@@ -1,0 +1,14 @@
+made desing plans for how the menu should function.. on paper
+
+in short:
+-takes input into account(same way to opperate the menu whether you are a player or AI)
+-has 3 base menu's : Start, Options, End
+-Start contains 3 buttons(for now, considering a save button): Start(which starts a new game), Options(which goes to the menu Options), Exit(Which quits the program)
+-Options contain 5 buttons(for now): Try Again(which restarts the same game config), Restart(which starts a new game), Controls(which displays a texture, showing the controls(*insert lololol mspaint*)), Credits(which displays a texture, showing names of creditors), Back(which goes to the menu Start)
+-End contains 3 buttons(for now): Try Again(which restarts the same game config), Restart(which starts a new game), Exit(Which quits the program)
+-A single button contains: string buttonname, vector2D location, one action function, (maybe variable lenght for display box with the buttonname)
+-A single menu contains: String Menuname, vector<buttons> buttonlist, selectors(which are the "arrows" used to indicate which button is selected(menu navigation)), Vector2D location(important note: buttons locations should be parented to this one), the run button action function(	If(button_#.location.y==selector.location.y) && Key.ENTER.isPressed || Key.Space.isPressed)do button_#.action()	)(keep in mind this is sudocode)
+-selectors exist inside the current active menu, always starts at the top of the menu its in, can move up and down in step intervals(using Keys: arrowUp,arrowDown,W,S), these step movements must align with the locations of the buttons, displayed using two arrows of eitherside of a button, (could move to draw ateention but bah)
+
+
+
