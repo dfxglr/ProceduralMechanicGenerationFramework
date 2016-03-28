@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UN_SingleMenuManager;
-using UN_MenuManager;
 using UN_Button;
 using UN_Menu;
 
@@ -18,7 +17,7 @@ namespace ConsoleApplication1
 
 
             //manager
-            MenuMananger M;
+            //MenuMananger M;
             //menues
             Menu StartMenu;
             Menu OptionsMenu;
@@ -55,32 +54,34 @@ namespace ConsoleApplication1
             EndMenuButtons.Add(new Button("TryAgain", 10, 15));
             EndMenuButtons.Add(new Button("Exit", 10, 20));
             EndMenu = new Menu("GAME OVER", EndMenuButtons, 20, 50);
-            //MenuManager
+            //MenuManager menu list
             MenuS.Add(StartMenu);
             MenuS.Add(OptionsMenu);
             MenuS.Add(ControlsMenu);
             MenuS.Add(CreditsMenu);
             MenuS.Add(EndMenu);
-            M = new MenuMananger(MenuS);
-
+            // adds menus to the single MenuManager, and it is a must
+            SingleMenuManager.Instance.Feed(MenuS);
             //testing begin
-            /*
-            M.Begin();
-            M.DisplayCurrent();
-            Console.WriteLine("_________");
-            M.SelectMenu(OptionsMenu);
-            M.DisplayCurrent();
-            Console.WriteLine("_________");
-            M.SelectMenu(StartMenu);
-            M.DisplayCurrent();
-            Console.WriteLine("_________");
-            M.SelectMenu(CreditsMenu);
-            M.DisplayCurrent();
-            */
-            SingleMenuManager.Instance.test();
-            
-            //testing end
 
+            
+            SingleMenuManager.Instance.Begin();
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("_________");
+            SingleMenuManager.Instance.SelectMenu(OptionsMenu);
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("_________");
+            SingleMenuManager.Instance.SelectMenu(StartMenu);
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("_________");
+            SingleMenuManager.Instance.SelectMenu(CreditsMenu);
+            SingleMenuManager.Instance.DisplayCurrent();
+            
+            //SingleMenuManager.Instance.test();
+            //StartMenu.TestButton();
+
+
+            //testing end
             Console.WriteLine("###################### Program end, hit key");
             Console.ReadKey();
         }

@@ -63,7 +63,7 @@ namespace UN_Button
                 case "Start":
                     //insert start button function here and remove the writeline below
                     Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
-                    SingleMenuManager.Instance.test();
+                    //SingleMenuManager.Instance.test();
                     break;
                 case "Exit":
                     //insert exit button function here and remove the writeline below

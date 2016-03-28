@@ -98,6 +98,7 @@ namespace UN_Menu
         }
         public void TestButton()
         {
+            buttonList[0].DoAction();
             //need to test a specific button, from this menues list 
         }
     }
