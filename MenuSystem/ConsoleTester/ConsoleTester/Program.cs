@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UN_SingleMenuManager;
 using UN_MenuManager;
 using UN_Button;
 using UN_Menu;
@@ -63,6 +64,7 @@ namespace ConsoleApplication1
             M = new MenuMananger(MenuS);
 
             //testing begin
+            /*
             M.Begin();
             M.DisplayCurrent();
             Console.WriteLine("_________");
@@ -74,6 +76,9 @@ namespace ConsoleApplication1
             Console.WriteLine("_________");
             M.SelectMenu(CreditsMenu);
             M.DisplayCurrent();
+            */
+            SingleMenuManager.Instance.test();
+            
             //testing end
 
             Console.WriteLine("###################### Program end, hit key");
