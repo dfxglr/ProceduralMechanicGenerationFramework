@@ -18,7 +18,7 @@ namespace UN_MenuManager
             menuList = M;
         }
 
-        //
+        //private function to deselect the other menues
         private void DeSelectRest(Menu ActiveMenu)
         {
             foreach (Menu e in menuList)
