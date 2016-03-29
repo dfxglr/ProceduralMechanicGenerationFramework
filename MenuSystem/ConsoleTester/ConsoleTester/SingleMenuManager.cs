@@ -13,7 +13,7 @@ namespace UN_SingleMenuManager
         // insert note here 
         List<Menu> menuList;
         //(selectCount isnt used much other than in void Begin and even there is only used a few times, potential to change this) 
-        int selectCount = 0;
+        Boolean selectMenu = true;
 
        
 
@@ -85,6 +85,7 @@ namespace UN_SingleMenuManager
             //-------------------------------------------------// setup end
             SingleMenuManager.Instance.Feed(Menues);
             SingleMenuManager.Instance.Begin();
+
         }
         //feed the single menu manager with stuff from the setup function
         private void Feed(List<Menu> M)
@@ -141,6 +142,11 @@ namespace UN_SingleMenuManager
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+        //annoying this function cant be run inside the classes without dual button activation, i have no clue why this is the case, but after testing all possible location with no luck im left to leave it in the main
+        public void SelectFirstButtonInMenu(int MenuRowNumber)
+        {
+            menuList[MenuRowNumber].SelectButtonZero();
+        }
         //selects a chosen menu using ints to refer to the position in the menulist
         public void SelectMenu(int MenuRowNumber)
         {
@@ -148,17 +154,18 @@ namespace UN_SingleMenuManager
             if (menuList != null)
             {
                 //Console.WriteLine("i hope i dont repeat");
-                
                 DeSelectAllM();
+                //menuList[MenuRowNumber].SelectButtonZero();
                 menuList[MenuRowNumber].Select();
-                //here is the fuckery, that messes with menuswapping... its too fast lol OIFHOUIHFHOEHWFHWFIUWHFHIWHFHWEHFHIUWEHFIHIWEHFIHWFHHUWFHIWHFUIEHWFUIHWFHEHWFHUEHIWFIUWFHIHWEFIHWIFH it fucking loops... 2 times dafug
-                menuList[MenuRowNumber].SelectButtonZero();
+                //cannot be called wihtout going full retard
+                //SelectFirstButtonInMenu(MenuRowNumber);
+                //Console.WriteLine(MenuRowNumber);
             }
             else
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
-            }
+            }            
         }
         //returns the number of menues
         public int MenuCount()
@@ -243,6 +250,10 @@ namespace UN_SingleMenuManager
                 e.Display();
                 Console.WriteLine(" is selected: " + e.IsSelected());
             }
+        }
+        public void FunctionRunFromClass()
+        {
+            Console.WriteLine("yes i can be run from the buttons");
         }
 
         //-------------------------------------------------//

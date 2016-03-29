@@ -91,11 +91,12 @@ namespace UN_Button
                     break;
                 case "Restart":
                     //insert start menu function here and remove the writeline below
-                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");  
                     break;
                 case "Controls":
                     //insert start menu function here and remove the writeline below
                     Console.WriteLine("button [" + buttonName + "] does its action");
+                    //SingleMenuManager.Instance.FunctionRunFromClass();
                     //selects the related menu
                     MoveToRelated();
                     break;
@@ -108,16 +109,15 @@ namespace UN_Button
                 case "Options":
                     //insert start menu function here and remove the writeline below
                     Console.WriteLine("button [" + buttonName + "] does its action");
+                    //SingleMenuManager.Instance.SelectFirstButtonInMenu(1);
                     //selects the related menu
-                    MoveToRelated();
+                    MoveToRelated(); 
                     break;
                 default:
                     //error message for if a button is none of the premade buttons have been selected and activated
                     Console.WriteLine("Default button, tried to execute a button action, however none of the premade button options were selected or activated");
                     break;
             }
-
-           
         }
         //---------------------------------------------------------------// button functions below
         private void MoveToRelated()
@@ -125,11 +125,8 @@ namespace UN_Button
             //selects the related menu
             if (relatedMenu != 100 && SingleMenuManager.Instance.MenuCount() != 0 && relatedMenu <= SingleMenuManager.Instance.MenuCount())
             {
-
-                Console.WriteLine("i hope i dont repeat");
-
-
-                SingleMenuManager.Instance.SelectMenu(relatedMenu);             
+                //SingleMenuManager.Instance.SelectFirstButtonInMenu(relatedMenu);
+                SingleMenuManager.Instance.SelectMenu(relatedMenu);
             }
             else
             {
@@ -137,6 +134,5 @@ namespace UN_Button
                 Console.WriteLine("Error: you have tried to move to the previously selected menu, but this button has not received a related menu or the related menu number given is higher than the number of menues in the menulist, please check the Setup function in the Single Menu Manager, at the creating of the button: " + buttonName);
             }
         }
-
     }
 }

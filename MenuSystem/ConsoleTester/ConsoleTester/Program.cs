@@ -22,18 +22,32 @@ namespace ConsoleApplication1
 
 
 
-            SingleMenuManager.Instance.SelectMenu(0);
+            //SingleMenuManager.Instance.SelectMenu(0);
             //SingleMenuManager.Instance.DisplayCurrent();
 
-            SingleMenuManager.Instance.MoveUp();
-            SingleMenuManager.Instance.MoveUp();
-            //SingleMenuManager.Instance.MoveUp();
-
-
-            //SingleMenuManager.Instance.WhoIsSelected();
-
+            SingleMenuManager.Instance.MoveDown();
             SingleMenuManager.Instance.ActivateButton();
-            //SingleMenuManager.Instance.WhoIsSelected();
+            //SingleMenuManager.Instance.SelectFirstButtonInMenu(1); //this thing is the fucking shit that i dont want
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
+
+            /*
+            SingleMenuManager.Instance.MoveUp();
+            SingleMenuManager.Instance.MoveUp();
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstButtonInMenu(3);
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
+
+           
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstButtonInMenu(1);
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
+            */
 
             /*
             SingleMenuManager.Instance.DisplayCurrent();

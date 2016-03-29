@@ -45,6 +45,7 @@ namespace UN_Menu
                 
                 DeSelectAllB();
                 buttonList[0].Select();
+
             }
             else
             {
@@ -108,8 +109,6 @@ namespace UN_Menu
                 {
                     e.DoAction();
                 }                
-                //e.Display();
-                //Console.WriteLine(" is selected: " + e.IsSelected());
             }
         }
         public void SelectUp()
