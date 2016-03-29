@@ -1,6 +1,7 @@
 ﻿using System;
 using UN_Button;
 using System.Collections.Generic;
+using UN_SingleMenuManager;
 
 
 namespace UN_Menu
@@ -21,14 +22,29 @@ namespace UN_Menu
             buttonList = BL;
             x = X;
             y = Y;
-
-
-
-            //checks if empty before running
-            if (buttonList.Count != 0)
+        }
+        public void PauseTime()
+        {
+            //stop time steps so the game is paused
+        }
+        //deselects all buttons
+        private void DeSelectAllB()
+        {
+            //
+            foreach (Button e in buttonList)
             {
-                //sets first button to be active
-                buttonList[0].IsSelected();
+                e.DeSelect();
+            }
+        }
+        // selects the first button in
+        public void SelectButtonZero()
+        {
+            //checks if empty before running
+            if (buttonList != null)
+            {
+                
+                DeSelectAllB();
+                buttonList[0].Select();
             }
             else
             {
@@ -36,21 +52,18 @@ namespace UN_Menu
                 Console.WriteLine("error: no buttons were found in the button list");
             }
         }
-        public void PauseTime()
-        {
-            //stop time steps so the game is paused
-        }
         public void DeSelect()
         {
             selected = false;
             //no using atm because its a console project at that this would spam it
             //Console.WriteLine("button: " + buttonName + " is NOT selected");
         }
+        //sets this menu to be active
         public void Select()
-        {
-            //sets this menu to be active
+        {            
             selected = true;
         }
+        //used to check if this menu is active
         public bool IsSelected()
         {
             //checks in this menu is selected
@@ -63,7 +76,7 @@ namespace UN_Menu
                 return false;
             }
         }
-
+        //displays this menu's name and/or texture       
         public void Display()
         {
             //name and/or textures
@@ -86,20 +99,72 @@ namespace UN_Menu
             }
         }
 
-        public void MoveUp()
+        // used this menues the currently selected buttons action 
+        public void UseButton()
         {
-            //buttonlist-1 into .Select()
-            //plus begin/end conditions for list[0 and N]
+            foreach (Button e in buttonList)
+            {
+                if (e.IsSelected() && selected)
+                {
+                    e.DoAction();
+                }                
+                //e.Display();
+                //Console.WriteLine(" is selected: " + e.IsSelected());
+            }
         }
-        public void MoveDown()
+        public void SelectUp()
         {
-            //buttonlist+1 into .Select()
-            //plus begin/end conditions for list[0 and N]
+            //first position in the list
+            if (buttonList[0].IsSelected())
+            {
+                buttonList[0].DeSelect();
+                buttonList[buttonList.Count-1].Select();
+            }
+            //last postition in the list
+            else if (buttonList[buttonList.Count-1].IsSelected())
+            {
+                buttonList[buttonList.Count-1].DeSelect();
+                buttonList[buttonList.Count - 2].Select();
+            }
+            else
+            {
+                //middle posititions in the list
+                for (int i = 1; i < buttonList.Count - 1; i++)
+                {
+                    if (buttonList[i].IsSelected())
+                    {
+                        buttonList[i].DeSelect();
+                        buttonList[i - 1].Select();
+                    }
+                }
+            }
         }
-        public void TestButton()
+        public void SelectDown()
         {
-            buttonList[0].DoAction();
-            //need to test a specific button, from this menues list 
+            //first position in the list
+            if (buttonList[0].IsSelected() && buttonList.Count >1)
+            {
+                buttonList[0].DeSelect();
+                buttonList[1].Select();
+            }
+            //last postition in the list
+            else if (buttonList[buttonList.Count-1].IsSelected())
+            {
+                buttonList[buttonList.Count-1].DeSelect();
+                buttonList[0].Select();
+            }
+            else
+            {
+                //middle posititions in the list
+                for (int i = 1; i < buttonList.Count - 1; i++)
+                {
+                    if (buttonList[i].IsSelected())
+                    {
+                        buttonList[i].DeSelect();
+                        buttonList[i + 1].Select();
+                    }
+                }
+            }
         }
     }
 }

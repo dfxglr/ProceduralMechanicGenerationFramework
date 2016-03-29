@@ -14,16 +14,26 @@ namespace UN_Button
         //public
         //buttonName must fit case names!!!
         String buttonName;
+        //the base 100 is the default value, when there is not input, and is used for error message in buttons Back and Options atm
+        int relatedMenu = 100;
         float x;
         float y;
         Boolean selected;
         //private
         //protected
 
-        //compiler
+        //compiler 1, base
         public Button(string BN, float X, float Y)
         {
             buttonName = BN;
+            x = X;
+            y = Y;
+        }
+        //complier 2, used for moving between menues
+        public Button(string BN, int R, float X, float Y)
+        {
+            buttonName = BN;
+            relatedMenu = R;
             x = X;
             y = Y;
         }
@@ -53,7 +63,7 @@ namespace UN_Button
             //displays the button itself
             //for this example its console.write(buttonName);
             Console.WriteLine(buttonName);
-        }
+        }       
         public void DoAction()
         {
             //make switch case for different atcions,a nd then we just add any new action here nice nice nice
@@ -62,36 +72,44 @@ namespace UN_Button
             {
                 case "Start":
                     //insert start button function here and remove the writeline below
-                    Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
                     //SingleMenuManager.Instance.test();
                     break;
                 case "Exit":
                     //insert exit button function here and remove the writeline below
-                    Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
                     break;
                 case "Back":
                     //insert back button function here and remove the writeline below
-                    Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action");
+                    //selects the related menu
+                    MoveToRelated();
                     break;
                 case "TryAgain":
                     //insert try again button function here and remove the writeline below
-                    Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
                     break;
                 case "Restart":
                     //insert start menu function here and remove the writeline below
-                    Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
                     break;
                 case "Controls":
                     //insert start menu function here and remove the writeline below
-                    Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action");
+                    //selects the related menu
+                    MoveToRelated();
                     break;
                 case "Credits":
                     //insert start menu function here and remove the writeline below
-                    Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action");
+                    //selects the related menu
+                    MoveToRelated();
                     break;
                 case "Options":
                     //insert start menu function here and remove the writeline below
-                    Console.WriteLine("button: " + buttonName + " does its action(which is nothing atm)");
+                    Console.WriteLine("button [" + buttonName + "] does its action");
+                    //selects the related menu
+                    MoveToRelated();
                     break;
                 default:
                     //error message for if a button is none of the premade buttons have been selected and activated
@@ -101,7 +119,24 @@ namespace UN_Button
 
            
         }
+        //---------------------------------------------------------------// button functions below
+        private void MoveToRelated()
+        {
+            //selects the related menu
+            if (relatedMenu != 100 && SingleMenuManager.Instance.MenuCount() != 0 && relatedMenu <= SingleMenuManager.Instance.MenuCount())
+            {
 
+                Console.WriteLine("i hope i dont repeat");
+
+
+                SingleMenuManager.Instance.SelectMenu(relatedMenu);             
+            }
+            else
+            {
+                //error for when a person forgets to add the related menu, when having made the button
+                Console.WriteLine("Error: you have tried to move to the previously selected menu, but this button has not received a related menu or the related menu number given is higher than the number of menues in the menulist, please check the Setup function in the Single Menu Manager, at the creating of the button: " + buttonName);
+            }
+        }
 
     }
 }

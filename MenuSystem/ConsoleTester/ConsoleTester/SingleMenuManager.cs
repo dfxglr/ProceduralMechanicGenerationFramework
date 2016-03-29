@@ -10,6 +10,14 @@ namespace UN_SingleMenuManager
 {
     public sealed class SingleMenuManager
     {
+        // insert note here 
+        List<Menu> menuList;
+        //(selectCount isnt used much other than in void Begin and even there is only used a few times, potential to change this) 
+        int selectCount = 0;
+
+       
+
+
         //-------------------------------------------------// singleton thread safe with no lock (type 4 from http://csharpindepth.com/Articles/General/Singleton.aspx)
         private static readonly SingleMenuManager instance = new SingleMenuManager();
         // Explicit static constructor to tell C# compiler not to mark type as 'beforefieldinit'
@@ -26,56 +34,90 @@ namespace UN_SingleMenuManager
                 return instance;
             }
         }
-        //-------------------------------------------------//
-
-
-        List<Menu> menuList;
-        int selectCount = 0;
         //-------------------------------------------------// My added functions
-        //acts as a manuel constuctor and feeds the list of menues into this instance
-        public void Feed(List<Menu> M)
+
+        //setup function to be used and edited for desired menues and buttons
+        public void Setup()
         {
+            //-------------------------------------------------// setup begin (change buttons and menue and shit here)
+            //menues
+            Menu StartMenu;
+            Menu OptionsMenu;
+            Menu ControlsMenu;
+            Menu CreditsMenu;
+            Menu EndMenu;
+            //lists for buttons and menues
+            List<Button> StartMenuButtons = new List<Button>();
+            List<Button> OptionsMenuButtons = new List<Button>();
+            List<Button> ControlsMenuButtons = new List<Button>();
+            List<Button> CreditsMenuButtons = new List<Button>();
+            List<Button> EndMenuButtons = new List<Button>();
+            List<Menu> Menues = new List<Menu>();
+            //start menu 
+            StartMenuButtons.Add(new Button("Start",  10, 10));
+            StartMenuButtons.Add(new Button("Options", 1, 10, 15));
+            StartMenuButtons.Add(new Button("Exit", 10, 20));
+            StartMenu = new Menu("Welcome to PMGF", StartMenuButtons, 20, 50);
+            //options menu
+            OptionsMenuButtons.Add(new Button("Restart", 10, 10));
+            OptionsMenuButtons.Add(new Button("TryAgain", 10, 15));
+            OptionsMenuButtons.Add(new Button("Controls", 2, 10, 20));
+            OptionsMenuButtons.Add(new Button("Credits", 3, 10, 20));
+            OptionsMenuButtons.Add(new Button("Back", 0, 10, 20));
+            OptionsMenu = new Menu("OPTIONS", OptionsMenuButtons, 20, 50);
+            //controls menu
+            ControlsMenuButtons.Add(new Button("Back", 1, 10, 10));
+            ControlsMenu = new Menu("CONTROLS", ControlsMenuButtons, 20, 50);
+            //credits menu
+            CreditsMenuButtons.Add(new Button("Back", 1, 10, 10));
+            CreditsMenu = new Menu("CREDITS", CreditsMenuButtons, 20, 50);
+            //End Menu
+            EndMenuButtons.Add(new Button("Restart", 10, 10));
+            EndMenuButtons.Add(new Button("TryAgain", 10, 15));
+            EndMenuButtons.Add(new Button("Exit", 10, 20));
+            EndMenu = new Menu("GAME OVER", EndMenuButtons, 20, 50);
+            //adds to the list of menues
+            Menues.Add(StartMenu);
+            Menues.Add(OptionsMenu);
+            Menues.Add(ControlsMenu);
+            Menues.Add(CreditsMenu);
+            Menues.Add(EndMenu);
+            //-------------------------------------------------// setup end
+            SingleMenuManager.Instance.Feed(Menues);
+            SingleMenuManager.Instance.Begin();
+        }
+        //feed the single menu manager with stuff from the setup function
+        private void Feed(List<Menu> M)
+        {
+            //adds the list of menues created in the setup function
             menuList = M;
-        }
-        //private function to deselect the other menues
-        private void DeSelectRest(Menu ActiveMenu)
-        {            
-            //
+        }    
+        //private function to deselect all menues
+        private void DeSelectAllM()
+        {
             foreach (Menu e in menuList)
-            {
-                if (e != ActiveMenu)
-                {
-                    e.DeSelect();
-                }
-            }           
+            {               
+                e.DeSelect();
+            }
         }
-        //
+        //selects the first menu in the menu list to be the active, if no other menu isset to be active
         public void Begin()
         {
             //checks to secure that function can be run if menulist is empty
             if (menuList != null)
             {
-                //for startup to make sure that one is selected and only one
-                foreach (Menu e in menuList)
-                {
-                    if (!e.IsSelected())
-                    {
-                        selectCount++;
-                    }
-                }
-                if (selectCount >= menuList.Count - 1)
-                {
-                    menuList[0].Select();
-                    DeSelectRest(menuList[0]);
-                }
+                DeSelectAllM();
+                menuList[0].Select();
+                
+                menuList[0].SelectButtonZero();
             }
             else
             {
                 //error message here
-                Console.WriteLine("The list of menues have not been added to the single menu manager, as such the function cannot be run, please use the function: SingleMenuManager.Instance.Feed(List<Menu> menuList), before executing other menu manager functions");
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
-        //
+        // displays he currently active menu
         public void DisplayCurrent()
         {
 
@@ -96,22 +138,110 @@ namespace UN_SingleMenuManager
             else
             {
                 //error message here
-                Console.WriteLine("The list of menues have not been added to the single menu manager, as such the function cannot be run, please use the function: SingleMenuManager.Instance.Feed(menuList of your choice), before executing other menu manager functions");
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
-        //
-        public void SelectMenu(Menu ChosenMenu)
+        //selects a chosen menu using ints to refer to the position in the menulist
+        public void SelectMenu(int MenuRowNumber)
         {
             //checks to secure that function can be run if menulist is empty
             if (menuList != null)
             {
-                ChosenMenu.Select();
-                DeSelectRest(ChosenMenu);
+                //Console.WriteLine("i hope i dont repeat");
+                
+                DeSelectAllM();
+                menuList[MenuRowNumber].Select();
+                //here is the fuckery, that messes with menuswapping... its too fast lol OIFHOUIHFHOEHWFHWFIUWHFHIWHFHWEHFHIUWEHFIHIWEHFIHWFHHUWFHIWHFUIEHWFUIHWFHEHWFHUEHIWFIUWFHIHWEFIHWIFH it fucking loops... 2 times dafug
+                menuList[MenuRowNumber].SelectButtonZero();
             }
             else
             {
                 //error message here
-                Console.WriteLine("The list of menues have not been added to the single menu manager, as such the function cannot be run, please use the function: SingleMenuManager.Instance.Feed(menuList of your choice), before executing other menu manager functions");
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
+        }
+        //returns the number of menues
+        public int MenuCount()
+        {
+            //checks to secure that function can be run if menulist is empty
+            if (menuList != null)
+            {
+                return menuList.Count;
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                return 0;
+            }
+        }
+        //activates the action of the currently selected button regardless of menu
+        public void ActivateButton()
+        {
+            //
+            if (menuList != null)
+            {
+                foreach (Menu e in menuList)
+                {
+                    if (e.IsSelected())
+                    {
+                        e.UseButton();
+                    }
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
+        }
+        //
+        public void MoveUp()
+        {
+            //
+            if (menuList != null)
+            {
+                foreach (Menu e in menuList)
+                {
+                    if (e.IsSelected())
+                    {
+                        e.SelectUp();
+                    }
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
+        }
+        public void MoveDown()
+        {
+            //
+            if (menuList != null)
+            {
+                foreach (Menu e in menuList)
+                {
+                    if (e.IsSelected())
+                    {
+                        e.SelectDown();
+                    }
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
+        }
+        //error checking function for manual use
+        public void WhoIsSelected()
+        {
+            foreach (Menu e in menuList)
+            {
+                //there is indeed only one menu active as all times
+                e.Display();
+                Console.WriteLine(" is selected: " + e.IsSelected());
             }
         }
 
