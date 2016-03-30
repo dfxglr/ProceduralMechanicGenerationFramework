@@ -13,7 +13,7 @@ namespace UN_SingleMenuManager
         // insert note here 
         List<Menu> menuList;
         //(selectCount isnt used much other than in void Begin and even there is only used a few times, potential to change this) 
-        Boolean selectMenu = true;
+        //Boolean selectMenu = true;
 
        
 
@@ -34,7 +34,8 @@ namespace UN_SingleMenuManager
                 return instance;
             }
         }
-        //-------------------------------------------------// My added functions
+        //-------------------------------------------------//
+        //the following are My added functions
 
         //setup function to be used and edited for desired menues and buttons
         public void Setup()
@@ -64,10 +65,10 @@ namespace UN_SingleMenuManager
             OptionsMenuButtons.Add(new Button("Controls", 2, 10, 20));
             OptionsMenuButtons.Add(new Button("Credits", 3, 10, 20));
             OptionsMenuButtons.Add(new Button("Back", 0, 10, 20));
-            OptionsMenu = new Menu("OPTIONS", OptionsMenuButtons, 20, 50);
+            OptionsMenu = new Menu("OPTIONS:", OptionsMenuButtons, 20, 50);
             //controls menu
             ControlsMenuButtons.Add(new Button("Back", 1, 10, 10));
-            ControlsMenu = new Menu("CONTROLS", ControlsMenuButtons, 20, 50);
+            ControlsMenu = new Menu("CONTROLS:", ControlsMenuButtons, 20, 50);
             //credits menu
             CreditsMenuButtons.Add(new Button("Back", 1, 10, 10));
             CreditsMenu = new Menu("CREDITS", CreditsMenuButtons, 20, 50);
@@ -75,7 +76,7 @@ namespace UN_SingleMenuManager
             EndMenuButtons.Add(new Button("Restart", 10, 10));
             EndMenuButtons.Add(new Button("TryAgain", 10, 15));
             EndMenuButtons.Add(new Button("Exit", 10, 20));
-            EndMenu = new Menu("GAME OVER", EndMenuButtons, 20, 50);
+            EndMenu = new Menu("GAME OVER:", EndMenuButtons, 20, 50);
             //adds to the list of menues
             Menues.Add(StartMenu);
             Menues.Add(OptionsMenu);
@@ -93,14 +94,6 @@ namespace UN_SingleMenuManager
             //adds the list of menues created in the setup function
             menuList = M;
         }    
-        //private function to deselect all menues
-        private void DeSelectAllM()
-        {
-            foreach (Menu e in menuList)
-            {               
-                e.DeSelect();
-            }
-        }
         //selects the first menu in the menu list to be the active, if no other menu isset to be active
         public void Begin()
         {
@@ -110,7 +103,7 @@ namespace UN_SingleMenuManager
                 DeSelectAllM();
                 menuList[0].Select();
                 
-                menuList[0].SelectButtonZero();
+                menuList[0].SelectButtonZeroOrActiveB();
             }
             else
             {
@@ -118,6 +111,8 @@ namespace UN_SingleMenuManager
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+
+        //----------------------------------------------------------------------------------------------------------------------------------// following are public functions that may be called from other scribts
         // displays he currently active menu
         public void DisplayCurrent()
         {
@@ -142,10 +137,37 @@ namespace UN_SingleMenuManager
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
-        //annoying this function cant be run inside the classes without dual button activation, i have no clue why this is the case, but after testing all possible location with no luck im left to leave it in the main
-        public void SelectFirstButtonInMenu(int MenuRowNumber)
+        //private function to deselect all menues
+        public void DeSelectAllM()
         {
-            menuList[MenuRowNumber].SelectButtonZero();
+            foreach (Menu e in menuList)
+            {
+                e.DeSelect();
+            }
+        }
+        //annoying this function cant be run inside the classes without dual button activation, i have no clue why this is the case, but after testing all possible location with no luck im left to leave it in the main
+        public void SelectFirstOrActiveButton()
+        {
+            //use a return function to get the menurownumber which is equal to the relatedmenu value
+            if (menuList != null)
+            {
+                foreach (Menu e in menuList)
+                {
+                    if (e.IsSelected())
+                    {
+                        e.SelectButtonZeroOrActiveB();
+                    }
+                    else
+                    {
+                        e.DeSelectAllB();
+                    }
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
         }
         //selects a chosen menu using ints to refer to the position in the menulist
         public void SelectMenu(int MenuRowNumber)
@@ -158,8 +180,7 @@ namespace UN_SingleMenuManager
                 //menuList[MenuRowNumber].SelectButtonZero();
                 menuList[MenuRowNumber].Select();
                 //cannot be called wihtout going full retard
-                //SelectFirstButtonInMenu(MenuRowNumber);
-                //Console.WriteLine(MenuRowNumber);
+                //SelectFirstOrActiveButton();
             }
             else
             {
@@ -182,7 +203,7 @@ namespace UN_SingleMenuManager
                 return 0;
             }
         }
-        //activates the action of the currently selected button regardless of menu
+        //activates the action of the currently selected button 
         public void ActivateButton()
         {
             //
@@ -202,7 +223,7 @@ namespace UN_SingleMenuManager
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
-        //
+        //selects the above below the the currently active button
         public void MoveUp()
         {
             //
@@ -222,6 +243,7 @@ namespace UN_SingleMenuManager
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+        //selects the button below the the currently active button
         public void MoveDown()
         {
             //
@@ -241,22 +263,7 @@ namespace UN_SingleMenuManager
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
-        //error checking function for manual use
-        public void WhoIsSelected()
-        {
-            foreach (Menu e in menuList)
-            {
-                //there is indeed only one menu active as all times
-                e.Display();
-                Console.WriteLine(" is selected: " + e.IsSelected());
-            }
-        }
-        public void FunctionRunFromClass()
-        {
-            Console.WriteLine("yes i can be run from the buttons");
-        }
-
-        //-------------------------------------------------//
+        //----------------------------------------------------------------------------------------------------------------------------------//
     }
 }
 

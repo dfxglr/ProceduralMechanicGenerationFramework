@@ -62,8 +62,15 @@ namespace UN_Button
         {
             //displays the button itself
             //for this example its console.write(buttonName);
-            Console.WriteLine(buttonName);
-        }       
+            if (selected)
+            {
+                Console.WriteLine(">" + buttonName + "<");
+            }
+            else
+            {
+                Console.WriteLine(buttonName);
+            }
+        }      
         public void DoAction()
         {
             //make switch case for different atcions,a nd then we just add any new action here nice nice nice
@@ -73,7 +80,6 @@ namespace UN_Button
                 case "Start":
                     //insert start button function here and remove the writeline below
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
-                    //SingleMenuManager.Instance.test();
                     break;
                 case "Exit":
                     //insert exit button function here and remove the writeline below
@@ -96,7 +102,6 @@ namespace UN_Button
                 case "Controls":
                     //insert start menu function here and remove the writeline below
                     Console.WriteLine("button [" + buttonName + "] does its action");
-                    //SingleMenuManager.Instance.FunctionRunFromClass();
                     //selects the related menu
                     MoveToRelated();
                     break;
@@ -109,9 +114,8 @@ namespace UN_Button
                 case "Options":
                     //insert start menu function here and remove the writeline below
                     Console.WriteLine("button [" + buttonName + "] does its action");
-                    //SingleMenuManager.Instance.SelectFirstButtonInMenu(1);
                     //selects the related menu
-                    MoveToRelated(); 
+                    MoveToRelated();
                     break;
                 default:
                     //error message for if a button is none of the premade buttons have been selected and activated
@@ -125,7 +129,6 @@ namespace UN_Button
             //selects the related menu
             if (relatedMenu != 100 && SingleMenuManager.Instance.MenuCount() != 0 && relatedMenu <= SingleMenuManager.Instance.MenuCount())
             {
-                //SingleMenuManager.Instance.SelectFirstButtonInMenu(relatedMenu);
                 SingleMenuManager.Instance.SelectMenu(relatedMenu);
             }
             else

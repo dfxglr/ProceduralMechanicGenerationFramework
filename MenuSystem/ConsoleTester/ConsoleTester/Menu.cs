@@ -8,8 +8,12 @@ namespace UN_Menu
 {
     public class Menu
     {
+        //
         string menuName;
         Boolean selected;
+        //
+        int anySelected = 0;
+        Boolean nooneSelected = false;
         //menu's position
         float x;
         float y;
@@ -28,7 +32,7 @@ namespace UN_Menu
             //stop time steps so the game is paused
         }
         //deselects all buttons
-        private void DeSelectAllB()
+        public void DeSelectAllB()
         {
             //
             foreach (Button e in buttonList)
@@ -37,15 +41,35 @@ namespace UN_Menu
             }
         }
         // selects the first button in
-        public void SelectButtonZero()
+        public void SelectButtonZeroOrActiveB()
         {
             //checks if empty before running
             if (buttonList != null)
             {
-                
-                DeSelectAllB();
-                buttonList[0].Select();
-
+                foreach (Button e in buttonList)
+                {
+                    if (!e.IsSelected())
+                    {
+                        anySelected++;
+                        if (anySelected==buttonList.Count)
+                        {
+                            nooneSelected = true;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                //selects button
+                if (nooneSelected)
+                {
+                    DeSelectAllB();
+                    buttonList[0].Select();
+                }
+                //resets 
+                anySelected = 0;
+                nooneSelected = false;
             }
             else
             {
@@ -99,7 +123,6 @@ namespace UN_Menu
                 Console.WriteLine("error: no buttons were found in the button list");
             }
         }
-
         // used this menues the currently selected buttons action 
         public void UseButton()
         {
@@ -108,7 +131,9 @@ namespace UN_Menu
                 if (e.IsSelected() && selected)
                 {
                     e.DoAction();
-                }                
+                    //this is the first ideal place for the function below, but i cant be run from here without double trouble
+                    //SingleMenuManager.Instance.SelectFirstButtonInMenu();
+                }
             }
         }
         public void SelectUp()
@@ -134,6 +159,7 @@ namespace UN_Menu
                     {
                         buttonList[i].DeSelect();
                         buttonList[i - 1].Select();
+                        break;
                     }
                 }
             }
@@ -161,6 +187,7 @@ namespace UN_Menu
                     {
                         buttonList[i].DeSelect();
                         buttonList[i + 1].Select();
+                        break;
                     }
                 }
             }

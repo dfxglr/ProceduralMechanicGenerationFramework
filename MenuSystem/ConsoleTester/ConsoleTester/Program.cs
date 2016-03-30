@@ -16,66 +16,92 @@ namespace ConsoleApplication1
             Console.WriteLine("###################### Program begin");
             //testing begin
 
+            //these two are a force pair
+            //  SingleMenuManager.Instance.ActivateButton();
+            //  SingleMenuManager.Instance.SelectFirstOrActiveButton();
+
+            //----------------------------------------------------------------------------------// simulation of a player operating the menu using the 3 otions: moveup, movedown, and activate
+
+            //starts up and shows start menu
             SingleMenuManager.Instance.Setup();
             SingleMenuManager.Instance.DisplayCurrent();
             Console.WriteLine("__________________");
 
+            //moves up in startmenu which selects >exit< and activates it
+            SingleMenuManager.Instance.MoveUp();
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstOrActiveButton(); //this thing is ok but still annoying
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
 
+            //Moves up in startmenu again which selects >options< and activates it
+            SingleMenuManager.Instance.MoveUp();
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstOrActiveButton();
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
 
-            //SingleMenuManager.Instance.SelectMenu(0);
-            //SingleMenuManager.Instance.DisplayCurrent();
-
+            //moves down in optionsmenu which selects >tryagain< and activates it
             SingleMenuManager.Instance.MoveDown();
             SingleMenuManager.Instance.ActivateButton();
-            //SingleMenuManager.Instance.SelectFirstButtonInMenu(1); //this thing is the fucking shit that i dont want
+            SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.DisplayCurrent();
             Console.WriteLine("__________________");
 
-            /*
+            //dosent move in optionsmenu, >tryagain< is still selected, activates it again
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstOrActiveButton();
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
+
+            //moves down in options menu which selects >controls< and activates it
+            SingleMenuManager.Instance.MoveDown();
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstOrActiveButton();
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
+
+            //tries to moves down in credits menu but only >back< can be selected, proceeds to activates it
+            SingleMenuManager.Instance.MoveDown();
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstOrActiveButton();
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
+
+            //moves down 3 times in options menu which selects >credits< and activates it
+            SingleMenuManager.Instance.MoveDown();
+            SingleMenuManager.Instance.MoveDown();
+            SingleMenuManager.Instance.MoveDown();
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstOrActiveButton();
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
+
+            // in creditsmenu, activates >back<
+            SingleMenuManager.Instance.ActivateButton();
+            SingleMenuManager.Instance.SelectFirstOrActiveButton();
+            Console.WriteLine("__________________");
+            SingleMenuManager.Instance.DisplayCurrent();
+            Console.WriteLine("__________________");
+
+            //moves up in optionsmenu which selects >back< and activates it
             SingleMenuManager.Instance.MoveUp();
-            SingleMenuManager.Instance.MoveUp();
             SingleMenuManager.Instance.ActivateButton();
-            SingleMenuManager.Instance.SelectFirstButtonInMenu(3);
+            SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.DisplayCurrent();
             Console.WriteLine("__________________");
 
-           
-            SingleMenuManager.Instance.ActivateButton();
-            SingleMenuManager.Instance.SelectFirstButtonInMenu(1);
-            Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
-            Console.WriteLine("__________________");
-            */
+            //congratz on going full circle, menu system ready for more button action, input interaction, and nice display, all the rest is done
 
-            /*
-            SingleMenuManager.Instance.DisplayCurrent();
-            Console.WriteLine("__________________");
-            SingleMenuManager.Instance.ActivateButton();
-            SingleMenuManager.Instance.DisplayCurrent();
-            Console.WriteLine("__________________");
-            SingleMenuManager.Instance.ActivateButton();
-            SingleMenuManager.Instance.DisplayCurrent();
-            */
-            /*
-            SingleMenuManager.Instance.SelectMenu(1);
-            SingleMenuManager.Instance.DisplayCurrent();
-            Console.WriteLine("__________________");
-            SingleMenuManager.Instance.SelectMenu(2);
-            SingleMenuManager.Instance.DisplayCurrent();
-            Console.WriteLine("__________________");
-            SingleMenuManager.Instance.SelectMenu(3);
-            SingleMenuManager.Instance.DisplayCurrent();
-            Console.WriteLine("__________________");
-            SingleMenuManager.Instance.SelectMenu(4);
-            SingleMenuManager.Instance.DisplayCurrent();
-            Console.WriteLine("__________________");
-            */
-            //SingleMenuManager.Instance.test();
-            //StartMenu.TestButton();
-
-
+            //----------------------------------------------------------------------------------// end of simulation
             //testing end
             Console.WriteLine("###################### Program end, hit key");
             Console.ReadKey();
