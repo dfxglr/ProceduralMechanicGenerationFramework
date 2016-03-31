@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using UN_SingleMenuManager;
-//using System.Windows.Input.Keyboard;
+using UN_SingleInputManager;
 
 
 //choose and assing a namespace
@@ -84,6 +84,7 @@ namespace UN_Button
                 case "Exit":
                     //insert exit button function here and remove the writeline below
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
+                    SingleInputManager.Instance.GameQuit();
                     break;
                 case "Back":
                     //insert back button function here and remove the writeline below

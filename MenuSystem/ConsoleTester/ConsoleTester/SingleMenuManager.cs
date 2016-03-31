@@ -10,7 +10,7 @@ namespace UN_SingleMenuManager
 {
     public sealed class SingleMenuManager
     {
-        // insert note here 
+        //variables 
         List<Menu> menuList;
         //(selectCount isnt used much other than in void Begin and even there is only used a few times, potential to change this) 
         //Boolean selectMenu = true;
@@ -137,12 +137,35 @@ namespace UN_SingleMenuManager
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
-        //private function to deselect all menues
+        //deselects all menues
         public void DeSelectAllM()
         {
             foreach (Menu e in menuList)
             {
                 e.DeSelect();
+            }
+        }
+        //returns true if no menu in the list is set to selected
+        public bool NoMenuSelected()
+        {
+            //use a return function to get the menurownumber which is equal to the relatedmenu value
+            if (menuList != null)
+            {
+                foreach (Menu e in menuList)
+                {
+                    if (e.IsSelected())
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function: NoMenuSelected(), in SinngleMenuManager cannot be run");
+                Console.WriteLine("since no menues were found, input switches to default, which is the 'NOT IN MENU', in SingleInputManager");
+                return false;
             }
         }
         //annoying this function cant be run inside the classes without dual button activation, i have no clue why this is the case, but after testing all possible location with no luck im left to leave it in the main
