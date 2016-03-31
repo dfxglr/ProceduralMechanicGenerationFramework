@@ -14,7 +14,7 @@ namespace UN_SingleInputManager
     {
         //variales
         Boolean quit = false;
-
+        Boolean isConsole = true;
         //booleans use for single press action with buttons, keyEventargs class could obsolete the use of these, but is being a dick for now reason so fuck it
         
         //print display to console
@@ -52,12 +52,12 @@ namespace UN_SingleInputManager
         //-------------------------------------------------//
         //the following are My added functions
 
-        //function that ends the update loop when the game need to quit
+        //gets if game/program is quitting
         public bool IsGameQuit()
         {
             return quit;
         }
-        //function that ends the update loop when the game need to quit
+        //exits the program
         public void GameQuit()
         {
             quit = true;
@@ -73,6 +73,11 @@ namespace UN_SingleInputManager
                 booleanRelatedToKey = false;
             }
             //---------------------------------------------------//
+        }
+        //allows for user to set program to either be console or not at the beginning
+        public void Setup(Boolean runItInConsole)
+        {
+            isConsole = runItInConsole;
         }
         //update function 
         public void InputUpdate()
@@ -95,57 +100,99 @@ namespace UN_SingleInputManager
                     wIsPressed = true;                    
                     //place desired function below
                     SingleMenuManager.Instance.MoveUp();
+                    //displays the current console menu, if isConsole is true
+                    if (isConsole)
+                    {
+                        SingleMenuManager.Instance.DisplayConsoleCurrent();
+                    }
                 }
-                //remeber to reset after each key and send ref to the assosiated bool
-                ResetBool(Key.W, ref wIsPressed);
                 // s 
                 if (Keyboard.IsKeyDown(Key.S) && !sIsPressed)
                 {
                     sIsPressed = true;
                     //place desired function below
                     SingleMenuManager.Instance.MoveDown();
+                    //displays the current console menu, if isConsole is true
+                    if (isConsole)
+                    {
+                        SingleMenuManager.Instance.DisplayConsoleCurrent();
+                    }
                 }
-                //remeber to reset after each key and send ref to the assosiated bool
-                ResetBool(Key.S, ref sIsPressed);
                 //-------------------------------------------------------------------//
+
                 //-------------------------------------------------------------------// Up, down
-                // w 
+                // up
                 if (Keyboard.IsKeyDown(Key.Up) && !upIsPressed)
                 {
                     upIsPressed = true;
                     //place desired function below
                     SingleMenuManager.Instance.MoveUp();
+                    //displays the current console menu, if isConsole is true
+                    if (isConsole)
+                    {
+                        SingleMenuManager.Instance.DisplayConsoleCurrent();
+                    }
                 }
-                //remeber to reset after each key and send ref to the assosiated bool
-                ResetBool(Key.Up, ref upIsPressed);
-                // s 
+                // down 
                 if (Keyboard.IsKeyDown(Key.Down) && !downIsPressed)
                 {
                     downIsPressed = true;
                     //place desired function below
                     SingleMenuManager.Instance.MoveDown();
+                    //displays the current console menu, if isConsole is true
+                    if (isConsole)
+                    {
+                        SingleMenuManager.Instance.DisplayConsoleCurrent();
+                    }
                 }
-                //remeber to reset after each key and send ref to the assosiated bool
-                ResetBool(Key.Down, ref downIsPressed);
+                //-------------------------------------------------------------------//
 
-                // print display to console
-                if (Keyboard.IsKeyDown(Key.P) && !pIsPressed)
+                //-------------------------------------------------------------------// enter, space
+                // enter 
+                if (Keyboard.IsKeyDown(Key.Enter) && !enterIsPressed)
                 {
-                    //
-                    pIsPressed = true;
-                    //
-                    Console.WriteLine("__________________");
-                    SingleMenuManager.Instance.DisplayCurrent();
-                    Console.WriteLine("__________________");        
+                    enterIsPressed = true;
+                    //place desired function below
+                    SingleMenuManager.Instance.ActivateButton();
+                    SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    //displays the current console menu, if isConsole is true
+                    if (isConsole)
+                    {
+                        SingleMenuManager.Instance.DisplayConsoleCurrent();
+                    }
                 }
-                //remeber to reset after each key and send ref to the assosiated bool
-                ResetBool(Key.P, ref pIsPressed);
-                //Console.WriteLine("IN MENU");
+                // space 
+                if (Keyboard.IsKeyDown(Key.Space) && !spaceIsPressed)
+                {
+                    spaceIsPressed = true;
+                    //place desired function below
+                    SingleMenuManager.Instance.ActivateButton();
+                    SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    //displays the current console menu, if isConsole is true
+                    if (isConsole)
+                    {
+                        SingleMenuManager.Instance.DisplayConsoleCurrent();
+                    }
+                }
+                //-------------------------------------------------------------------//
+
+                //-------------------------------------------------------------------// reseting the bools for each key, this used for only pressing once
+                ResetBool(Key.W, ref wIsPressed);
+                ResetBool(Key.S, ref sIsPressed);
+                ResetBool(Key.Up, ref upIsPressed);
+                ResetBool(Key.Down, ref downIsPressed);
+                ResetBool(Key.Enter, ref enterIsPressed);
+                ResetBool(Key.Space, ref spaceIsPressed);
+                //-------------------------------------------------------------------//
             }
             //NOT IN MENU
             else
             {
-                //Console.WriteLine("NOT IN MENU");
+                //insert code containing the controls needed for game aka : w,a,s,d - up,left,down,right - enter,space - escape
+
+                //escape key should bring you to options menu and pause the game using SingleMenuManager.Instance.Pause();
+
+
             }
         }
 
@@ -165,106 +212,106 @@ namespace UN_SingleInputManager
             //----------------------------------------------------------------------------------// simulation of a player operating the menu using the 3 otions: moveup, movedown, and activate
             //starts up and shows start menu
             SingleMenuManager.Instance.Setup();
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //moves up in startmenu which selects >exit< and activates it
             SingleMenuManager.Instance.MoveUp();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton(); //this thing is ok but still annoying
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //Moves up in startmenu again which selects >options< and activates it
             SingleMenuManager.Instance.MoveUp();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //moves down in optionsmenu which selects >tryagain< and activates it
             SingleMenuManager.Instance.MoveDown();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //dosent move in optionsmenu, >tryagain< is still selected, activates it again
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //moves down in options menu which selects >controls< and activates it
             SingleMenuManager.Instance.MoveDown();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //tries to moves down in credits menu but only >back< can be selected, proceeds to activates it
             SingleMenuManager.Instance.MoveDown();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //moves down 3 times in options menu which selects >credits< and activates it
             SingleMenuManager.Instance.MoveDown();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.MoveDown();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.MoveDown();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             // in creditsmenu, activates >back<
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //moves up in optionsmenu which selects >back< and activates it
             SingleMenuManager.Instance.MoveUp();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
             SingleMenuManager.Instance.ActivateButton();
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
             Console.WriteLine("__________________");
-            SingleMenuManager.Instance.DisplayCurrent();
+            SingleMenuManager.Instance.DisplayConsoleCurrent();
             Console.WriteLine("__________________");
 
             //congratz on going full circle, menu system ready for more button action, input interaction, and nice display, all the rest is done

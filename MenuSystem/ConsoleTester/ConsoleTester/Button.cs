@@ -60,6 +60,10 @@ namespace UN_Button
         }
         public void Display()
         {
+            //insert here what the button looks like aka texture or text or w/e we want in the rendered version of the game
+        }
+        public void DisplayConsole()
+        {
             //displays the button itself
             //for this example its console.write(buttonName);
             if (selected)
@@ -78,42 +82,42 @@ namespace UN_Button
             switch (buttonName)
             {
                 case "Start":
-                    //insert start button function here and remove the writeline below
+                    //insert start button function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
                     break;
                 case "Exit":
-                    //insert exit button function here and remove the writeline below
+                    //insert exit button function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
                     SingleInputManager.Instance.GameQuit();
                     break;
                 case "Back":
-                    //insert back button function here and remove the writeline below
+                    //insert back button function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "TryAgain":
-                    //insert try again button function here and remove the writeline below
+                    //insert try again button function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
                     break;
                 case "Restart":
-                    //insert start menu function here and remove the writeline below
+                    //insert start menu function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");  
                     break;
                 case "Controls":
-                    //insert start menu function here and remove the writeline below
+                    //insert start menu function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Credits":
-                    //insert start menu function here and remove the writeline below
+                    //insert start menu function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Options":
-                    //insert start menu function here and remove the writeline below
+                    //insert start menu function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();

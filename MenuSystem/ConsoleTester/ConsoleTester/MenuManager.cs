@@ -54,7 +54,7 @@ namespace UN_MenuManager
             {
                 if (e.IsSelected())
                 {
-                    e.Display();
+                    e.DisplayM();
                     e.DisplayButtons();
                 }
             }

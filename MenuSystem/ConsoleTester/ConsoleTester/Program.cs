@@ -24,6 +24,7 @@ namespace ConsoleApplication1
             //--------------------------------------------------//pretend setup function
             //SingleInputManager.Instance.RunMenuFromInputTest();
             SingleMenuManager.Instance.Setup();
+            SingleInputManager.Instance.Setup(true);
             //--------------------------------------------------//
 
 

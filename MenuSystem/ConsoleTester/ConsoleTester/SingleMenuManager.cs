@@ -112,9 +112,37 @@ namespace UN_SingleMenuManager
             }
         }
 
-        //----------------------------------------------------------------------------------------------------------------------------------// following are public functions that may be called from other scribts
-        // displays he currently active menu
+        //----------------------------------------------------------------------------------------------------------------------------------// 
+        //pauses the game
+        public void Pause()
+        {
+            // somehow pause the game in here
+        }
+        //displays the currently active menu
         public void DisplayCurrent()
+        {
+            //checks to secure that function can be run if menulist is empty
+            if (menuList != null)
+            {
+                //display currently active menu, if there is any
+                //will work fine so long as no two menues are selected at the same time
+                foreach (Menu e in menuList)
+                {
+                    if (e.IsSelected())
+                    {
+                        e.DisplayM();
+                        e.DisplayButtons();
+                    }
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
+        }
+        // displays the currently active console menu
+        public void DisplayConsoleCurrent()
         {
 
             //checks to secure that function can be run if menulist is empty
@@ -126,8 +154,10 @@ namespace UN_SingleMenuManager
                 {
                     if (e.IsSelected())
                     {
-                        e.Display();
-                        e.DisplayButtons();
+                        Console.WriteLine("__________________");
+                        e.DisplayConsole();
+                        e.DisplayConsoleButtons();
+                        Console.WriteLine("__________________");
                     }
                 }
             }

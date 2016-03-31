@@ -100,21 +100,39 @@ namespace UN_Menu
             {
                 return false;
             }
-        }
-        //displays this menu's name and/or texture       
-        public void Display()
+        }   
+        public void DisplayM()
         {
-            //name and/or textures
-            Console.WriteLine(menuName);
+            //insert here what the menu looks like aka texture or text or w/e we want in the rendered version of the game
         }
         public void DisplayButtons()
         {
-            if (buttonList.Count != 0)
+            if (buttonList != null)
             {
                 //display all buttons(only display for console here)
                 foreach (Button e in buttonList)
                 {
                     e.Display();
+                }
+            }
+            else
+            {
+                //error message for if no buttons are found in the button list
+                Console.WriteLine("error: no buttons were found in the button list");
+            }
+        }
+        public void DisplayConsole()
+        {
+            Console.WriteLine(menuName);
+        }
+        public void DisplayConsoleButtons()
+        {
+            if (buttonList != null)
+            {
+                //display all buttons(only display for console here)
+                foreach (Button e in buttonList)
+                {
+                    e.DisplayConsole();
                 }
             }
             else
@@ -138,59 +156,75 @@ namespace UN_Menu
         }
         public void SelectUp()
         {
-            //first position in the list
-            if (buttonList[0].IsSelected())
+            if (buttonList != null)
             {
-                buttonList[0].DeSelect();
-                buttonList[buttonList.Count-1].Select();
-            }
-            //last postition in the list
-            else if (buttonList[buttonList.Count-1].IsSelected())
-            {
-                buttonList[buttonList.Count-1].DeSelect();
-                buttonList[buttonList.Count - 2].Select();
-            }
-            else
-            {
-                //middle posititions in the list
-                for (int i = 1; i < buttonList.Count - 1; i++)
+                //first position in the list
+                if (buttonList[0].IsSelected())
                 {
-                    if (buttonList[i].IsSelected())
+                    buttonList[0].DeSelect();
+                    buttonList[buttonList.Count - 1].Select();
+                }
+                //last postition in the list
+                else if (buttonList[buttonList.Count - 1].IsSelected())
+                {
+                    buttonList[buttonList.Count - 1].DeSelect();
+                    buttonList[buttonList.Count - 2].Select();
+                }
+                else
+                {
+                    //middle posititions in the list
+                    for (int i = 1; i < buttonList.Count - 1; i++)
                     {
-                        buttonList[i].DeSelect();
-                        buttonList[i - 1].Select();
-                        break;
+                        if (buttonList[i].IsSelected())
+                        {
+                            buttonList[i].DeSelect();
+                            buttonList[i - 1].Select();
+                            break;
+                        }
                     }
                 }
             }
+            else
+            {
+                //error message for if no buttons are found in the button list
+                Console.WriteLine("error: no buttons were found in the button list");
+            } 
         }
         public void SelectDown()
         {
-            //first position in the list
-            if (buttonList[0].IsSelected() && buttonList.Count >1)
+            if (buttonList != null)
             {
-                buttonList[0].DeSelect();
-                buttonList[1].Select();
-            }
-            //last postition in the list
-            else if (buttonList[buttonList.Count-1].IsSelected())
-            {
-                buttonList[buttonList.Count-1].DeSelect();
-                buttonList[0].Select();
-            }
-            else
-            {
-                //middle posititions in the list
-                for (int i = 1; i < buttonList.Count - 1; i++)
+                //first position in the list
+                if (buttonList[0].IsSelected() && buttonList.Count > 1)
                 {
-                    if (buttonList[i].IsSelected())
+                    buttonList[0].DeSelect();
+                    buttonList[1].Select();
+                }
+                //last postition in the list
+                else if (buttonList[buttonList.Count - 1].IsSelected())
+                {
+                    buttonList[buttonList.Count - 1].DeSelect();
+                    buttonList[0].Select();
+                }
+                else
+                {
+                    //middle posititions in the list
+                    for (int i = 1; i < buttonList.Count - 1; i++)
                     {
-                        buttonList[i].DeSelect();
-                        buttonList[i + 1].Select();
-                        break;
+                        if (buttonList[i].IsSelected())
+                        {
+                            buttonList[i].DeSelect();
+                            buttonList[i + 1].Select();
+                            break;
+                        }
                     }
                 }
             }
+            else
+            {
+                //error message for if no buttons are found in the button list
+                Console.WriteLine("error: no buttons were found in the button list");
+            }  
         }
     }
 }
