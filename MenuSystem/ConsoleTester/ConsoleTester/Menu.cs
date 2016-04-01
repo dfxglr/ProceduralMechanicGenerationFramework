@@ -20,12 +20,19 @@ namespace UN_Menu
         //list of the buttons in the menu
         List<Button> buttonList;
 
+        //constructor used for the rendered version or aka when we need the positions
         public Menu(string MN, List<Button> BL, float X, float Y)
         {
             menuName = MN;
             buttonList = BL;
             x = X;
             y = Y;
+        }
+        //constructor used for the console versions
+        public Menu(string MN, List<Button> BL)
+        {
+            menuName = MN;
+            buttonList = BL;
         }
         public void PauseTime()
         {

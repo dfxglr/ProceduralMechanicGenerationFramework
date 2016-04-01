@@ -37,6 +37,19 @@ namespace UN_Button
             x = X;
             y = Y;
         }
+        //compiler 3, base in console
+        public Button(string BN)
+        {
+            buttonName = BN;
+        }
+        //complier 4, used for moving between menues in console
+        public Button(string BN, int R)
+        {
+            buttonName = BN;
+            relatedMenu = R;
+        }
+
+
         public void DeSelect()
         {
             //deselects this button
@@ -84,6 +97,14 @@ namespace UN_Button
                 case "Start":
                     //insert start button function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
+                    //selects the related menu
+                    MoveToRelated();
+                    break;
+                case "Restart":
+                    //insert start button function here and remove the writeline below - console need only
+                    Console.WriteLine("button [" + buttonName + "] does its action");
+                    //selects the related menu
+                    MoveToRelated();
                     break;
                 case "Exit":
                     //insert exit button function here and remove the writeline below - console need only
@@ -96,11 +117,11 @@ namespace UN_Button
                     //selects the related menu
                     MoveToRelated();
                     break;
-                case "TryAgain":
+                case "New Game":
                     //insert try again button function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
                     break;
-                case "Restart":
+                case "Previous Game":
                     //insert start menu function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");  
                     break;
@@ -117,6 +138,18 @@ namespace UN_Button
                     MoveToRelated();
                     break;
                 case "Options":
+                    //insert start menu function here and remove the writeline below - console need only
+                    Console.WriteLine("button [" + buttonName + "] does its action");
+                    //selects the related menu
+                    MoveToRelated();
+                    break;
+                case "Debug":
+                    //insert start menu function here and remove the writeline below - console need only
+                    Console.WriteLine("button [" + buttonName + "] does its action");
+                    //selects the related menu
+                    MoveToRelated();
+                    break;
+                case "Game Over":
                     //insert start menu function here and remove the writeline below - console need only
                     Console.WriteLine("button [" + buttonName + "] does its action");
                     //selects the related menu

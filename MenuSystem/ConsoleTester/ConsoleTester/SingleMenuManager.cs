@@ -37,57 +37,169 @@ namespace UN_SingleMenuManager
         //-------------------------------------------------//
         //the following are My added functions
 
-        //setup function to be used and edited for desired menues and buttons
-        public void Setup()
+        //
+        public void SetupGame(Boolean runInDebug)
         {
             //-------------------------------------------------// setup begin (change buttons and menue and shit here)
             //menues
+            Menu MainMenu;
             Menu StartMenu;
+            Menu RestartMenu;
             Menu OptionsMenu;
             Menu ControlsMenu;
             Menu CreditsMenu;
             Menu EndMenu;
             //lists for buttons and menues
+            List<Button> MainMenuButtons = new List<Button>();
             List<Button> StartMenuButtons = new List<Button>();
+            List<Button> RestartMenuButtons = new List<Button>();
             List<Button> OptionsMenuButtons = new List<Button>();
             List<Button> ControlsMenuButtons = new List<Button>();
             List<Button> CreditsMenuButtons = new List<Button>();
             List<Button> EndMenuButtons = new List<Button>();
             List<Menu> Menues = new List<Menu>();
+            //Main Menu
+            MainMenuButtons.Add(new Button("Start", 1, 10, 10));
+            MainMenuButtons.Add(new Button("Options", 3, 10, 15));
+            MainMenuButtons.Add(new Button("Exit", 10, 20));
+            MainMenu = new Menu("Welcome to PMGF", MainMenuButtons, 20, 50);
             //start menu 
-            StartMenuButtons.Add(new Button("Start",  10, 10));
-            StartMenuButtons.Add(new Button("Options", 1, 10, 15));
-            StartMenuButtons.Add(new Button("Exit", 10, 20));
-            StartMenu = new Menu("Welcome to PMGF", StartMenuButtons, 20, 50);
+            StartMenuButtons.Add(new Button("New Game", 10, 10));
+            StartMenuButtons.Add(new Button("Previous Game", 10, 15));
+            StartMenuButtons.Add(new Button("Back", 0, 10, 20));
+            StartMenu = new Menu("START:", StartMenuButtons, 20, 50);
+            //restart menu 
+            RestartMenuButtons.Add(new Button("New Game", 10, 10));
+            RestartMenuButtons.Add(new Button("Previous Game", 10, 15));
+            RestartMenuButtons.Add(new Button("Exit", 10, 20));
+            RestartMenu = new Menu("RESTART:", RestartMenuButtons, 20, 50);
             //options menu
-            OptionsMenuButtons.Add(new Button("Restart", 10, 10));
-            OptionsMenuButtons.Add(new Button("TryAgain", 10, 15));
-            OptionsMenuButtons.Add(new Button("Controls", 2, 10, 20));
-            OptionsMenuButtons.Add(new Button("Credits", 3, 10, 20));
-            OptionsMenuButtons.Add(new Button("Back", 0, 10, 20));
+            OptionsMenuButtons.Add(new Button("Controls", 4, 10, 20));
+            OptionsMenuButtons.Add(new Button("Credits", 5, 10, 25));
+            if (runInDebug)
+            {
+                OptionsMenuButtons.Add(new Button("Debug", 7, 10, 25));
+            }
+            OptionsMenuButtons.Add(new Button("Back", 0, 10, 30));
             OptionsMenu = new Menu("OPTIONS:", OptionsMenuButtons, 20, 50);
+            //
             //controls menu
-            ControlsMenuButtons.Add(new Button("Back", 1, 10, 10));
+            ControlsMenuButtons.Add(new Button("Back", 3, 10, 10));
             ControlsMenu = new Menu("CONTROLS:", ControlsMenuButtons, 20, 50);
             //credits menu
-            CreditsMenuButtons.Add(new Button("Back", 1, 10, 10));
+            CreditsMenuButtons.Add(new Button("Back", 3, 10, 10));
             CreditsMenu = new Menu("CREDITS", CreditsMenuButtons, 20, 50);
             //End Menu
-            EndMenuButtons.Add(new Button("Restart", 10, 10));
-            EndMenuButtons.Add(new Button("TryAgain", 10, 15));
+            EndMenuButtons.Add(new Button("Restart", 2, 10, 10));
             EndMenuButtons.Add(new Button("Exit", 10, 20));
             EndMenu = new Menu("GAME OVER:", EndMenuButtons, 20, 50);
-            //adds to the list of menues
+            //adds to the list of menues - have main menu in the beginning always plz, dont be dick 
+            Menues.Add(MainMenu);
             Menues.Add(StartMenu);
+            Menues.Add(RestartMenu);
             Menues.Add(OptionsMenu);
             Menues.Add(ControlsMenu);
             Menues.Add(CreditsMenu);
             Menues.Add(EndMenu);
+            //debug menu
+            if (runInDebug)
+            {
+                Menu DebugMenu;
+                //
+                List<Button> DebugMenuButtons = new List<Button>();
+                //Add degub buttons here
+                DebugMenuButtons.Add(new Button("Game Over", 6, 10, 10));
+                DebugMenuButtons.Add(new Button("Back", 3, 10, 10));
+                DebugMenu = new Menu("DEBUG:", DebugMenuButtons, 20, 50);
+                Menues.Add(DebugMenu);
+            }
             //-------------------------------------------------// setup end
             SingleMenuManager.Instance.Feed(Menues);
             SingleMenuManager.Instance.Begin();
 
         }
+        //debug console setup
+        public void SetupConsole(Boolean runInDebug)
+        {
+            //-------------------------------------------------// setup begin (change buttons and menue and shit here)
+            //menues
+            Menu MainMenu;
+            Menu StartMenu;
+            Menu RestartMenu;
+            Menu OptionsMenu;
+            Menu ControlsMenu;
+            Menu CreditsMenu;
+            Menu EndMenu;
+            //lists for buttons and menues
+            List<Button> MainMenuButtons = new List<Button>();
+            List<Button> StartMenuButtons = new List<Button>();
+            List<Button> RestartMenuButtons = new List<Button>();
+            List<Button> OptionsMenuButtons = new List<Button>();
+            List<Button> ControlsMenuButtons = new List<Button>();
+            List<Button> CreditsMenuButtons = new List<Button>();
+            List<Button> EndMenuButtons = new List<Button>();
+            List<Menu> Menues = new List<Menu>();
+            //Main Menu
+            MainMenuButtons.Add(new Button("Start", 1));
+            MainMenuButtons.Add(new Button("Options", 3));
+            MainMenuButtons.Add(new Button("Exit"));
+            MainMenu = new Menu("Welcome to PMGF", MainMenuButtons);
+            //start menu 
+            StartMenuButtons.Add(new Button("New Game"));
+            StartMenuButtons.Add(new Button("Previous Game"));
+            StartMenuButtons.Add(new Button("Back", 0));
+            StartMenu = new Menu("START:", StartMenuButtons);
+            //restart menu 
+            RestartMenuButtons.Add(new Button("New Game"));
+            RestartMenuButtons.Add(new Button("Previous Game"));
+            RestartMenuButtons.Add(new Button("Exit"));
+            RestartMenu = new Menu("RESTART:", RestartMenuButtons);
+            //options menu
+            OptionsMenuButtons.Add(new Button("Controls", 4));
+            OptionsMenuButtons.Add(new Button("Credits", 5));
+            if (runInDebug)
+            {
+                OptionsMenuButtons.Add(new Button("Debug", 7));
+            }
+            OptionsMenuButtons.Add(new Button("Back", 0));
+            OptionsMenu = new Menu("OPTIONS:", OptionsMenuButtons);
+            //
+            //controls menu
+            ControlsMenuButtons.Add(new Button("Back", 3));
+            ControlsMenu = new Menu("CONTROLS:", ControlsMenuButtons);
+            //credits menu
+            CreditsMenuButtons.Add(new Button("Back", 3));
+            CreditsMenu = new Menu("CREDITS", CreditsMenuButtons);
+            //End Menu
+            EndMenuButtons.Add(new Button("Restart", 2));
+            EndMenuButtons.Add(new Button("Exit"));
+            EndMenu = new Menu("GAME OVER:", EndMenuButtons);
+            //adds to the list of menues - have main menu in the beginning always plz, dont be dick 
+            Menues.Add(MainMenu);
+            Menues.Add(StartMenu);
+            Menues.Add(RestartMenu);
+            Menues.Add(OptionsMenu);
+            Menues.Add(ControlsMenu);
+            Menues.Add(CreditsMenu);
+            Menues.Add(EndMenu);
+            //debug menu
+            if (runInDebug)
+            {
+                Menu DebugMenu;
+                //
+                List<Button> DebugMenuButtons = new List<Button>();
+                //Add degub buttons here
+                DebugMenuButtons.Add(new Button("Game Over", 6, 10, 10));
+                DebugMenuButtons.Add(new Button("Back", 3, 10, 10));
+                DebugMenu = new Menu("DEBUG:", DebugMenuButtons, 20, 50);
+                Menues.Add(DebugMenu);
+            }
+
+            //-------------------------------------------------// setup end
+            SingleMenuManager.Instance.Feed(Menues);
+            SingleMenuManager.Instance.Begin();
+        }
+
         //feed the single menu manager with stuff from the setup function
         private void Feed(List<Menu> M)
         {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 using UN_SingleMenuManager;
 using UN_SingleInputManager;
 using UN_Button;
@@ -23,7 +22,7 @@ namespace ConsoleApplication1
 
             //--------------------------------------------------//pretend setup function
             //SingleInputManager.Instance.RunMenuFromInputTest();
-            SingleMenuManager.Instance.Setup();
+            SingleMenuManager.Instance.SetupConsole(true);
             SingleInputManager.Instance.Setup(true);
             //--------------------------------------------------//
 
