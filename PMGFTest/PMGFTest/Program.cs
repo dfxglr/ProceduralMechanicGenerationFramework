@@ -10,7 +10,13 @@ namespace PMGF
 			public static void Main (string[] args)
 			{
 				// Test
+<<<<<<< HEAD
                 
+=======
+				Console.WriteLine("PMGFTest Starting");
+
+
+>>>>>>> pvt_working_branch
 			}
 		}
 

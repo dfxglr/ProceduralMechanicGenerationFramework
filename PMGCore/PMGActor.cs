@@ -8,7 +8,14 @@ namespace PMGF
 		public class PMGActor
 		{
 			List<PMGMethod> Methods;
+<<<<<<< HEAD
 			List<PMGEvent> Events;
+=======
+			List<PMGEventFixed> FixedEvents;
+			List<PMGEventDynamic> DynamicEvent;
+
+            PMGValueStack ValueStack;
+>>>>>>> pvt_working_branch
 
 
 
@@ -22,4 +29,8 @@ namespace PMGF
 		}
 
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> pvt_working_branch

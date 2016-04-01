@@ -35,6 +35,12 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="..\..\PMGCore\GenericStack.cs">
+      <Link>PMGCore\GenericStack.cs</Link>
+    </Compile>
+>>>>>>> pvt_working_branch
     <Compile Include="..\..\PMGCore\PMGActor.cs">
       <Link>PMGCore\PMGActor.cs</Link>
     </Compile>
@@ -50,6 +56,12 @@
     <Compile Include="..\..\PMGCore\PMGEvent.cs">
       <Link>PMGCore\PMGEvent.cs</Link>
     </Compile>
+<<<<<<< HEAD
+=======
+    <Compile Include="..\..\PMGCore\PMGEventDynamic.cs">
+      <Link>PMGCore\PMGEventDynamic.cs</Link>
+    </Compile>
+>>>>>>> pvt_working_branch
     <Compile Include="..\..\PMGCore\PMGEventFixed.cs">
       <Link>PMGCore\PMGEventFixed.cs</Link>
     </Compile>
@@ -74,9 +86,12 @@
     <Compile Include="..\..\PMGCore\PMGValueStack.cs">
       <Link>PMGCore\PMGValueStack.cs</Link>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="..\..\PMGCore\PMGEventDynamic.cs">
       <Link>PMGCore\PMGEventDynamic.cs</Link>
     </Compile>
+=======
+>>>>>>> pvt_working_branch
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
