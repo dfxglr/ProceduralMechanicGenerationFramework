@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{B2BF8790-06B6-44D3-94F4-9C9442BC06FA}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PMGFTest</RootNamespace>
+    <AssemblyName>PMGFTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PMGCore\GenericStack.cs" />
+    <Compile Include="PMGCore\PMGActor.cs" />
+    <Compile Include="PMGCore\PMGChangeFunction.cs" />
+    <Compile Include="PMGCore\PMGConditionFunction.cs" />
+    <Compile Include="PMGCore\PMGCore.cs" />
+    <Compile Include="PMGCore\PMGEvent.cs" />
+    <Compile Include="PMGCore\PMGEventDynamic.cs" />
+    <Compile Include="PMGCore\PMGEventFixed.cs" />
+    <Compile Include="PMGCore\PMGExecuteList.cs" />
+    <Compile Include="PMGCore\PMGFunction.cs" />
+    <Compile Include="PMGCore\PMGMethod.cs" />
+    <Compile Include="PMGCore\PMGTimeStep.cs" />
+    <Compile Include="PMGCore\PMGUtilityFunction.cs" />
+    <Compile Include="PMGCore\PMGValueFunction.cs" />
+    <Compile Include="PMGCore\PMGValueStack.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
