@@ -5,13 +5,6 @@ namespace PMGF
 
 	namespace PMGCore
 	{
-<<<<<<< HEAD
-		
-		public class PMGMethod
-		{
-
-=======
-
 		public class PMGMethod
 		{
 
@@ -24,19 +17,12 @@ namespace PMGF
 
             public DoneDelegate OnDone = null;
 
->>>>>>> pvt_working_branch
 
 
 		    public PMGMethod()
 		    {
 		    }
 
-<<<<<<< HEAD
-		}
-	}
-
-}
-=======
 			public void Call()
 			{
 			}
@@ -75,4 +61,3 @@ namespace PMGF
 	}
 
 }
->>>>>>> pvt_working_branch

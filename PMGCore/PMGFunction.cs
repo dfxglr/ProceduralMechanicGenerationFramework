@@ -5,15 +5,9 @@ namespace PMGF
 
 		public class PMGFunction
 		{
-<<<<<<< HEAD
-			
 		}
 
-	}
-}
-=======
 
-		}
 
         public virtual void Do()
         {
@@ -21,4 +15,3 @@ namespace PMGF
 
 	}
 }
->>>>>>> pvt_working_branch

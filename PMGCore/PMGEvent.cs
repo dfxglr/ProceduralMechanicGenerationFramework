@@ -6,23 +6,17 @@ namespace PMGF
 	namespace PMGCore
 	{
 
-<<<<<<< HEAD
-=======
-
 
         public enum EventTriggerBehavior { ALWAYS, REQUIRE_FALSE, ONE_TIME, VICTORY, DEFEAT, NEUTRAL };
 
 
 
->>>>>>> pvt_working_branch
 		public class PMGEvent
 		{
 
 		    public PMGEvent()
 		    {
 		    }
-<<<<<<< HEAD
-=======
 
 			public virtual void Trigger()
 			{
@@ -30,7 +24,6 @@ namespace PMGF
 			}
 
 
->>>>>>> pvt_working_branch
 		}
 
 	}

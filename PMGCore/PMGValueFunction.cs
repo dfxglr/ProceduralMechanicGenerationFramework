@@ -5,10 +5,7 @@ namespace PMGF
 
 		public class PMGValueFunction : PMGFunction
 		{
-<<<<<<< HEAD
-=======
 			// Value functions add to valuestacks
->>>>>>> pvt_working_branch
 			public PMGValueFunction()
 			{
 			}
@@ -16,8 +13,4 @@ namespace PMGF
 
 
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> pvt_working_branch

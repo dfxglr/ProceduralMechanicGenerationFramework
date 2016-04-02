@@ -5,11 +5,6 @@ namespace PMGF
 
 		public class PMGConditionFunction : PMGFunction
 		{
-<<<<<<< HEAD
-			public PMGConditionFunction()
-			{
-			}
-=======
 			// Condition functions can get values from the valustacks
 
 			public PMGConditionFunction()
@@ -19,7 +14,6 @@ namespace PMGF
 			public virtual bool Evaluate()
 			{
 			}
->>>>>>> pvt_working_branch
 		}
 
 
