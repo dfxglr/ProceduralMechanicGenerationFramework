@@ -16,9 +16,10 @@ namespace PMGF
 
             public EventTriggerBehavior Behavior;
             public PMGMethod Method;
+            public PMGValueStack _valueStack;
 
 
-		    public PMGEvent(method, behavior)
+		    public PMGEvent(PMGMethod method, EventTriggerBehavior behavior)
 		    {
                 this.Method = method;
                 this.Behavior = behavior;

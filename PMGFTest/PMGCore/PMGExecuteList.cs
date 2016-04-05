@@ -8,16 +8,13 @@ namespace PMGF
 		public class PMGExecuteList
 		{
 
-            public List<PMGFunction> Functions;
+            public List<PMGFunction> _functions;
 
-			public PMGExecuteList()
-			{
-
-			}
 
             public void Execute()
             {
-                foreach(PMGFunction f in Functions)
+                // Execute all functions in list at once
+                foreach(PMGFunction f in _functions)
                 {
                     f.Do();
                 }

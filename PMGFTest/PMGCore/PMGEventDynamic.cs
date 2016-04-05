@@ -6,6 +6,7 @@ namespace PMGF
 
 		public class PMGEventDynamic : PMGEvent
 		{
+
 			public PMGEventDynamic()
 			{
 			}

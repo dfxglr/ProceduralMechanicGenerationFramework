@@ -1,2 +1,18 @@
 == Prioritized list of programming things to do==
 
+
+Core:
+    PMGFunctions
+        Value
+        Condition
+        Utility
+        Change
+
+
+
+
+Generative Part:
+    Translate genome -> implementations of classes
+
+
+
