@@ -8,7 +8,7 @@ namespace PMGF
 		{
 			PMGMethod Method; // or method id
 
-			public PMGEventFixed()
+			public PMGEventFixed(PMGMethod method, EventTriggerBehavior behavior) : base(method, behavior)
 			{
 			}
 

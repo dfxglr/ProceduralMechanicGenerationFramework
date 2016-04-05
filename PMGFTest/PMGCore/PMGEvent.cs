@@ -14,15 +14,18 @@ namespace PMGF
 		public class PMGEvent
 		{
 
-            public EventTriggerBehavior Behavior;
-            public PMGMethod Method;
+            public EventTriggerBehavior _behavior;
+            public PMGMethod _method;
             public PMGValueStack _valueStack;
+
+            public PMGActor _callingActor;
 
 
 		    public PMGEvent(PMGMethod method, EventTriggerBehavior behavior)
 		    {
-                this.Method = method;
-                this.Behavior = behavior;
+                this._method = method;
+                this._behavior = behavior;
+                this._callingActor = calling;
 		    }
 
 			public virtual void Trigger()
@@ -34,9 +37,10 @@ namespace PMGF
             public virtual void OnMethodDone()
             {
                 // To call when the method is done
-                switch(Behavior)
+                switch(_behavior)
                 {
-
+                    default:
+                        break;
                 }
             }
 

@@ -47,9 +47,6 @@ namespace PMGF
 						ActorStack.Push ((PMGActor)val);
 						break;
 
-                    default:
-						throw new System.ArgumentException("Non-existant valuetype","ValueType t");
-						break;
                 }
 
             }

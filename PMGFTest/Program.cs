@@ -25,8 +25,8 @@ namespace PMGFTest
             // Test Events
             //
             PMGEvent basee = new PMGEvent(meth,EventTriggerBehavior.ONE_TIME);
-            PMGEventFixed fixe = new PMGEventFixed();
-            PMGEventDynamic dyne = new PMGEventDynamic();
+            PMGEventFixed fixe = new PMGEventFixed(meth,EventTriggerBehavior.ONE_TIME);
+            PMGEventDynamic dyne = new PMGEventDynamic(meth,EventTriggerBehavior.ONE_TIME);
 
             // Test with "foreach(EventTriggerBehavior b in Enum.EventTriggerBehavior.GetValues(typeof(EventTriggerBehavior))) { skldjfklasjfls}
 

@@ -7,7 +7,7 @@ namespace PMGF
 		public class PMGEventDynamic : PMGEvent
 		{
 
-			public PMGEventDynamic()
+			public PMGEventDynamic(PMGMethod method, EventTriggerBehavior behavior) : base(method, behavior)
 			{
 			}
 
