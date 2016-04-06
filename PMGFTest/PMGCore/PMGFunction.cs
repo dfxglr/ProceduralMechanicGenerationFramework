@@ -3,27 +3,24 @@ namespace PMGF
 	namespace PMGCore
 	{
 
+        // Generic delegate to use (we have specific ones too)
+        public delegate void FunctionDelegate(PMGValueStack localStack, PMGActor actor);
+
+
 		public class PMGFunction
 		{
 
-            public int _whichFunction;
-            public PMGValueStack _localStack,_actorStack;
+            protected int _whichFunction;
+
 
             public PMGFunction(int whichFunction)
             {
                 _whichFunction = whichFunction;
             }
 
-
-	        public void Do(PMGValueStack localStack, PMGValueStack actorStack)
-	        {
-                // Local stack is the stack of the calling event or method
-                // actor stach is the stack of the actor to which the calling
-                //      method or event belongs.
-                //
-                _localStack = localStack;
-                _actorStack = actorStack;
-	        }
+            public virtual void Do(PMGValueStack localStack, PMGActor actor)
+            {
+            }
 		}
 
 	}

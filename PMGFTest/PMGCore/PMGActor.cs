@@ -11,15 +11,17 @@ namespace PMGF
             // Actors don't have events. Misleading in article
             //  - the events have methods.
 
-			List<PMGEventFixed> FixedEvents;
-			List<PMGEventDynamic> DynamicEvent;
+			List<PMGEventFixed> FixedEvents = new List<PMGEventFixed>();
+			List<PMGEventDynamic> DynamicEvent = new List<PMGEventDynamic>();
 
-            PMGValueStack ValueStack;
+            public PMGValueStack ValueStack = new PMGValueStack();
+
+            public PMGCore Core;
 
 
-
-		    public PMGActor()
+		    public PMGActor(PMGCore _Core)
 		    {
+                Core = _Core;
 
 		    }
 

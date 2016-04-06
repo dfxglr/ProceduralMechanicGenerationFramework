@@ -8,7 +8,9 @@ namespace PMGF
 		{
 			PMGMethod Method; // or method id
 
-			public PMGEventFixed(PMGMethod method, EventTriggerBehavior behavior) : base(method, behavior)
+			public PMGEventFixed(PMGMethod method, PMGActor actor,
+                                 EventTriggerBehavior behavior = EventTriggerBehavior.ALWAYS)
+                                : base(method, actor, behavior)
 			{
 			}
 

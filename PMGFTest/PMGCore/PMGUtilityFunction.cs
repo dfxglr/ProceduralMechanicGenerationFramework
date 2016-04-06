@@ -5,7 +5,7 @@ namespace PMGF
 
 		public class PMGUtilityFunction : PMGFunction
 		{
-			public PMGUtilityFunction()
+			public PMGUtilityFunction(int whichFunction) : base(whichFunction)
 			{
 			}
 		}

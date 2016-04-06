@@ -9,7 +9,7 @@ namespace PMGF
 
 		public class GenericStack <T>
 		{
-			public List<T> Values;
+			public List<T> Values = new List<T>();
 
 			public GenericStack ()
 			{
@@ -66,7 +66,10 @@ namespace PMGF
                 {
                     throw new System.InvalidOperationException("Reading from empty stack");
                 }
+            }
 		}
 	}
 }
+
+
 

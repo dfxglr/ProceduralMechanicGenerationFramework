@@ -10,8 +10,8 @@ namespace PMGF
 
 		public class PMGValueStack
 		{
-			GenericStack<PMGActor> ActorStack;
-			GenericStack<int> IntStack;
+			GenericStack<PMGActor> ActorStack = new GenericStack<PMGActor>();
+			GenericStack<int> IntStack = new GenericStack<int>();
 
 			public PMGValueStack()
 			{
@@ -63,6 +63,7 @@ namespace PMGF
             {
                 ActorStack.Push(val);
             }
+
 
 		}
 

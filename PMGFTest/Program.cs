@@ -10,31 +10,48 @@ namespace PMGFTest
             Console.WriteLine("Test program starting.");
 
 
-            // Test Functions
-            //
-            PMGFunction basef = new PMGFunction();
-            PMGValueFunction varf = new PMGValueFunction();
-            PMGConditionFunction condf = new PMGConditionFunction();
-            PMGUtilityFunction utilf = new PMGUtilityFunction();
-            PMGChangeFunction chanf = new PMGChangeFunction();
+            // Create a new core (one is needed per game)
+            PMGCore core = new PMGCore();
 
-            // Test Methods
-            //
-            PMGMethod meth = new PMGMethod();
+            //Actor, method, and exe list needed to test functions
+            Console.WriteLine("Creating Actor, Method, and Exe list.");
+            PMGActor testActor = new PMGActor(core);
+            PMGMethod testMethod = new PMGMethod();
 
-            // Test Events
-            //
-            PMGEvent basee = new PMGEvent(meth,EventTriggerBehavior.ONE_TIME);
-            PMGEventFixed fixe = new PMGEventFixed(meth,EventTriggerBehavior.ONE_TIME);
-            PMGEventDynamic dyne = new PMGEventDynamic(meth,EventTriggerBehavior.ONE_TIME);
+            // Exe list needs local stack (i.e. the method stack) and actor
+            PMGExecuteList testExeList = new PMGExecuteList(testMethod._valueStack,
+                                                            testActor);
 
-            // Test with "foreach(EventTriggerBehavior b in Enum.EventTriggerBehavior.GetValues(typeof(EventTriggerBehavior))) { skldjfklasjfls}
+            // Testing value functions
+            Console.WriteLine("Creating value functions.");
+            PMGValueFunction vf1 = new PMGValueFunction(0); // VF_DebugWriteToConsole
+            PMGValueFunction vf2 = new PMGValueFunction(1); // VF_DoNothing
+            PMGValueFunction vf3 = new PMGValueFunction(0); // VF_DebugWriteToConsole
+            PMGValueFunction vf4 = new PMGValueFunction(2); // VF_PushLeetToActor
+
+            // Add value functions to exe list
+            Console.WriteLine("Adding value functions to exe list.");
+            testExeList._functions.Add(vf1);
+            testExeList._functions.Add(vf2);
+            testExeList._functions.Add(vf3);
+            testExeList._functions.Add(vf4);
+
+            // Add exe list to method
+            Console.WriteLine("Adding exe list to method.");
+            testMethod._steps.Add(testExeList);
 
 
+            // Call the method (usually done from event)
+            Console.WriteLine("Calling Method");
+            testMethod.Call();
 
-            // Test Actors
-            //
-            PMGActor a = new PMGActor();
+
+            // Run some timesteps
+            Console.WriteLine("Running timesteps");
+            for(int i=0; i < 5; i++)
+            {
+                testMethod.TimeStep();
+            }
 
 		}
 	}

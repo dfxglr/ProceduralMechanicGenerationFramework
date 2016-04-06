@@ -7,7 +7,7 @@ namespace PMGF
 		{
 			// Condition functions can get values from the valustacks
 
-			public PMGConditionFunction()
+			public PMGConditionFunction(int whichFunction) : base(whichFunction)
 			{
 			}
 

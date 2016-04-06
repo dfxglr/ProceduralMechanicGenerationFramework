@@ -50,6 +50,7 @@
     <Compile Include="PMGCore\PMGUtilityFunction.cs" />
     <Compile Include="PMGCore\PMGValueFunction.cs" />
     <Compile Include="PMGCore\PMGValueStack.cs" />
+    <Compile Include="PMGCore\PMGValueFunctionsCollection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

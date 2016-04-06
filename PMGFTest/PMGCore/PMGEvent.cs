@@ -8,6 +8,7 @@ namespace PMGF
 
 
         public enum EventTriggerBehavior { ALWAYS, REQUIRE_FALSE, ONE_TIME, VICTORY, DEFEAT, NEUTRAL };
+        // Default behavior is ALWAYS
 
 
 
@@ -21,7 +22,8 @@ namespace PMGF
             public PMGActor _callingActor;
 
 
-		    public PMGEvent(PMGMethod method, EventTriggerBehavior behavior)
+		    public PMGEvent(PMGMethod method, PMGActor calling,
+                            EventTriggerBehavior behavior= EventTriggerBehavior.ALWAYS)
 		    {
                 this._method = method;
                 this._behavior = behavior;
