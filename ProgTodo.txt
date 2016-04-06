@@ -14,5 +14,5 @@ Core:
 Generative Part:
     Translate genome -> implementations of classes
 
-
+handling constants?
 
