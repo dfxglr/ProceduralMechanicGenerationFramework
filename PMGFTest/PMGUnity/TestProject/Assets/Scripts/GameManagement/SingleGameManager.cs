@@ -45,8 +45,8 @@ public class SingleGameManager : MonoBehaviour
     // runs once in the beginning(Awake() is before this however)
     public void Start()
     {
-        Debug.Log("unity is a cunt and int knows it");
-        SingleMenuManager.Instance.SetupConsole(true);
+        Debug.Log("unity is a cunt and it knows it");
+        SingleMenuManager.Instance.Setup(true);
         SingleInputManager.Instance.Setup(true);
     }
     //runs all the time

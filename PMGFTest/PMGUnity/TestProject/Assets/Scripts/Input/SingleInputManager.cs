@@ -77,9 +77,9 @@ namespace UN_SingleInputManager
             //---------------------------------------------------//
         }
         //allows for user to set program to either be console or not at the beginning - works regardless of console or not
-        public void Setup(Boolean runInConsole)
+        public void Setup(Boolean runWithConsole)
         {
-            isConsole = runInConsole;
+            isConsole = runWithConsole;
         }
         //update function 
         public void InputUpdate()
@@ -157,6 +157,7 @@ namespace UN_SingleInputManager
                     enterIsPressed = true;
                     //place desired function below
                     SingleMenuManager.Instance.ActivateButton();
+                    //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
@@ -170,6 +171,7 @@ namespace UN_SingleInputManager
                     spaceIsPressed = true;
                     //place desired function below
                     SingleMenuManager.Instance.ActivateButton();
+                    //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
@@ -194,6 +196,8 @@ namespace UN_SingleInputManager
                 //insert code containing the controls needed for game aka : w,a,s,d - up,left,down,right - enter,space - escape
 
                 //escape key should bring you to options menu and pause the game using SingleMenuManager.Instance.Pause();
+
+                //basically place what is needed as game input here
 
             }
         }    
