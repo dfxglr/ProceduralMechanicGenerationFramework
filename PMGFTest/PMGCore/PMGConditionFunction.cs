@@ -3,7 +3,7 @@ namespace PMGF
 	namespace PMGCore
 	{
 
-		public class PMGConditionFunction : PMGFunction
+		public sealed class PMGConditionFunction : PMGFunction
 		{
 			// Condition functions can get values from the valustacks
 
@@ -12,9 +12,9 @@ namespace PMGF
                 Type = FunctionType.CONDITION;
 			}
 
-            public bool Do(PMGActor actor, PMGValueStack localStack)
+            public override bool Do(PMGActor actor, PMGValueStack localStack)
             {
-                actor.Core.ConditionFunctions.PMGConditionFunctionsCollection.Collection[_whichFunction](actor, localStack);
+                return actor.Core.ConditionFunctions.Collection[_whichFunction](actor, localStack);
             }
 		}
 

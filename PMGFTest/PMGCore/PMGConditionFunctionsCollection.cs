@@ -33,17 +33,20 @@ namespace PMGF
             {
                 // Write a message to console for testing purposes.
                 Console.WriteLine("VF_DebugWriteToConsole Called!");
+                return true;
             }
 
             public bool CF_DoNothing(PMGActor actor, PMGValueStack localStack)
             {
                 // literally do nothing
+                return true;
             }
 
             public bool CF_PushLeetToActor(PMGActor actor, PMGValueStack localStack)
             {
                 // push 1337 to actor stack
                 actor.ValueStack.Push(1337);
+                return true;
             }
         }
     }

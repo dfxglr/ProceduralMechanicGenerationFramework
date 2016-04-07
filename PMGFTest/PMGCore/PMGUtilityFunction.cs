@@ -3,7 +3,7 @@ namespace PMGF
 	namespace PMGCore
 	{
 
-		public class PMGUtilityFunction : PMGFunction
+		public sealed class PMGUtilityFunction : PMGFunction
 		{
             // Utility functions can change the method or event calling
 

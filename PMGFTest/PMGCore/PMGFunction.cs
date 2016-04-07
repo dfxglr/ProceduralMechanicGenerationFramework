@@ -13,7 +13,7 @@ namespace PMGF
         public enum FunctionOwnerType { METHOD, EVENT };
 
 
-		public class PMGFunction
+		public abstract class PMGFunction
 		{
 
             public FunctionType Type;
@@ -25,10 +25,19 @@ namespace PMGF
                 _whichFunction = whichFunction;
             }
 
-            public virtual void Do(PMGActor actor)
+
+
+            // used for value and change function
+            // and used for condition function
+            public virtual bool Do(PMGActor actor, PMGValueStack localStack)
             {
-                // Every function needs the actor (to access Core, where function
-                //  collections are
+                throw new System.InvalidOperationException("Virtual method Do(PMGActor actor) called when it shouldn't be (wrong arguments or casting when calling derived overriden function?)");
+            }
+
+            // used for utility function
+            public virtual void Do(PMGActor actor, object owner, FunctionOwnerType ownerType)
+            {
+                throw new System.InvalidOperationException("Virtual method Do(PMGActor actor) called when it shouldn't be (wrong arguments or casting when calling derived overriden function?)");
             }
 		}
 

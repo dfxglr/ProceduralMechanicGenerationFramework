@@ -6,7 +6,7 @@ namespace PMGF
 
 
 
-		public class PMGValueFunction : PMGFunction
+		public sealed class PMGValueFunction : PMGFunction
 		{
 			// Value functions add to valuestacks
 
@@ -16,10 +16,13 @@ namespace PMGF
                 Type = FunctionType.VALUE;
 			}
 
-            public override void Do(PMGActor actor, PMGValueStack localStack)
+            public override bool Do(PMGActor actor, PMGValueStack localStack)
             {
                 // call correct value function
                 actor.Core.ValueFunctions.Collection[_whichFunction](actor, localStack);
+
+                // dummy return that's not used
+                return true;
             }
 
 		}

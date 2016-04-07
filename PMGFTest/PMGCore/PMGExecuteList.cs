@@ -29,7 +29,7 @@ namespace PMGF
             public bool Execute()
             {
                 // Get the local stack ready (need proper casting)
-                PMGValueStack localStack;
+                PMGValueStack localStack = null;
 
                 switch(_ownerType)
                 {
@@ -40,6 +40,9 @@ namespace PMGF
                         localStack = ((PMGMethod) _owner)._valueStack;
                         break;
                 }
+
+                if(localStack == null)
+                    throw new System.InvalidOperationException("localStack is still null. Could not be set to event or method stack.");
 
                 // Prepare bool for condition functions
                 bool AllTrue = true;

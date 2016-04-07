@@ -51,6 +51,9 @@
     <Compile Include="PMGCore\PMGValueFunction.cs" />
     <Compile Include="PMGCore\PMGValueStack.cs" />
     <Compile Include="PMGCore\PMGValueFunctionsCollection.cs" />
+    <Compile Include="PMGCore\PMGUtilityFunctionsCollection.cs" />
+    <Compile Include="PMGCore\PMGConditionFunctionsCollection.cs" />
+    <Compile Include="PMGCore\PMGChangeFunctionsCollection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
