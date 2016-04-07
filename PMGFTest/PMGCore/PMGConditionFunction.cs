@@ -9,12 +9,13 @@ namespace PMGF
 
 			public PMGConditionFunction(int whichFunction) : base(whichFunction)
 			{
+                Type = FunctionType.CONDITION;
 			}
 
-			public virtual bool Evaluate()
-			{
-				return false;
-			}
+            public bool Do(PMGActor actor, PMGValueStack localStack)
+            {
+                actor.Core.ConditionFunctions.PMGConditionFunctionsCollection.Collection[_whichFunction](actor, localStack);
+            }
 		}
 
 

@@ -7,8 +7,8 @@ namespace PMGF
     namespace PMGCore
     {
         // Delegate for valuefunctions
-        public delegate void ValueFunction(PMGValueStack localStack,
-                                           PMGActor actor);
+        public delegate void ValueFunction(PMGActor actor,
+                                           PMGValueStack localStack);
 
         public class PMGValueFunctionsCollection
         {
@@ -30,18 +30,18 @@ namespace PMGF
             /*
              * USER DEFINED FUNCTIONS
              */
-            public void VF_DebugWriteToConsole(PMGValueStack localStack, PMGActor actor)
+            public void VF_DebugWriteToConsole(PMGActor actor, PMGValueStack localStack)
             {
                 // Write a message to console for testing purposes.
                 System.Console.WriteLine("VF_DebugWriteToConsole Called!");
             }
 
-            public void VF_DoNothing(PMGValueStack localStack, PMGActor actor)
+            public void VF_DoNothing(PMGActor actor, PMGValueStack localStack)
             {
                 // literally do nothing
             }
 
-            public void VF_PushLeetToActor(PMGValueStack localStack, PMGActor actor)
+            public void VF_PushLeetToActor(PMGActor actor, PMGValueStack localStack)
             {
                 // push 1337 to actor stack
                 actor.ValueStack.Push(1337);

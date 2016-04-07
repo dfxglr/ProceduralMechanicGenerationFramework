@@ -19,7 +19,8 @@ namespace PMGFTest
             PMGMethod testMethod = new PMGMethod();
 
             // Exe list needs local stack (i.e. the method stack) and actor
-            PMGExecuteList testExeList = new PMGExecuteList(testMethod._valueStack,
+            PMGExecuteList testExeList = new PMGExecuteList((object) testMethod,
+                                                            FunctionOwnerType.METHOD,
                                                             testActor);
 
             // Testing value functions
