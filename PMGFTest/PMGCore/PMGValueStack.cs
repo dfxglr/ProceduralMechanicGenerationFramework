@@ -18,6 +18,13 @@ namespace PMGF
 
 			}
 
+            public void Clear()
+            {
+                // clear the stack
+                ActorStack = new GenericStack<PMGActor>();
+                IntStack = new GenericStack<int>();
+            }
+
             public object GetValueOfType(ValueType t)
             {
                 // Return value of the specified type, or throw error
