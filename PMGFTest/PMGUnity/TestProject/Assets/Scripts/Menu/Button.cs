@@ -54,35 +54,47 @@ namespace UN_Button
         public Button(string BN)
         {
             buttonName = BN;
-            InstantiateButton();
         }
         //complier 4, used for moving between menues in console
         public Button(string BN, int R)
         {
             buttonName = BN;
             relatedMenu = R;
-            InstantiateButton();
         }
         public void InstantiateButton()
         {
             GameObject button =  Instantiate(Resources.Load("Prefabs/button"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            //----------------------------------//add what the object should do on instantiation here
+            //tags the instance with its name
             button.tag = buttonName;
+            //Texture
+            button.GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/Buttons/" + buttonName) as Texture2D;
+            //Rotation
+            button.transform.eulerAngles = SingleMenuManager.Instance.LeRotation();
+            //----------------------------------//
         }
         //might need to destroy them again
         public void DestroyButton()
         {
-
+            //lets hope that if there is no tag that it does nothing
+            Destroy(GameObject.FindGameObjectWithTag(buttonName));
         }
-
+        public string ButtonName()
+        {
+            return buttonName;
+        }
         public void DeSelect()
         {
             //deselects this button
             selected = false;
+            //display on not selected but is set here
+
         }
         public void Select()
         {
             //deselects this button
             selected = true;
+
         }
         public bool IsSelected()
         {
@@ -93,19 +105,6 @@ namespace UN_Button
             else
             {
                 return false;
-            }
-        }
-        public void Display()
-        {
-            //insert here what the button looks like aka texture or text or w/e we want in the rendered version of the game
-            //displays the button itself
-            if (selected)
-            {
-                //Console.WriteLine(">" + buttonName + "<");
-            }
-            else
-            {
-                //Console.WriteLine(buttonName);
             }
         }
         public void DisplayConsole()
@@ -215,6 +214,9 @@ namespace UN_Button
             if (relatedMenu != 100 && SingleMenuManager.Instance.MenuCount() != 0 && relatedMenu <= SingleMenuManager.Instance.MenuCount())
             {
                 SingleMenuManager.Instance.SelectMenu(relatedMenu);
+                //unity objects
+                SingleMenuManager.Instance.DestroyAll();
+                SingleMenuManager.Instance.InstantiateCurrent();
             }
             else
             {

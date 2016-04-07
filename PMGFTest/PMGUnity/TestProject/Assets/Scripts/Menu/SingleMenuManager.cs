@@ -17,6 +17,9 @@ namespace UN_SingleMenuManager
         //(selectCount isnt used much other than in void Begin and even there is only used a few times, potential to change this) 
         //Boolean selectMenu = true;
 
+        //rotation vector for turning the menu ins a specific direction 
+        Vector3 MenuRotation;
+
        
 
 
@@ -40,9 +43,12 @@ namespace UN_SingleMenuManager
         //the following are My added functions
 
         //
-        public void SetupGame(Boolean runInDebug)
+        public void Setup(Boolean runInDebug)
         {
             //-------------------------------------------------// setup begin (change buttons and menue and shit here)
+            //-------//rotation of buttons and menues display surfaces(unity stuff)
+            MenuRotation = new Vector3(90, 180, 0);
+            //-------//
             //menues
             Menu MainMenu;
             Menu StartMenu;
@@ -61,40 +67,52 @@ namespace UN_SingleMenuManager
             List<Button> EndMenuButtons = new List<Button>();
             List<Menu> Menues = new List<Menu>();
             //Main Menu
-            MainMenuButtons.Add(new Button("Start", 1, 10, 10));
-            MainMenuButtons.Add(new Button("Options", 3, 10, 15));
-            MainMenuButtons.Add(new Button("Exit", 10, 20));
-            MainMenu = new Menu("Welcome to PMGF", MainMenuButtons, 20, 50);
+            MainMenuButtons.Add(new Button("Start", 1, 0, -3));
+            MainMenuButtons.Add(new Button("Options", 3, 0, -6));
+            MainMenuButtons.Add(new Button("Exit", 0, -9));
+            MainMenu = new Menu("Welcome to PMGF", MainMenuButtons, 0, 0);
             //start menu 
-            StartMenuButtons.Add(new Button("New Game", 10, 10));
-            StartMenuButtons.Add(new Button("Previous Game", 10, 15));
-            StartMenuButtons.Add(new Button("Back", 0, 10, 20));
-            StartMenu = new Menu("START:", StartMenuButtons, 20, 50);
+            StartMenuButtons.Add(new Button("New Game", 0, -3));
+            StartMenuButtons.Add(new Button("Previous Game", 0, -6));
+            StartMenuButtons.Add(new Button("Back", 0, 0, -9));
+            StartMenu = new Menu("START", StartMenuButtons, 0, 0);
             //restart menu 
-            RestartMenuButtons.Add(new Button("New Game", 10, 10));
-            RestartMenuButtons.Add(new Button("Previous Game", 10, 15));
-            RestartMenuButtons.Add(new Button("Exit", 10, 20));
-            RestartMenu = new Menu("RESTART:", RestartMenuButtons, 20, 50);
-            //options menu
-            OptionsMenuButtons.Add(new Button("Controls", 4, 10, 20));
-            OptionsMenuButtons.Add(new Button("Credits", 5, 10, 25));
+            RestartMenuButtons.Add(new Button("New Game", 0, -3));
+            RestartMenuButtons.Add(new Button("Previous Game", 0, -6));
+            RestartMenuButtons.Add(new Button("Exit", 0, -9));
             if (runInDebug)
             {
-                OptionsMenuButtons.Add(new Button("Debug", 7, 10, 25));
+                RestartMenuButtons.Add(new Button("Back", 6, 0, -12));
             }
-            OptionsMenuButtons.Add(new Button("Back", 0, 10, 30));
-            OptionsMenu = new Menu("OPTIONS:", OptionsMenuButtons, 20, 50);
+            RestartMenu = new Menu("RESTART", RestartMenuButtons, 0, 0);
+            //options menu
+            OptionsMenuButtons.Add(new Button("Controls", 4, 0, -3));
+            OptionsMenuButtons.Add(new Button("Credits", 5, 0, -6));
+            if (runInDebug)
+            {
+                OptionsMenuButtons.Add(new Button("Debug", 7, 0, -9));
+                OptionsMenuButtons.Add(new Button("Back", 0, 0, -12));
+            }
+            else
+            {
+                OptionsMenuButtons.Add(new Button("Back", 0, 0, -9));
+            }
+            OptionsMenu = new Menu("OPTIONS", OptionsMenuButtons, 0, 0);
             //
             //controls menu
-            ControlsMenuButtons.Add(new Button("Back", 3, 10, 10));
-            ControlsMenu = new Menu("CONTROLS:", ControlsMenuButtons, 20, 50);
+            ControlsMenuButtons.Add(new Button("Back", 3, 0, -3));
+            ControlsMenu = new Menu("CONTROLS", ControlsMenuButtons, 0, 0);
             //credits menu
-            CreditsMenuButtons.Add(new Button("Back", 3, 10, 10));
-            CreditsMenu = new Menu("CREDITS", CreditsMenuButtons, 20, 50);
+            CreditsMenuButtons.Add(new Button("Back", 3, 0, -3));
+            CreditsMenu = new Menu("CREDITS", CreditsMenuButtons, 0, 0);
             //End Menu
-            EndMenuButtons.Add(new Button("Restart", 2, 10, 10));
-            EndMenuButtons.Add(new Button("Exit", 10, 20));
-            EndMenu = new Menu("GAME OVER:", EndMenuButtons, 20, 50);
+            EndMenuButtons.Add(new Button("Restart", 2, 0, -3));
+            EndMenuButtons.Add(new Button("Exit", 0, -6));
+            if (runInDebug)
+            {
+                EndMenuButtons.Add(new Button("Back", 7, 0, -9));
+            }
+            EndMenu = new Menu("GAME OVER", EndMenuButtons, 0, 0);
             //adds to the list of menues - have main menu in the beginning always plz, dont be dick 
             Menues.Add(MainMenu);
             Menues.Add(StartMenu);
@@ -110,99 +128,22 @@ namespace UN_SingleMenuManager
                 //
                 List<Button> DebugMenuButtons = new List<Button>();
                 //Add degub buttons here
-                DebugMenuButtons.Add(new Button("Game Over", 6, 10, 10));
-                DebugMenuButtons.Add(new Button("Back", 3, 10, 10));
-                DebugMenu = new Menu("DEBUG:", DebugMenuButtons, 20, 50);
+                DebugMenuButtons.Add(new Button("Game Over", 6, 0, -3));
+                DebugMenuButtons.Add(new Button("Back", 3, 0, -6));
+                DebugMenu = new Menu("DEBUG", DebugMenuButtons, 0, 0);
                 Menues.Add(DebugMenu);
             }
             //-------------------------------------------------// setup end
             SingleMenuManager.Instance.Feed(Menues);
             SingleMenuManager.Instance.Begin();
+            SingleMenuManager.Instance.InstantiateCurrent();
+            //GameObject.FindGameObjectWithTag(menuList[0].GetButtonList()[0].ButtonName()).GetComponent<Renderer>().material.color = new Vector4(255, 0, 0, 0);
 
         }
-        //debug console setup
-        public void SetupConsole(Boolean runInDebug)
+        public Vector3 LeRotation()
         {
-            //-------------------------------------------------// setup begin (change buttons and menue and shit here)
-            //menues
-            Menu MainMenu;
-            Menu StartMenu;
-            Menu RestartMenu;
-            Menu OptionsMenu;
-            Menu ControlsMenu;
-            Menu CreditsMenu;
-            Menu EndMenu;
-            //lists for buttons and menues
-            List<Button> MainMenuButtons = new List<Button>();
-            List<Button> StartMenuButtons = new List<Button>();
-            List<Button> RestartMenuButtons = new List<Button>();
-            List<Button> OptionsMenuButtons = new List<Button>();
-            List<Button> ControlsMenuButtons = new List<Button>();
-            List<Button> CreditsMenuButtons = new List<Button>();
-            List<Button> EndMenuButtons = new List<Button>();
-            List<Menu> Menues = new List<Menu>();
-            //Main Menu
-            MainMenuButtons.Add(new Button("Start", 1));
-            MainMenuButtons.Add(new Button("Options", 3));
-            MainMenuButtons.Add(new Button("Exit"));
-            MainMenu = new Menu("Welcome to PMGF", MainMenuButtons);
-            //start menu 
-            StartMenuButtons.Add(new Button("New Game"));
-            StartMenuButtons.Add(new Button("Previous Game"));
-            StartMenuButtons.Add(new Button("Back", 0));
-            StartMenu = new Menu("START:", StartMenuButtons);
-            //restart menu 
-            RestartMenuButtons.Add(new Button("New Game"));
-            RestartMenuButtons.Add(new Button("Previous Game"));
-            RestartMenuButtons.Add(new Button("Exit"));
-            RestartMenu = new Menu("RESTART:", RestartMenuButtons);
-            //options menu
-            OptionsMenuButtons.Add(new Button("Controls", 4));
-            OptionsMenuButtons.Add(new Button("Credits", 5));
-            if (runInDebug)
-            {
-                OptionsMenuButtons.Add(new Button("Debug", 7));
-            }
-            OptionsMenuButtons.Add(new Button("Back", 0));
-            OptionsMenu = new Menu("OPTIONS:", OptionsMenuButtons);
-            //
-            //controls menu
-            ControlsMenuButtons.Add(new Button("Back", 3));
-            ControlsMenu = new Menu("CONTROLS:", ControlsMenuButtons);
-            //credits menu
-            CreditsMenuButtons.Add(new Button("Back", 3));
-            CreditsMenu = new Menu("CREDITS", CreditsMenuButtons);
-            //End Menu
-            EndMenuButtons.Add(new Button("Restart", 2));
-            EndMenuButtons.Add(new Button("Exit"));
-            EndMenu = new Menu("GAME OVER:", EndMenuButtons);
-            //adds to the list of menues - have main menu in the beginning always plz, dont be dick 
-            Menues.Add(MainMenu);
-            Menues.Add(StartMenu);
-            Menues.Add(RestartMenu);
-            Menues.Add(OptionsMenu);
-            Menues.Add(ControlsMenu);
-            Menues.Add(CreditsMenu);
-            Menues.Add(EndMenu);
-            //debug menu
-            if (runInDebug)
-            {
-                Menu DebugMenu;
-                //
-                List<Button> DebugMenuButtons = new List<Button>();
-                //Add degub buttons here
-                DebugMenuButtons.Add(new Button("Game Over", 6, 10, 10));
-                DebugMenuButtons.Add(new Button("Back", 3, 10, 10));
-                DebugMenu = new Menu("DEBUG:", DebugMenuButtons, 20, 50);
-                Menues.Add(DebugMenu);
-            }
-
-            //-------------------------------------------------// setup end
-            SingleMenuManager.Instance.Feed(Menues);
-            SingleMenuManager.Instance.Begin();
-            SingleMenuManager.instance.DisplayConsoleCurrent();
+            return MenuRotation;
         }
-
         //feed the single menu manager with stuff from the setup function
         private void Feed(List<Menu> M)
         {
@@ -216,14 +157,17 @@ namespace UN_SingleMenuManager
             if (menuList != null)
             {
                 DeSelectAllM();
-                menuList[0].Select();
-                
+                menuList[0].Select();              
                 menuList[0].SelectButtonZeroOrActiveB();
+                //deselect other buttons tint
+                //add selecteds buttons tint
+                //GameObject.FindGameObjectWithTag(menuList[0].GetButtonList()[0].ButtonName()).GetComponent<Renderer>().material.color = new Vector4(255, 0, 0, 0);
             }
             else
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
 
@@ -232,6 +176,53 @@ namespace UN_SingleMenuManager
         public void Pause()
         {
             // somehow pause the game in here
+        }
+        //
+        public void InstantiateCurrent()
+        {
+            //checks to secure that function can be run if menulist is empty
+            if (menuList != null)
+            {
+                //display currently active menu, if there is any
+                //will work fine so long as no two menues are selected at the same time
+                foreach (Menu e in menuList)
+                {
+                    if (e.IsSelected())
+                    {
+                        e.InstantiateMenu();
+                        e.InstantiateMenuButtons();
+                        //add selecteds buttons tint
+                    }
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
+        }
+        //destroys any menu object found, to clear out for new instantiation
+        public void DestroyAll()
+        {
+            //checks to secure that function can be run if menulist is empty
+            if (menuList != null)
+            {
+                //display currently active menu, if there is any
+                //will work fine so long as no two menues are selected at the same time
+                foreach (Menu e in menuList)
+                {
+                    e.DestroyMenu();
+                    e.DestroyButtons();
+                    //Debug.Log("detroy actions should have happend");
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
         }
         //displays the currently active menu
         public void DisplayCurrent()
@@ -245,8 +236,7 @@ namespace UN_SingleMenuManager
                 {
                     if (e.IsSelected())
                     {
-                        e.DisplayM();
-                        e.DisplayButtons();
+                        //
                     }
                 }
             }
@@ -254,6 +244,7 @@ namespace UN_SingleMenuManager
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
         // displays the currently active console menu
@@ -280,14 +271,25 @@ namespace UN_SingleMenuManager
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
         //deselects all menues
         public void DeSelectAllM()
         {
-            foreach (Menu e in menuList)
+            //checks to secure that function can be run if menulist is empty
+            if (menuList != null)
             {
-                e.DeSelect();
+                foreach (Menu e in menuList)
+                {
+                    e.DeSelect();
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
         //returns true if no menu in the list is set to selected
@@ -309,11 +311,12 @@ namespace UN_SingleMenuManager
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function: NoMenuSelected(), in SinngleMenuManager cannot be run");
-                Console.WriteLine("since no menues were found, input switches to default, which is the 'NOT IN MENU', in SingleInputManager");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
                 return false;
             }
         }
         //annoying this function cant be run inside the classes without dual button activation, i have no clue why this is the case, but after testing all possible location with no luck im left to leave it in the main
+        //needed for when activating a button from input to set the selected in the new menu
         public void SelectFirstOrActiveButton()
         {
             //use a return function to get the menurownumber which is equal to the relatedmenu value
@@ -324,6 +327,9 @@ namespace UN_SingleMenuManager
                     if (e.IsSelected())
                     {
                         e.SelectButtonZeroOrActiveB();
+                        //deselect other buttons tint
+                        //add selecteds buttons tint
+                        //GameObject.FindGameObjectWithTag(menuList[0].GetButtonList()[0].ButtonName()).GetComponent<Renderer>().material.color = new Vector4(255, 0, 0, 0);
                     }
                     else
                     {
@@ -335,6 +341,7 @@ namespace UN_SingleMenuManager
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
         //selects a chosen menu using ints to refer to the position in the menulist
@@ -343,18 +350,15 @@ namespace UN_SingleMenuManager
             //checks to secure that function can be run if menulist is empty
             if (menuList != null)
             {
-                //Console.WriteLine("i hope i dont repeat");
                 DeSelectAllM();
-                //menuList[MenuRowNumber].SelectButtonZero();
                 menuList[MenuRowNumber].Select();
-                //cannot be called wihtout going full retard
-                //SelectFirstOrActiveButton();
             }
             else
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
-            }            
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
         }
         //returns the number of menues
         public int MenuCount()
@@ -368,6 +372,7 @@ namespace UN_SingleMenuManager
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
                 return 0;
             }
         }
@@ -389,6 +394,7 @@ namespace UN_SingleMenuManager
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
         //selects the above below the the currently active button
@@ -402,6 +408,8 @@ namespace UN_SingleMenuManager
                     if (e.IsSelected())
                     {
                         e.SelectUp();
+                        //deselect other buttons tint
+                        //add selecteds buttons tint
                     }
                 }
             }
@@ -409,6 +417,7 @@ namespace UN_SingleMenuManager
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
         //selects the button below the the currently active button
@@ -422,6 +431,8 @@ namespace UN_SingleMenuManager
                     if (e.IsSelected())
                     {
                         e.SelectDown();
+                        //deselect other buttons tint
+                        //add selecteds buttons tint
                     }
                 }
             }
@@ -429,6 +440,7 @@ namespace UN_SingleMenuManager
             {
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
         //----------------------------------------------------------------------------------------------------------------------------------//

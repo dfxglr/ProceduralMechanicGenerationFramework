@@ -82,6 +82,9 @@ namespace UN_Menu
                 {
                     DeSelectAllB();
                     buttonList[0].Select();
+                    //display here
+                    //GameObject.FindGameObjectWithTag(buttonList[0].ButtonName()).GetComponent<Renderer>().material.color = new Vector4(255,0,0,0);
+
                 }
                 //resets 
                 anySelected = 0;
@@ -94,6 +97,11 @@ namespace UN_Menu
                 Debug.Log("Error: no buttons found in the button list");
             }
         }
+        public List<Button> GetButtonList()
+        {
+            return buttonList;
+        }
+
         public void DeSelect()
         {
             selected = false;
@@ -117,19 +125,35 @@ namespace UN_Menu
             {
                 return false;
             }
-        }   
-        public void DisplayM()
-        {
-            //insert here what the menu looks like aka texture or text or w/e we want in the rendered version of the game
         }
-        public void DisplayButtons()
+        public void InstantiateMenu()
+        {
+            GameObject menu = Instantiate(Resources.Load("Prefabs/menu"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            //----------------------------------//add what the object should do on instantiation here
+            //tag the instance with its name
+            menu.tag = menuName;
+            //texture
+            //Texture2D menuTex = Resources.Load("Prefabs/" + menuName) as Texture;
+            menu.GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/menues/" + menuName) as Texture2D;
+            //Resources.Load("Prefabs/Welcome to RMGF", typeof(Material)) as Material;
+            //Rotation
+            menu.transform.eulerAngles = SingleMenuManager.Instance.LeRotation();
+            //menu.AddComponent<Renderer>().material = Resources.Load("Prefabs/Welcome to RMGF", typeof(Material)) as Material;
+
+            //if(IsSelected())
+            //{
+
+            //}
+            //----------------------------------//
+        }
+        public void InstantiateMenuButtons()
         {
             if (buttonList != null)
             {
                 //display all buttons(only display for console here)
                 foreach (Button e in buttonList)
                 {
-                    e.Display();
+                    e.InstantiateButton();
                 }
             }
             else
@@ -138,6 +162,32 @@ namespace UN_Menu
                 Console.WriteLine("error: no buttons were found in the button list");
                 Debug.Log("Error: no buttons found in the button list");
             }
+        }
+        public void DestroyMenu()
+        {
+            //lets hope that if there is no tag that it does nthing
+            Destroy(GameObject.FindGameObjectWithTag(menuName));
+        }
+        public void DestroyButtons()
+        {
+            if (buttonList != null)
+            {
+                //display all buttons(only display for console here)
+                foreach (Button e in buttonList)
+                {
+                    e.DestroyButton();
+                }
+            }
+            else
+            {
+                //error message for if no buttons are found in the button list
+                Console.WriteLine("error: no buttons were found in the button list");
+
+            }
+        }
+        public void DisplaySelectedButton()
+        {
+
         }
         public void DisplayConsole()
         {
@@ -236,6 +286,8 @@ namespace UN_Menu
                         {
                             buttonList[i].DeSelect();
                             buttonList[i + 1].Select();
+                            //display selected and
+                            //GameObject.FindGameObjectWithTag(buttonList[i+1].ButtonName()).GetComponent<Renderer>().material.SetColor("fagit",Color.red);
                             break;
                         }
                     }
