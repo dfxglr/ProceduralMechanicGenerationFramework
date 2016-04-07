@@ -11,7 +11,8 @@ namespace UN_Menu
     public class Menu : MonoBehaviour
     {
         //
-        string menuName;
+        public string menuName;
+        public GameObject menu;
         Boolean selected;
         //
         int anySelected = 0;
@@ -126,12 +127,13 @@ namespace UN_Menu
                 return false;
             }
         }
+
         public void InstantiateMenu()
         {
             GameObject menu = Instantiate(Resources.Load("Prefabs/menu"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
             //----------------------------------//add what the object should do on instantiation here
             //tag the instance with its name
-            menu.tag = menuName;
+            menu.name = menuName;
             //texture
             //Texture2D menuTex = Resources.Load("Prefabs/" + menuName) as Texture;
             menu.GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/menues/" + menuName) as Texture2D;
@@ -165,8 +167,9 @@ namespace UN_Menu
         }
         public void DestroyMenu()
         {
-            //lets hope that if there is no tag that it does nthing
-            Destroy(GameObject.FindGameObjectWithTag(menuName));
+            //GameObject.FindGameObjectWithTag(menuName).tag = "Destroy";
+            //lets hope that if there is no tag that it does nothing
+            Destroy(GameObject.Find(menuName));
         }
         public void DestroyButtons()
         {
@@ -175,6 +178,7 @@ namespace UN_Menu
                 //display all buttons(only display for console here)
                 foreach (Button e in buttonList)
                 {
+
                     e.DestroyButton();
                 }
             }
@@ -184,10 +188,6 @@ namespace UN_Menu
                 Console.WriteLine("error: no buttons were found in the button list");
 
             }
-        }
-        public void DisplaySelectedButton()
-        {
-
         }
         public void DisplayConsole()
         {

@@ -19,6 +19,8 @@ namespace UN_SingleMenuManager
 
         //rotation vector for turning the menu ins a specific direction 
         Vector3 MenuRotation;
+        Vector4 DefaultColor;
+        Vector4 TintColor;
 
        
 
@@ -48,6 +50,10 @@ namespace UN_SingleMenuManager
             //-------------------------------------------------// setup begin (change buttons and menue and shit here)
             //-------//rotation of buttons and menues display surfaces(unity stuff)
             MenuRotation = new Vector3(90, 180, 0);
+
+            //color
+            DefaultColor = new Vector4(0.0f,1.0f,0.0f,1.0f);
+            TintColor = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
             //-------//
             //menues
             Menu MainMenu;
@@ -137,8 +143,7 @@ namespace UN_SingleMenuManager
             SingleMenuManager.Instance.Feed(Menues);
             SingleMenuManager.Instance.Begin();
             SingleMenuManager.Instance.InstantiateCurrent();
-            //GameObject.FindGameObjectWithTag(menuList[0].GetButtonList()[0].ButtonName()).GetComponent<Renderer>().material.color = new Vector4(255, 0, 0, 0);
-
+            //SingleMenuManager.Instance.DisplayUnitySelected();
         }
         public Vector3 LeRotation()
         {
@@ -159,9 +164,6 @@ namespace UN_SingleMenuManager
                 DeSelectAllM();
                 menuList[0].Select();              
                 menuList[0].SelectButtonZeroOrActiveB();
-                //deselect other buttons tint
-                //add selecteds buttons tint
-                //GameObject.FindGameObjectWithTag(menuList[0].GetButtonList()[0].ButtonName()).GetComponent<Renderer>().material.color = new Vector4(255, 0, 0, 0);
             }
             else
             {
@@ -178,6 +180,42 @@ namespace UN_SingleMenuManager
             // somehow pause the game in here
         }
         //
+        public void DisplayUnitySelected()
+        {
+            //checks to secure that function can be run if menulist is empty
+            if (menuList != null)
+            {
+                //display currently active menu, if there is any
+                //will work fine so long as no two menues are selected at the same time
+                foreach (Menu e in menuList)
+                {
+                    if (e.IsSelected())
+                    {
+                        Debug.Log(e.menuName);
+                        //---------------------------------------// unity find and show selected button
+                         foreach (Button e2 in e.GetButtonList())
+                         {
+                             Debug.Log(e2.buttonName);
+                             GameObject.Find(e2.buttonName).GetComponent<Renderer>().material.color = DefaultColor;
+                             if (e2.IsSelected())
+                             {
+                                Debug.Log("got colored");
+                                 //tints the object for the selected button
+                                 GameObject.FindGameObjectWithTag(e2.buttonName).GetComponent<Renderer>().material.color = TintColor;
+                             }
+                         }
+                         //---------------------------------------//*/
+                    }
+                }
+            }
+            else
+            {
+                //error message here
+                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
+            }
+        }
+        //
         public void InstantiateCurrent()
         {
             //checks to secure that function can be run if menulist is empty
@@ -191,7 +229,6 @@ namespace UN_SingleMenuManager
                     {
                         e.InstantiateMenu();
                         e.InstantiateMenuButtons();
-                        //add selecteds buttons tint
                     }
                 }
             }
@@ -212,32 +249,16 @@ namespace UN_SingleMenuManager
                 //will work fine so long as no two menues are selected at the same time
                 foreach (Menu e in menuList)
                 {
-                    e.DestroyMenu();
-                    e.DestroyButtons();
-                    //Debug.Log("detroy actions should have happend");
-                }
-            }
-            else
-            {
-                //error message here
-                Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
-                Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
-            }
-        }
-        //displays the currently active menu
-        public void DisplayCurrent()
-        {
-            //checks to secure that function can be run if menulist is empty
-            if (menuList != null)
-            {
-                //display currently active menu, if there is any
-                //will work fine so long as no two menues are selected at the same time
-                foreach (Menu e in menuList)
-                {
-                    if (e.IsSelected())
+                    if (true)
                     {
-                        //
+                        e.DestroyMenu();
+                        e.DestroyButtons();
                     }
+                    else
+                    {
+                        Debug.Log("unity is a fucking fagit");
+                    }
+                    
                 }
             }
             else
@@ -327,9 +348,6 @@ namespace UN_SingleMenuManager
                     if (e.IsSelected())
                     {
                         e.SelectButtonZeroOrActiveB();
-                        //deselect other buttons tint
-                        //add selecteds buttons tint
-                        //GameObject.FindGameObjectWithTag(menuList[0].GetButtonList()[0].ButtonName()).GetComponent<Renderer>().material.color = new Vector4(255, 0, 0, 0);
                     }
                     else
                     {
@@ -343,6 +361,8 @@ namespace UN_SingleMenuManager
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
+            //unity selector
+            //SingleMenuManager.Instance.DisplayUnitySelected();
         }
         //selects a chosen menu using ints to refer to the position in the menulist
         public void SelectMenu(int MenuRowNumber)
@@ -407,9 +427,7 @@ namespace UN_SingleMenuManager
                 {
                     if (e.IsSelected())
                     {
-                        e.SelectUp();
-                        //deselect other buttons tint
-                        //add selecteds buttons tint
+                        e.SelectUp();                        
                     }
                 }
             }
@@ -418,7 +436,7 @@ namespace UN_SingleMenuManager
                 //error message here
                 Console.WriteLine("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
-            }
+            }            
         }
         //selects the button below the the currently active button
         public void MoveDown()
@@ -431,8 +449,6 @@ namespace UN_SingleMenuManager
                     if (e.IsSelected())
                     {
                         e.SelectDown();
-                        //deselect other buttons tint
-                        //add selecteds buttons tint
                     }
                 }
             }
