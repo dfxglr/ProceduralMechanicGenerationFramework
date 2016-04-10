@@ -7,8 +7,12 @@ namespace PMGF
 	{
 
 
-        public enum EventTriggerBehavior { ALWAYS, REQUIRE_FALSE, ONE_TIME, VICTORY, DEFEAT, NEUTRAL };
-        // Default behavior is ALWAYS
+        // Need to change this. End events are not behaviors. Actually they are more methods or change-functions than anything...
+        //public enum EventTriggerBehavior { ALWAYS, REQUIRE_FALSE, ONE_TIME, VICTORY, DEFEAT, NEUTRAL };
+        public enum EventTriggerBehavior { ALWAYS, REQUIRE_METHOD_DONE, REQUIRE_FALSE, ONE_TIME };
+        // TODO Discuss event trigger/end behaviors and naming
+
+        // Default behavior is REQUIRE_METHOD_DONE
 
 
 
@@ -16,12 +20,13 @@ namespace PMGF
 		{
 
             public PMGExecuteList _conditions;
-            private bool _lastConditionCheck;
-            private bool _thisConditionCheck;
-            private bool _canTrigger;
             public EventTriggerBehavior _behavior;
             public PMGMethod _method;
             public PMGValueStack _valueStack;
+
+            public bool _methodRunning;
+
+            private bool _hasBeenFalse;
 
             public PMGActor _callingActor;
 
@@ -29,58 +34,67 @@ namespace PMGF
 		    public PMGEvent(PMGMethod method, PMGActor calling,
                             EventTriggerBehavior behavior= EventTriggerBehavior.ALWAYS)
 		    {
-                this._method = method;
-                this._behavior = behavior;
-                this._callingActor = calling;
-                _lastConditionCheck = false;
-                _thisConditionCheck = false;
-                _canTrigger = false;
+                _method = method;
+                _behavior = behavior;
+                _callingActor = calling;
+
+                _hasBeenFalse = false;
+                _methodRunning = false;
 		    }
 
 			public void Trigger()
 			{
-                // Trigger the event (start from first item in execute list at timestep 0
-                if(_canTrigger)
-                    _method.Call();
+                _hasBeenFalse = false;
+                _methodRunning = true;
 
-                if(_behavior == EventTriggerBehavior.ONE_TIME)
-                {
-                    // Remove this event  TODO
-                }
+
+                _method._onDone = OnMethodDone;
+                _method.Call();
 			}
 
             public void EvaluateConditions()
             {
+                bool CanTrigger = true;
+
+                // Make sure method isn't already running
+
+                CanTrigger &= (! _method._running);
+
                 // Check conditions
-                _lastConditionCheck = _thisConditionCheck;
-                _thisConditionCheck = _conditions.Execute();
+                bool ConditionsCheck = _conditions.Execute();
 
+                // Only trigger if they check out
+                CanTrigger &= ConditionsCheck;
 
-                _canTrigger = _thisConditionCheck;
+                // Check if it has been false since last Trigger
+                _hasBeenFalse |= (! ConditionsCheck);
 
-                _canTrigger &=  ! _method._running;
+                // If required by behavior, factor that in to whether we can trigger
+                if(_behavior == EventTriggerBehavior.REQUIRE_FALSE)
+                {
+                    CanTrigger &= _hasBeenFalse;
+                }
 
-                _canTrigger &= TypeCheck();
-
-
-                Trigger();
+                // yep
+                if(CanTrigger)
+                    Trigger();
 
                 // clear stack
                 _valueStack.Clear();
             }
 
-            public bool TypeCheck()
-            {
-
-
-            }
 
             public void OnMethodDone()
             {
+                // TODO Fix behavior when method is done
                 // To call when the method is done
                 switch(_behavior)
                 {
+                    case EventTriggerBehavior.ONE_TIME:
+                        // Destroy this event
+                        break;
                     default:
+
                         break;
                 }
             }

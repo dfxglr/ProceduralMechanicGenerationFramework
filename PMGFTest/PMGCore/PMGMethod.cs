@@ -34,7 +34,7 @@ namespace PMGF
                 _stepIter = 0;
             }
 
-            public void Stop()
+            public void Pause()
             {
                 // Stop the method (but stay at current timestep
                 _running = false;
@@ -45,6 +45,14 @@ namespace PMGF
                 // Stop and reset the method (e.g. timestep 0)
                 _running = false;
                 _stepIter = 0;
+
+                _valueStack = new PMGValueStack();
+            }
+
+            public void Stop()
+            {
+                // same as above)
+                Reset();
             }
 
 
@@ -71,8 +79,7 @@ namespace PMGF
 
             {
                 // Reached end of the list of time_steps.
-                _running = false;
-                _stepIter = 0;
+                Reset();
 
                 if(_onDone != null)
                     _onDone();
