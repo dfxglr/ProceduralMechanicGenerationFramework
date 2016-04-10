@@ -73,6 +73,7 @@ namespace UN_SingleInputManager
             {
                 //Console.WriteLine("fagit");
                 booleanRelatedToKey = false;
+                
             }
             //---------------------------------------------------//
         }
@@ -102,6 +103,8 @@ namespace UN_SingleInputManager
                     wIsPressed = true;                    
                     //place desired function below
                     SingleMenuManager.Instance.MoveUp();
+                    //unity selector update
+                    //SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -114,6 +117,8 @@ namespace UN_SingleInputManager
                     sIsPressed = true;
                     //place desired function below
                     SingleMenuManager.Instance.MoveDown();
+                    //unity selector update
+                    //SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -129,6 +134,8 @@ namespace UN_SingleInputManager
                     upIsPressed = true;
                     //place desired function below
                     SingleMenuManager.Instance.MoveUp();
+                    //unity selector update
+                    //SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -141,6 +148,8 @@ namespace UN_SingleInputManager
                     downIsPressed = true;
                     //place desired function below
                     SingleMenuManager.Instance.MoveDown();
+                    //unity selector update
+                    //SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -158,7 +167,10 @@ namespace UN_SingleInputManager
                     //place desired function below
                     SingleMenuManager.Instance.ActivateButton();
                     //in case the button swaps to new menu
-                    SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    //SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    //unity selector update
+                    //SingleMenuManager.Instance.DisplayUnitySelected();
+                    
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -173,6 +185,8 @@ namespace UN_SingleInputManager
                     SingleMenuManager.Instance.ActivateButton();
                     //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    //unity selector update
+                    //SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {

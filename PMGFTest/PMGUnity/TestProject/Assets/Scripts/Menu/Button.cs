@@ -17,7 +17,8 @@ namespace UN_Button
 
         //public
         //buttonName must fit case names!!!
-        String buttonName;
+        public String buttonName;
+        public GameObject button;
         //the base 100 is the default value, when there is not input, and is used for error message in buttons Back and Options atm
         int relatedMenu = 100;
         float x;
@@ -63,10 +64,11 @@ namespace UN_Button
         }
         public void InstantiateButton()
         {
-            GameObject button =  Instantiate(Resources.Load("Prefabs/button"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            button =  Instantiate(Resources.Load("Prefabs/button"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
             //----------------------------------//add what the object should do on instantiation here
             //tags the instance with its name
-            button.tag = buttonName;
+            //button.tag = buttonName;
+            button.name = buttonName;
             //Texture
             button.GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/Buttons/" + buttonName) as Texture2D;
             //Rotation
@@ -76,12 +78,7 @@ namespace UN_Button
         //might need to destroy them again
         public void DestroyButton()
         {
-            //lets hope that if there is no tag that it does nothing
-            Destroy(GameObject.FindGameObjectWithTag(buttonName));
-        }
-        public string ButtonName()
-        {
-            return buttonName;
+            Destroy(GameObject.Find(buttonName));
         }
         public void DeSelect()
         {
@@ -213,9 +210,10 @@ namespace UN_Button
             //selects the related menu
             if (relatedMenu != 100 && SingleMenuManager.Instance.MenuCount() != 0 && relatedMenu <= SingleMenuManager.Instance.MenuCount())
             {
-                SingleMenuManager.Instance.SelectMenu(relatedMenu);
+                
                 //unity objects
                 SingleMenuManager.Instance.DestroyAll();
+                SingleMenuManager.Instance.SelectMenu(relatedMenu);
                 SingleMenuManager.Instance.InstantiateCurrent();
             }
             else
