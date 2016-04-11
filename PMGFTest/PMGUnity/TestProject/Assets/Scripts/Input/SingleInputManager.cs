@@ -104,7 +104,7 @@ namespace UN_SingleInputManager
                     //place desired function below
                     SingleMenuManager.Instance.MoveUp();
                     //unity selector update
-                    //SingleMenuManager.Instance.DisplayUnitySelected();
+                    SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -118,7 +118,7 @@ namespace UN_SingleInputManager
                     //place desired function below
                     SingleMenuManager.Instance.MoveDown();
                     //unity selector update
-                    //SingleMenuManager.Instance.DisplayUnitySelected();
+                    SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -135,7 +135,7 @@ namespace UN_SingleInputManager
                     //place desired function below
                     SingleMenuManager.Instance.MoveUp();
                     //unity selector update
-                    //SingleMenuManager.Instance.DisplayUnitySelected();
+                    SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -149,7 +149,7 @@ namespace UN_SingleInputManager
                     //place desired function below
                     SingleMenuManager.Instance.MoveDown();
                     //unity selector update
-                    //SingleMenuManager.Instance.DisplayUnitySelected();
+                    SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -167,10 +167,9 @@ namespace UN_SingleInputManager
                     //place desired function below
                     SingleMenuManager.Instance.ActivateButton();
                     //in case the button swaps to new menu
-                    //SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    SingleMenuManager.Instance.SelectFirstOrActiveButton();
                     //unity selector update
-                    //SingleMenuManager.Instance.DisplayUnitySelected();
-                    
+                    SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {
@@ -186,7 +185,7 @@ namespace UN_SingleInputManager
                     //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
                     //unity selector update
-                    //SingleMenuManager.Instance.DisplayUnitySelected();
+                    SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
                     if (isConsole)
                     {

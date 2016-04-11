@@ -41,7 +41,7 @@ public class SingleGameManager : MonoBehaviour
     {
         SingleGameManager.instance = null;
     }
-    //-----------------------------------------------------------------------//
+    //-----------------------------------------------------------------------//*/
     // runs once in the beginning(Awake() is before this however)
     public void Start()
     {

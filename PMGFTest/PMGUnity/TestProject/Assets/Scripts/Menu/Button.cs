@@ -23,7 +23,7 @@ namespace UN_Button
         int relatedMenu = 100;
         float x;
         float y;
-        Boolean selected;
+        public Boolean isSelected;
         //private
         //protected
 
@@ -75,40 +75,12 @@ namespace UN_Button
             button.transform.eulerAngles = SingleMenuManager.Instance.LeRotation();
             //----------------------------------//
         }
-        //might need to destroy them again
-        public void DestroyButton()
-        {
-            Destroy(GameObject.Find(buttonName));
-        }
-        public void DeSelect()
-        {
-            //deselects this button
-            selected = false;
-            //display on not selected but is set here
 
-        }
-        public void Select()
-        {
-            //deselects this button
-            selected = true;
-
-        }
-        public bool IsSelected()
-        {
-            if (selected)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
         public void DisplayConsole()
         {
             //displays the button itself
             //for this example its console.write(buttonName);
-            if (selected)
+            if (isSelected)
             {
                 Console.WriteLine(">" + buttonName + "<");
                 Debug.Log(">" + buttonName + "<");
@@ -204,7 +176,7 @@ namespace UN_Button
                     break;
             }
         }
-        //---------------------------------------------------------------// button functions below
+        //---------------------------------------------------------------// user made button functions below
         private void MoveToRelated()
         {
             //selects the related menu

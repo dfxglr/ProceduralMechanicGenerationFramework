@@ -5,12 +5,12 @@ public class DestroyTest : MonoBehaviour {
 
     void OnDestroy()
     {
-        Debug.Log(tag + ": got detroyed");
+        //Debug.Log(name + ": got detroyed");
     }
 
 	// Use this for initialization
 	void Start () {
-        Debug.Log(tag + ": got made");
+        //Debug.Log(tag + ": got made");
     }
 	
 	// Update is called once per frame

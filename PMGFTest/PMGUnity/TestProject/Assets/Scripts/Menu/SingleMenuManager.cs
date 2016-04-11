@@ -143,7 +143,7 @@ namespace UN_SingleMenuManager
             SingleMenuManager.Instance.Feed(Menues);
             SingleMenuManager.Instance.Begin();
             SingleMenuManager.Instance.InstantiateCurrent();
-            //SingleMenuManager.Instance.DisplayUnitySelected();
+            SingleMenuManager.Instance.DisplayUnitySelected();
         }
         public Vector3 LeRotation()
         {
@@ -162,7 +162,7 @@ namespace UN_SingleMenuManager
             if (menuList != null)
             {
                 DeSelectAllM();
-                menuList[0].Select();              
+                menuList[0].isSelected = true;              
                 menuList[0].SelectButtonZeroOrActiveB();
             }
             else
@@ -179,6 +179,7 @@ namespace UN_SingleMenuManager
         {
             // somehow pause the game in here
         }
+
         //
         public void DisplayUnitySelected()
         {
@@ -189,21 +190,22 @@ namespace UN_SingleMenuManager
                 //will work fine so long as no two menues are selected at the same time
                 foreach (Menu e in menuList)
                 {
-                    if (e.IsSelected())
+                    if (e.isSelected)
                     {
-                        Debug.Log(e.menuName);
+                        //Debug.Log(e.menuName);
                         //---------------------------------------// unity find and show selected button
-                         foreach (Button e2 in e.GetButtonList())
-                         {
-                             Debug.Log(e2.buttonName);
-                             GameObject.Find(e2.buttonName).GetComponent<Renderer>().material.color = DefaultColor;
-                             if (e2.IsSelected())
-                             {
-                                Debug.Log("got colored");
-                                 //tints the object for the selected button
-                                 GameObject.FindGameObjectWithTag(e2.buttonName).GetComponent<Renderer>().material.color = TintColor;
-                             }
-                         }
+                            foreach (Button e2 in e.buttonList)
+                            {
+                                //Debug.Log(e2.buttonName);
+                                e2.button.GetComponent<Renderer>().material.color = DefaultColor;
+                                if (e2.isSelected)
+                                {
+                                    //Debug.Log("got colored");
+                                    //tints the object for the selected button
+                                    e2.button.GetComponent<Renderer>().material.color = TintColor;
+                                }
+                            }
+                        
                          //---------------------------------------//*/
                     }
                 }
@@ -215,6 +217,7 @@ namespace UN_SingleMenuManager
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+        
         //
         public void InstantiateCurrent()
         {
@@ -225,10 +228,25 @@ namespace UN_SingleMenuManager
                 //will work fine so long as no two menues are selected at the same time
                 foreach (Menu e in menuList)
                 {
-                    if (e.IsSelected())
+                    if (e.isSelected)
                     {
+                        //
                         e.InstantiateMenu();
-                        e.InstantiateMenuButtons();
+                        //
+                        if (e.buttonList != null)
+                        {
+                            //display all buttons(only display for console here)
+                            foreach (Button e2 in e.buttonList)
+                            {
+                                e2.InstantiateButton();
+                            }
+                        }
+                        else
+                        {
+                            //error message for if no buttons are found in the button list
+                            Console.WriteLine("error: no buttons were found in the button list");
+                            Debug.Log("Error: no buttons found in the button list");
+                        }
                     }
                 }
             }
@@ -239,7 +257,8 @@ namespace UN_SingleMenuManager
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
-        //destroys any menu object found, to clear out for new instantiation
+        
+        //destroys any menu or button game object found, used to clear out for new instantiation
         public void DestroyAll()
         {
             //checks to secure that function can be run if menulist is empty
@@ -249,16 +268,19 @@ namespace UN_SingleMenuManager
                 //will work fine so long as no two menues are selected at the same time
                 foreach (Menu e in menuList)
                 {
-                    if (true)
+                    Destroy(e.menu);
+                    if (e.buttonList != null)
                     {
-                        e.DestroyMenu();
-                        e.DestroyButtons();
+                        foreach (Button e2 in e.buttonList)
+                        {
+                            Destroy(e2.button);
+                        }
                     }
                     else
                     {
-                        Debug.Log("unity is a fucking fagit");
+                        //error message for if no buttons are found in the button list
+                        Console.WriteLine("error: no buttons were found in the button list");
                     }
-                    
                 }
             }
             else
@@ -268,6 +290,7 @@ namespace UN_SingleMenuManager
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+        
         // displays the currently active console menu
         public void DisplayConsoleCurrent()
         {
@@ -279,11 +302,22 @@ namespace UN_SingleMenuManager
                 //will work fine so long as no two menues are selected at the same time
                 foreach (Menu e in menuList)
                 {
-                    if (e.IsSelected())
+                    if (e.isSelected)
                     {
                         Console.WriteLine("__________________");
-                        e.DisplayConsole();
-                        e.DisplayConsoleButtons();
+                        Debug.Log(e.menuName);
+                        foreach (Button e2 in e.buttonList) {
+                            if (e2.isSelected)
+                            {
+                                Console.WriteLine(">" + e2.buttonName + "<");
+                                Debug.Log(">" + e2.buttonName + "<");
+                            }
+                            else
+                            {
+                                Console.WriteLine(e2.buttonName);
+                                Debug.Log(e2.buttonName);
+                            }
+                        }
                         Console.WriteLine("__________________");
                     }
                 }
@@ -295,6 +329,7 @@ namespace UN_SingleMenuManager
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+        
         //deselects all menues
         public void DeSelectAllM()
         {
@@ -303,7 +338,7 @@ namespace UN_SingleMenuManager
             {
                 foreach (Menu e in menuList)
                 {
-                    e.DeSelect();
+                    e.isSelected = false;
                 }
             }
             else
@@ -313,6 +348,7 @@ namespace UN_SingleMenuManager
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+        
         //returns true if no menu in the list is set to selected
         public bool NoMenuSelected()
         {
@@ -321,7 +357,7 @@ namespace UN_SingleMenuManager
             {
                 foreach (Menu e in menuList)
                 {
-                    if (e.IsSelected())
+                    if (e.isSelected)
                     {
                         return true;
                     }
@@ -336,6 +372,7 @@ namespace UN_SingleMenuManager
                 return false;
             }
         }
+        
         //annoying this function cant be run inside the classes without dual button activation, i have no clue why this is the case, but after testing all possible location with no luck im left to leave it in the main
         //needed for when activating a button from input to set the selected in the new menu
         public void SelectFirstOrActiveButton()
@@ -345,7 +382,7 @@ namespace UN_SingleMenuManager
             {
                 foreach (Menu e in menuList)
                 {
-                    if (e.IsSelected())
+                    if (e.isSelected)
                     {
                         e.SelectButtonZeroOrActiveB();
                     }
@@ -364,6 +401,7 @@ namespace UN_SingleMenuManager
             //unity selector
             //SingleMenuManager.Instance.DisplayUnitySelected();
         }
+        
         //selects a chosen menu using ints to refer to the position in the menulist
         public void SelectMenu(int MenuRowNumber)
         {
@@ -371,7 +409,7 @@ namespace UN_SingleMenuManager
             if (menuList != null)
             {
                 DeSelectAllM();
-                menuList[MenuRowNumber].Select();
+                menuList[MenuRowNumber].isSelected = true;
             }
             else
             {
@@ -380,6 +418,7 @@ namespace UN_SingleMenuManager
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+        
         //returns the number of menues
         public int MenuCount()
         {
@@ -396,17 +435,36 @@ namespace UN_SingleMenuManager
                 return 0;
             }
         }
+        
         //activates the action of the currently selected button 
         public void ActivateButton()
         {
-            //
+            //checks if there are any items in menulist
             if (menuList != null)
             {
+                // goes through menulist
                 foreach (Menu e in menuList)
                 {
-                    if (e.IsSelected())
+                    //runs for the selected menu only
+                    if (e.isSelected)
                     {
-                        e.UseButton();
+                        //checks if there are any items in the selected menu's buttonlist
+                        if (e.buttonList != null) {
+                            //goes through selected menu's buttonlist
+                            foreach (Button e2 in e.buttonList)
+                            {
+                                //runs for the selected button only
+                                if (e2.isSelected)
+                                {
+                                    //does the action assigned to the selected button
+                                    e2.DoAction();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("Error: no buttons found in the button list of the selected menu");
+                        }
                     }
                 }
             }
@@ -417,17 +475,54 @@ namespace UN_SingleMenuManager
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }
         }
+        
         //selects the above below the the currently active button
         public void MoveUp()
         {
-            //
+            //checks if there are any items in menulist
             if (menuList != null)
             {
+                // goes through menulist
                 foreach (Menu e in menuList)
                 {
-                    if (e.IsSelected())
+                    //runs for the selected menu only
+                    if (e.isSelected)
                     {
-                        e.SelectUp();                        
+                        //checks if there are any items in the selected menu's buttonlist
+                        if (e.buttonList != null)
+                        {
+                            //if first position in the list - move up by deselecting and then selecting the end item in the list
+                            if (e.buttonList[0].isSelected)
+                            {
+                                e.buttonList[0].isSelected = false;
+                                e.buttonList[e.buttonList.Count - 1].isSelected = true;
+                            }
+                            //if last position in the list - move up by deselecting and then selecting the previous item in the list
+                            else if (e.buttonList[e.buttonList.Count - 1].isSelected)
+                            {
+                                e.buttonList[e.buttonList.Count - 1].isSelected = false;
+                                e.buttonList[e.buttonList.Count - 2].isSelected = true;
+                            }
+                            else
+                            {
+                                //if any middle position in the list - move up by finding the selected button and deselecting it and then selecting the previous item in the list
+                                for (int i = 1; i < e.buttonList.Count - 1; i++)
+                                {
+                                    if (e.buttonList[i].isSelected)
+                                    {
+                                        e.buttonList[i].isSelected = false;
+                                        e.buttonList[i - 1].isSelected = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //error message for if no buttons are found in the button list
+                            Console.WriteLine("error: no buttons were found in the button list");
+                            Debug.Log("Error: no buttons found in the button list of the selected menu");
+                        }
                     }
                 }
             }
@@ -438,17 +533,51 @@ namespace UN_SingleMenuManager
                 Debug.Log("The list of menues have not been added to the single menu manager, as such this function cannot be run, please check if the function: SingleMenuManager.Instance.Feed(menuList of your choice), has been used in the single menu manager setup function");
             }            
         }
+        
         //selects the button below the the currently active button
         public void MoveDown()
         {
-            //
+            //checks if there are any items in menulist
             if (menuList != null)
             {
                 foreach (Menu e in menuList)
                 {
-                    if (e.IsSelected())
+                    if (e.isSelected)
                     {
-                        e.SelectDown();
+                        if (e.buttonList != null)
+                        {
+                            //if first position in the list - move down by deselecting and then selecting the next item in the list
+                            if (e.buttonList[0].isSelected && e.buttonList.Count > 1)
+                            {
+                                e.buttonList[0].isSelected = false;
+                                e.buttonList[1].isSelected = true;
+                            }
+                            //if last position in the list - move down by deselecting and then selecting the first item in the list
+                            else if (e.buttonList[e.buttonList.Count - 1].isSelected)
+                            {
+                                e.buttonList[e.buttonList.Count - 1].isSelected = false;
+                                e.buttonList[0].isSelected = true;
+                            }
+                            else
+                            {
+                                //if any middle position in the list - move down by finding the selected button and deselecting it and then selecting the next item in the list
+                                for (int i = 1; i < e.buttonList.Count - 1; i++)
+                                {
+                                    if (e.buttonList[i].isSelected)
+                                    {
+                                        e.buttonList[i].isSelected = false;
+                                        e.buttonList[i + 1].isSelected = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //error message for if no buttons are found in the button list
+                            Console.WriteLine("error: no buttons were found in the button list");
+                            Debug.Log("Error: no buttons found in the button list of the selected menu");
+                        }
                     }
                 }
             }
