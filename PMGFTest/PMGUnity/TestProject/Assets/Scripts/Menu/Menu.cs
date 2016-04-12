@@ -13,7 +13,7 @@ namespace UN_Menu
         //
         public string menuName;
         public GameObject menu;
-        Boolean selected;
+        public Boolean isSelected;
         //
         int anySelected = 0;
         Boolean nooneSelected = false;
@@ -21,7 +21,7 @@ namespace UN_Menu
         float x;
         float y;
         //list of the buttons in the menu
-        List<Button> buttonList;
+        public List<Button> buttonList;
 
         //constructor used for the rendered version or aka when we need the positions
         public Menu(string MN, List<Button> BL, float X, float Y)
@@ -49,7 +49,7 @@ namespace UN_Menu
             {
                 foreach (Button e in buttonList)
                 {
-                    e.DeSelect();
+                    e.isSelected = false;
                 }
             }
             else
@@ -57,6 +57,7 @@ namespace UN_Menu
                 Debug.Log("Error: no buttons found in the button list");
             }
         }
+        
         // selects the first button in
         public void SelectButtonZeroOrActiveB()
         {
@@ -65,7 +66,7 @@ namespace UN_Menu
             {
                 foreach (Button e in buttonList)
                 {
-                    if (!e.IsSelected())
+                    if (!e.isSelected)
                     {
                         anySelected++;
                         if (anySelected==buttonList.Count)
@@ -82,7 +83,7 @@ namespace UN_Menu
                 if (nooneSelected)
                 {
                     DeSelectAllB();
-                    buttonList[0].Select();
+                    buttonList[0].isSelected = true;
                     //display here
                     //GameObject.FindGameObjectWithTag(buttonList[0].ButtonName()).GetComponent<Renderer>().material.color = new Vector4(255,0,0,0);
 
@@ -98,56 +99,24 @@ namespace UN_Menu
                 Debug.Log("Error: no buttons found in the button list");
             }
         }
-        public List<Button> GetButtonList()
-        {
-            return buttonList;
-        }
 
-        public void DeSelect()
-        {
-            selected = false;
-            //no using atm because its a console project at that this would spam it
-            //Console.WriteLine("button: " + buttonName + " is NOT selected");
-        }
-        //sets this menu to be active
-        public void Select()
-        {            
-            selected = true;
-        }
-        //used to check if this menu is active
-        public bool IsSelected()
-        {
-            //checks in this menu is selected
-            if (selected)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
+        //instantiates menu unity game object, set its name, texture and rotation
         public void InstantiateMenu()
         {
-            GameObject menu = Instantiate(Resources.Load("Prefabs/menu"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            menu = Instantiate(Resources.Load("Prefabs/menu"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
             //----------------------------------//add what the object should do on instantiation here
             //tag the instance with its name
             menu.name = menuName;
             //texture
             //Texture2D menuTex = Resources.Load("Prefabs/" + menuName) as Texture;
             menu.GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/menues/" + menuName) as Texture2D;
-            //Resources.Load("Prefabs/Welcome to RMGF", typeof(Material)) as Material;
             //Rotation
             menu.transform.eulerAngles = SingleMenuManager.Instance.LeRotation();
-            //menu.AddComponent<Renderer>().material = Resources.Load("Prefabs/Welcome to RMGF", typeof(Material)) as Material;
-
-            //if(IsSelected())
-            //{
-
-            //}
+            
             //----------------------------------//
         }
+        
+        //
         public void InstantiateMenuButtons()
         {
             if (buttonList != null)
@@ -165,30 +134,7 @@ namespace UN_Menu
                 Debug.Log("Error: no buttons found in the button list");
             }
         }
-        public void DestroyMenu()
-        {
-            //GameObject.FindGameObjectWithTag(menuName).tag = "Destroy";
-            //lets hope that if there is no tag that it does nothing
-            Destroy(GameObject.Find(menuName));
-        }
-        public void DestroyButtons()
-        {
-            if (buttonList != null)
-            {
-                //display all buttons(only display for console here)
-                foreach (Button e in buttonList)
-                {
 
-                    e.DestroyButton();
-                }
-            }
-            else
-            {
-                //error message for if no buttons are found in the button list
-                Console.WriteLine("error: no buttons were found in the button list");
-
-            }
-        }
         public void DisplayConsole()
         {
             Console.WriteLine(menuName);
@@ -210,95 +156,6 @@ namespace UN_Menu
                 Console.WriteLine("error: no buttons were found in the button list");
                 Debug.Log("Error: no buttons found in the button list");
             }
-        }
-        // used this menues the currently selected buttons action 
-        public void UseButton()
-        {
-            foreach (Button e in buttonList)
-            {
-                if (e.IsSelected() && selected)
-                {
-                    e.DoAction();
-                    //this is the first ideal place for the function below, but i cant be run from here without double trouble
-                    //SingleMenuManager.Instance.SelectFirstButtonInMenu();
-                }
-            }
-        }
-        public void SelectUp()
-        {
-            if (buttonList != null)
-            {
-                //first position in the list
-                if (buttonList[0].IsSelected())
-                {
-                    buttonList[0].DeSelect();
-                    buttonList[buttonList.Count - 1].Select();
-                }
-                //last postition in the list
-                else if (buttonList[buttonList.Count - 1].IsSelected())
-                {
-                    buttonList[buttonList.Count - 1].DeSelect();
-                    buttonList[buttonList.Count - 2].Select();
-                }
-                else
-                {
-                    //middle posititions in the list
-                    for (int i = 1; i < buttonList.Count - 1; i++)
-                    {
-                        if (buttonList[i].IsSelected())
-                        {
-                            buttonList[i].DeSelect();
-                            buttonList[i - 1].Select();
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //error message for if no buttons are found in the button list
-                Console.WriteLine("error: no buttons were found in the button list");
-                Debug.Log("Error: no buttons found in the button list");
-            } 
-        }
-        public void SelectDown()
-        {
-            if (buttonList != null)
-            {
-                //first position in the list
-                if (buttonList[0].IsSelected() && buttonList.Count > 1)
-                {
-                    buttonList[0].DeSelect();
-                    buttonList[1].Select();
-                }
-                //last postition in the list
-                else if (buttonList[buttonList.Count - 1].IsSelected())
-                {
-                    buttonList[buttonList.Count - 1].DeSelect();
-                    buttonList[0].Select();
-                }
-                else
-                {
-                    //middle posititions in the list
-                    for (int i = 1; i < buttonList.Count - 1; i++)
-                    {
-                        if (buttonList[i].IsSelected())
-                        {
-                            buttonList[i].DeSelect();
-                            buttonList[i + 1].Select();
-                            //display selected and
-                            //GameObject.FindGameObjectWithTag(buttonList[i+1].ButtonName()).GetComponent<Renderer>().material.SetColor("fagit",Color.red);
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //error message for if no buttons are found in the button list
-                Console.WriteLine("error: no buttons were found in the button list");
-                Debug.Log("Error: no buttons found in the button list");
-            }  
         }
     }
 }
