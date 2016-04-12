@@ -45,18 +45,13 @@ public class SingleGameManager : MonoBehaviour
     // runs once in the beginning(Awake() is before this however)
     public void Start()
     {
-        Debug.Log("unity is a cunt and it knows it");
         SingleMenuManager.Instance.Setup(true);
         SingleInputManager.Instance.Setup(true);
     }
     //runs all the time
     public void Update()
     {
-        //update not needed now, but singleinoutmanager.instance.quitgame(), should be used to quit the game lol obviuosly
-        //if(!SingleInputManager.Instance.IsGameQuit())
-        //{
-            SingleInputManager.Instance.InputUpdate();
-        //}
+        SingleInputManager.Instance.InputUpdate();
     }
     //-----------------------------------------------------------------------//
 }

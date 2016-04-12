@@ -19,7 +19,7 @@ namespace UN_Button
         //buttonName must fit case names!!!
         public String buttonName;
         public GameObject button;
-        //the base 100 is the default value, when there is not input, and is used for error message in buttons Back and Options atm
+        //the base 100 is the default value so that 0 isnt, when there is not input, and is used for error message in buttons Back and Options atm
         int relatedMenu = 100;
         float x;
         float y;
@@ -39,9 +39,8 @@ namespace UN_Button
             buttonName = BN;
             x = X;
             y = Y;
-            
-            //Instantiate(button, new Vector3(x, y, 0), Quaternion.identity);
         }
+
         //complier 2, used for moving between menues
         public Button(string BN, int R, float X, float Y)
         {
@@ -49,19 +48,22 @@ namespace UN_Button
             relatedMenu = R;
             x = X;
             y = Y;
-            //Instantiate(button, new Vector3(x, y, 0), Quaternion.identity);
         }
-        //compiler 3, base in console
+
+        /*//compiler 3, base in console
         public Button(string BN)
         {
             buttonName = BN;
         }
+
         //complier 4, used for moving between menues in console
         public Button(string BN, int R)
         {
             buttonName = BN;
             relatedMenu = R;
-        }
+        }//*/
+        
+        //instantiates the button in unity terms, with conditions of: position, name, texture, rotation
         public void InstantiateButton()
         {
             button =  Instantiate(Resources.Load("Prefabs/button"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
@@ -76,21 +78,7 @@ namespace UN_Button
             //----------------------------------//
         }
 
-        public void DisplayConsole()
-        {
-            //displays the button itself
-            //for this example its console.write(buttonName);
-            if (isSelected)
-            {
-                Console.WriteLine(">" + buttonName + "<");
-                Debug.Log(">" + buttonName + "<");
-            }
-            else
-            {
-                Console.WriteLine(buttonName);
-                Debug.Log(buttonName);
-            }
-        }      
+        //---------------------------------------------------------------// insert new buttons in the switch case below
         public void DoAction()
         {
             //make switch case for different atcions,a nd then we just add any new action here nice nice nice
@@ -99,73 +87,54 @@ namespace UN_Button
             {
                 case "Start":
                     //insert start button function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
-                    Debug.Log("button [" + buttonName + "] does its action(which is nothing atm)");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Restart":
                     //insert start button function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action");
-                    Debug.Log("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Exit":
                     //insert exit button function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
-                    Debug.Log("button [" + buttonName + "] does its action(which is nothing atm)");
-                    SingleInputManager.Instance.GameQuit();
+                    //quits the unity game
+                    Application.Quit();//is ignored in the editor and web player
                     break;
                 case "Back":
                     //insert back button function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action");
-                    Debug.Log("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "New Game":
                     //insert try again button function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
-                    Debug.Log("button [" + buttonName + "] does its action(which is nothing atm)");
+                    SingleMenuManager.Instance.DeSelectAllM();
+                    SingleMenuManager.Instance.DestroyAll();
                     break;
                 case "Previous Game":
                     //insert start menu function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action(which is nothing atm)");
-                    Debug.Log("button [" + buttonName + "] does its action(which is nothing atm)");
                     break;
                 case "Controls":
                     //insert start menu function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action");
-                    Debug.Log("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Credits":
-                    //insert start menu function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action");
-                    Debug.Log("button [" + buttonName + "] does its action");
+                    //insert start menu function here and remove the writeline below - console need only;
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Options":
                     //insert start menu function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action");
-                    Debug.Log("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Debug":
                     //insert start menu function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action");
-                    Debug.Log("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Game Over":
                     //insert start menu function here and remove the writeline below - console need only
-                    Console.WriteLine("button [" + buttonName + "] does its action");
-                    Debug.Log("button [" + buttonName + "] does its action");
                     //selects the related menu
                     MoveToRelated();
                     break;
@@ -176,13 +145,13 @@ namespace UN_Button
                     break;
             }
         }
-        //---------------------------------------------------------------// user made button functions below
+        
+        //---------------------------------------------------------------// user-made button-functions below
         private void MoveToRelated()
         {
             //selects the related menu
             if (relatedMenu != 100 && SingleMenuManager.Instance.MenuCount() != 0 && relatedMenu <= SingleMenuManager.Instance.MenuCount())
             {
-                
                 //unity objects
                 SingleMenuManager.Instance.DestroyAll();
                 SingleMenuManager.Instance.SelectMenu(relatedMenu);

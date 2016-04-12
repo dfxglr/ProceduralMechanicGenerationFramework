@@ -16,7 +16,8 @@ namespace UN_SingleInputManager
     {
         //variales
         Boolean quit = false;
-        Boolean isConsole = true;
+        Boolean withConsole = true;
+        //Boolean inMenu = true;
         //booleans use for single press action with buttons, keyEventargs class could obsolete the use of these, but is being a dick for now reason so fuck it
         
         //print display to console
@@ -34,6 +35,8 @@ namespace UN_SingleInputManager
         // keys enter and space
         Boolean enterIsPressed = false;
         Boolean spaceIsPressed = false;
+        // key escape
+        Boolean escapeIsPressed = false;
 
         //-------------------------------------------------// singleton thread safe with no lock (type 4 from http://csharpindepth.com/Articles/General/Singleton.aspx)
         private static readonly SingleInputManager instance = new SingleInputManager();
@@ -80,7 +83,7 @@ namespace UN_SingleInputManager
         //allows for user to set program to either be console or not at the beginning - works regardless of console or not
         public void Setup(Boolean runWithConsole)
         {
-            isConsole = runWithConsole;
+            withConsole = runWithConsole;
         }
         //update function 
         public void InputUpdate()
@@ -88,13 +91,9 @@ namespace UN_SingleInputManager
             //add keys here
 
             //Exits the program
-            if (Input.GetKeyUp(KeyCode.Escape))
-            {
-                Console.WriteLine("quit was hit");
-                GameQuit();
-            }
+            
             //IN MENU
-            if (SingleMenuManager.Instance.NoMenuSelected())
+            if (SingleMenuManager.Instance.IsMenuSelected())
             {
                 //-------------------------------------------------------------------// w, s
                 // w 
@@ -106,7 +105,7 @@ namespace UN_SingleInputManager
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
-                    if (isConsole)
+                    if (withConsole)
                     {
                         SingleMenuManager.Instance.DisplayConsoleCurrent();
                     }
@@ -120,7 +119,7 @@ namespace UN_SingleInputManager
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
-                    if (isConsole)
+                    if (withConsole)
                     {
                         SingleMenuManager.Instance.DisplayConsoleCurrent();
                     }
@@ -137,7 +136,7 @@ namespace UN_SingleInputManager
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
-                    if (isConsole)
+                    if (withConsole)
                     {
                         SingleMenuManager.Instance.DisplayConsoleCurrent();
                     }
@@ -151,7 +150,7 @@ namespace UN_SingleInputManager
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
-                    if (isConsole)
+                    if (withConsole)
                     {
                         SingleMenuManager.Instance.DisplayConsoleCurrent();
                     }
@@ -165,13 +164,13 @@ namespace UN_SingleInputManager
                 {
                     enterIsPressed = true;
                     //place desired function below
-                    SingleMenuManager.Instance.ActivateButton();
+                    SingleMenuManager.Instance.ActivateButton(withConsole);
                     //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
-                    if (isConsole)
+                    if (withConsole)
                     {
                         SingleMenuManager.Instance.DisplayConsoleCurrent();
                     }
@@ -181,15 +180,16 @@ namespace UN_SingleInputManager
                 {
                     spaceIsPressed = true;
                     //place desired function below
-                    SingleMenuManager.Instance.ActivateButton();
+                    SingleMenuManager.Instance.ActivateButton(withConsole);
                     //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
-                    if (isConsole)
+                    if (withConsole)
                     {
                         SingleMenuManager.Instance.DisplayConsoleCurrent();
+
                     }
                 }
                 //-------------------------------------------------------------------//
@@ -211,7 +211,32 @@ namespace UN_SingleInputManager
                 //escape key should bring you to options menu and pause the game using SingleMenuManager.Instance.Pause();
 
                 //basically place what is needed as game input here
+                //-------------------------------------------------------------------// escape for options menu
+                if (Input.GetKeyDown(KeyCode.Escape) && !escapeIsPressed)
+                {
+                    escapeIsPressed = true;
+                    //place desired function below
+                    SingleMenuManager.Instance.SelectMenu(3);
+                    //in case the button swaps to new menu
+                    SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    //instantiates the selected menu
+                    SingleMenuManager.Instance.InstantiateCurrent();
+                    //unity selector update
+                    SingleMenuManager.Instance.DisplayUnitySelected();
+                    //displays the current console menu, if isConsole is true
+                    if (withConsole)
+                    {
+                        SingleMenuManager.Instance.DisplayConsoleCurrent();
 
+                    }
+                }
+                //-------------------------------------------------------------------//
+
+
+
+                //-------------------------------------------------------------------//reseting the bools for each key, this used for only pressing once
+                ResetBool(KeyCode.Space, ref spaceIsPressed);
+                //-------------------------------------------------------------------//
             }
         }    
     }
