@@ -31,9 +31,26 @@ namespace PMGF
                 switch(t)
                 {
                     case ValueType.INT:
-                        return (object) IntStack.Pop();
+                        return  IntStack.PopButNoPop() as object;
                     case ValueType.ACTOR:
-                        return (object) ActorStack.Pop();
+                        return  ActorStack.PopButNoPop() as object;
+
+                    default:
+                        throw new System.ArgumentException("Non-existant valuetype","t");
+                }
+
+            }
+
+
+            public object PopValueOfType(ValueType t)
+            {
+                // Return value of the specified type, or throw error
+                switch(t)
+                {
+                    case ValueType.INT:
+                        return  IntStack.Pop() as object;
+                    case ValueType.ACTOR:
+                        return  ActorStack.Pop() as object;
 
                     default:
                         throw new System.ArgumentException("Non-existant valuetype","ValueType t");
@@ -41,17 +58,21 @@ namespace PMGF
 
             }
 
+
             public void PushValueOfType(object val, ValueType t)
             {
                 // Push a value of type or return error
+                if(val == null)
+                    throw new System.ArgumentNullException("val");
+
                 switch(t)
 
                 {
 					case ValueType.INT:
-						IntStack.Push ((int)val);
+						IntStack.Push(System.Convert.ToInt32(val));
 						break;
 					case ValueType.ACTOR:
-						ActorStack.Push ((PMGActor)val);
+						ActorStack.Push(val as PMGActor);
 						break;
 
                 }

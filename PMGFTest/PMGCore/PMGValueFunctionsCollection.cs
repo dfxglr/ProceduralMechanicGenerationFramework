@@ -21,6 +21,7 @@ namespace PMGF
                 // Add all the functions you want
                 // f# */
                 /*  0 */Collection.Add(VF_DebugWriteToConsole); // Write a msg to console
+                        Collection.Add(VF_Push42ToLocal);
                 /*  1 */Collection.Add(VF_DoNothing);           // Do nothing
                 /*  2 */Collection.Add(VF_PushLeetToActor);     // Push 1337 to actor stack
             }
@@ -34,6 +35,22 @@ namespace PMGF
             {
                 // Write a message to console for testing purposes.
                 System.Console.WriteLine("VF_DebugWriteToConsole Called!");
+
+                // You can also call other functions!
+                VF_Push1337ToLocal(actor, localStack);
+
+            }
+
+            public void VF_Push42ToLocal(PMGActor actor, PMGValueStack localStack)
+            {
+                System.Console.WriteLine("Pushing 42 to local stack");
+                localStack.Push(42);
+            }
+
+            public void VF_Push1337ToLocal(PMGActor actor, PMGValueStack localStack)
+            {
+                System.Console.WriteLine("Push 1337 to local stack");
+                localStack.Push(1337);
             }
 
             public void VF_DoNothing(PMGActor actor, PMGValueStack localStack)

@@ -14,10 +14,6 @@ namespace PMGF
 			{
 			}
 
-			public override void Trigger()
-			{
-				Method.Call();
-			}
 
 		}
 

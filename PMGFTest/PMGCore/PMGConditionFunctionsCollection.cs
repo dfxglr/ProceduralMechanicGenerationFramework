@@ -31,9 +31,17 @@ namespace PMGF
              */
             public bool CF_DebugWriteToConsole(PMGActor actor, PMGValueStack localStack)
             {
-                // Write a message to console for testing purposes.
-                Console.WriteLine("VF_DebugWriteToConsole Called!");
-                return true;
+                System.Console.WriteLine("Cond. function checking if timestep > 5");
+                if(actor.Core.WorldTimeSteps > 5)
+                {
+                    Console.WriteLine("It did!");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("It did not!");
+                    return false;
+                }
             }
 
             public bool CF_DoNothing(PMGActor actor, PMGValueStack localStack)

@@ -16,3 +16,7 @@ Generative Part:
 
 handling constants?
 
+
+
+convert all castings using is/as, also add exception handling to any place that does casting
+

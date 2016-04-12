@@ -32,7 +32,24 @@ namespace PMGF
             public void UF_DebugWriteToConsole(PMGActor actor, object owner, FunctionOwnerType ownerType)
             {
                 // Write a message to console for testing purposes.
-                Console.WriteLine("VF_DebugWriteToConsole Called!");
+                Console.WriteLine("Utility functions called. ");
+
+
+                // Get owner as method (this is for testing so we know it's a method)
+                PMGMethod ownerM = owner as PMGMethod;
+
+                // if an int is in stack that is over 1k (we push 1337 by default)
+                // Then we change the value function to #1 (instead of #0)
+                // In this case pushing 42 instead
+                int intFromStack = System.Convert.ToInt32(ownerM._valueStack.GetValueOfType(ValueType.INT));
+
+
+                if( intFromStack > 1000)
+                {
+                    Console.WriteLine("Changing value function in owner method steps!");
+                    ownerM.CurrentStep._functions[0] = new PMGValueFunction(1);
+                    ownerM.Reset();
+                }
             }
 
             public void UF_DoNothing(PMGActor actor, object owner, FunctionOwnerType ownerType)

@@ -20,17 +20,23 @@ namespace PMGF
 			{
 				// Add item to end of correct stack
 
+                if(item == null)
+                    throw new ArgumentNullException("item");
+
 				Values.Add (item);
 			}
 
 			public T Pop()
 			{
-				if (Values.Count > 0) {
+				if (Values.Count > 0)
+                {
 					T tmp = Values.Last ();
 					Values.Remove (Values.Last ());
 
 					return tmp;
-				} else {
+				}
+                else
+                {
 					throw new System.InvalidOperationException ("Popping empty stack");
 				}
 

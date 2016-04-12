@@ -32,7 +32,11 @@ namespace PMGF
             public void CF_DebugWriteToConsole(PMGActor actor, PMGValueStack localStack)
             {
                 // Write a message to console for testing purposes.
-                Console.WriteLine("VF_DebugWriteToConsole Called!");
+                int fromStack = System.Convert.ToInt32(localStack.PopValueOfType(ValueType.INT));
+
+                string s = string.Format("Change function called. Got {0} from stack!",fromStack);
+
+                Console.WriteLine(s);
             }
 
             public void CF_DoNothing(PMGActor actor, PMGValueStack localStack)

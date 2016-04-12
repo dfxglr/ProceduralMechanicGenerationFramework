@@ -17,6 +17,9 @@ namespace PMGF
             public PMGChangeFunctionsCollection ChangeFunctions = new PMGChangeFunctionsCollection();
 
 
+            // World variables. TODO move at some point?
+            public PMGValueStack WorldStack = new PMGValueStack();
+            public int WorldTimeSteps;
 
             public PMGCore()
             {

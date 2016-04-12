@@ -14,6 +14,7 @@ namespace PMGF
 
         // Default behavior is REQUIRE_METHOD_DONE
 
+        // TODO find out which parts should be in fixed/dyn events
 
 
 		public class PMGEvent
@@ -22,7 +23,7 @@ namespace PMGF
             public PMGExecuteList _conditions;
             public EventTriggerBehavior _behavior;
             public PMGMethod _method;
-            public PMGValueStack _valueStack;
+            public PMGValueStack _valueStack = new PMGValueStack();
 
             public bool _methodRunning;
 

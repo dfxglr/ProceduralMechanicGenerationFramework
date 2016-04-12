@@ -13,6 +13,8 @@ namespace PMGF
             public bool _running;
             public int _stepIter;
 
+            public PMGExecuteList CurrentStep = null;
+
             public PMGValueStack _valueStack = new PMGValueStack();
 
             // Delegate for when the method is done (for calling event, perhaps);
@@ -46,6 +48,9 @@ namespace PMGF
                 _running = false;
                 _stepIter = 0;
 
+                // stop potential execution in list
+                CurrentStep.StopExecution();
+
                 _valueStack = new PMGValueStack();
             }
 
@@ -70,6 +75,7 @@ namespace PMGF
                 else
                 {
                     // Execute next step
+                    CurrentStep = _steps[_stepIter];
                     _steps[_stepIter].Execute();
                     _stepIter++;
                 }
