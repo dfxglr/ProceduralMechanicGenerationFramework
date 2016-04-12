@@ -155,7 +155,6 @@ namespace UN_Button
                 //unity objects
                 SingleMenuManager.Instance.DestroyAll();
                 SingleMenuManager.Instance.SelectMenu(relatedMenu);
-                SingleMenuManager.Instance.InstantiateCurrent();
             }
             else
             {

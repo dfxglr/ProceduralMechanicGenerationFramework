@@ -167,6 +167,8 @@ namespace UN_SingleInputManager
                     SingleMenuManager.Instance.ActivateButton(withConsole);
                     //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    //instantiates the selected menu
+                    SingleMenuManager.Instance.InstantiateCurrent();
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
@@ -183,6 +185,8 @@ namespace UN_SingleInputManager
                     SingleMenuManager.Instance.ActivateButton(withConsole);
                     //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
+                    //instantiates the selected menu
+                    SingleMenuManager.Instance.InstantiateCurrent();
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
                     //displays the current console menu, if isConsole is true
@@ -216,7 +220,7 @@ namespace UN_SingleInputManager
                 {
                     escapeIsPressed = true;
                     //place desired function below
-                    SingleMenuManager.Instance.SelectMenu(3);
+                    SingleMenuManager.Instance.SelectMenu(7);
                     //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
                     //instantiates the selected menu
@@ -235,7 +239,7 @@ namespace UN_SingleInputManager
 
 
                 //-------------------------------------------------------------------//reseting the bools for each key, this used for only pressing once
-                ResetBool(KeyCode.Space, ref spaceIsPressed);
+                ResetBool(KeyCode.Escape, ref escapeIsPressed);
                 //-------------------------------------------------------------------//
             }
         }    

@@ -60,7 +60,7 @@ namespace UN_SingleMenuManager
             Menu ControlsMenu;
             Menu CreditsMenu;
             Menu EndMenu;
-            Menu InGameOptionsMenu;
+            Menu PauseMenu;
             //lists for buttons and menues
             List<Button> MainMenuButtons = new List<Button>();
             List<Button> StartMenuButtons = new List<Button>();
@@ -69,7 +69,7 @@ namespace UN_SingleMenuManager
             List<Button> ControlsMenuButtons = new List<Button>();
             List<Button> CreditsMenuButtons = new List<Button>();
             List<Button> EndMenuButtons = new List<Button>();
-            List<Button> InGameOptionsMenuButtons = new List<Button>();
+            List<Button> PauseMenuButtons = new List<Button>();
             //Main Menu
             MainMenuButtons.Add(new Button("Start", 1, 0, -3));
             MainMenuButtons.Add(new Button("Options", 3, 0, -6));
@@ -94,7 +94,7 @@ namespace UN_SingleMenuManager
             OptionsMenuButtons.Add(new Button("Credits", 5, 0, -6));
             if (runInDebug)
             {
-                OptionsMenuButtons.Add(new Button("Debug", 7, 0, -9));
+                OptionsMenuButtons.Add(new Button("Debug", 8, 0, -9));
                 OptionsMenuButtons.Add(new Button("Back", 0, 0, -12));
             }
             else
@@ -114,12 +114,17 @@ namespace UN_SingleMenuManager
             EndMenuButtons.Add(new Button("Exit", 0, -6));
             if (runInDebug)
             {
-                EndMenuButtons.Add(new Button("Back", 7, 0, -9));
+                EndMenuButtons.Add(new Button("Back", 8, 0, -9));
             }
             EndMenu = new Menu("GAME OVER", EndMenuButtons, 0, 0);
             //In Game Options Menu
-            //InGameOptionsMenuButtons.Add("");
-            InGameOptionsMenu = new Menu("IN GAME OPTIONS", InGameOptionsMenuButtons, 0, 0);
+            PauseMenuButtons.Add(new Button("Continue", 0, -3));
+            PauseMenuButtons.Add(new Button("Exit", 0, -6));
+            if (runInDebug)
+            {
+                PauseMenuButtons.Add(new Button("Back", 8, 0, -9));
+            }
+            PauseMenu = new Menu("PAUSE", PauseMenuButtons, 0, 0);
             //adds to the list of menues - have main menu in the beginning always plz, dont be dick 
             menuList.Add(MainMenu);
             menuList.Add(StartMenu);
@@ -128,7 +133,7 @@ namespace UN_SingleMenuManager
             menuList.Add(ControlsMenu);
             menuList.Add(CreditsMenu);
             menuList.Add(EndMenu);
-            menuList.Add(InGameOptionsMenu);
+            menuList.Add(PauseMenu);
 
             //debug menu
             if (runInDebug)
@@ -138,7 +143,8 @@ namespace UN_SingleMenuManager
                 List<Button> DebugMenuButtons = new List<Button>();
                 //Add degub buttons here
                 DebugMenuButtons.Add(new Button("Game Over", 6, 0, -3));
-                DebugMenuButtons.Add(new Button("Back", 3, 0, -6));
+                DebugMenuButtons.Add(new Button("Pause", 6, 0, -6));
+                DebugMenuButtons.Add(new Button("Back", 3, 0, -9));
                 DebugMenu = new Menu("DEBUG", DebugMenuButtons, 0, 0);
                 menuList.Add(DebugMenu);
             }
