@@ -18,18 +18,16 @@ namespace UN_Menu
         public int ButtonsNotSelectedCount = 0;
         public Boolean noButtonSelected = false;
         //this menu's position
-        float x;
-        float y;
+        Vector3 Pos;
         //list of the buttons in this menu
         public List<Button> buttonList;
 
         //constructor used for the rendered version or aka when we need the positions
-        public Menu(string MN, List<Button> BL, float X, float Y)
+        public Menu(string MN, List<Button> BL, Vector3 position)
         {
             menuName = MN;
             buttonList = BL;
-            x = X;
-            y = Y;
+            Pos = position;
         }
         
         //constructor used for the console versions
@@ -43,8 +41,9 @@ namespace UN_Menu
         public void InstantiateMenu()
         {
             //instantiates a unity object at position of this object
-            menu = Instantiate(Resources.Load("Prefabs/menu"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            menu = Instantiate(Resources.Load("Prefabs/menu"), Pos+ SingleMenuManager.Instance.parrent.transform.position, Quaternion.identity) as GameObject;
             //----------------------------------//add what the object should do on instantiation here
+            menu.transform.parent = SingleMenuManager.Instance.parrent.transform;
             //tag the instance with its name
             menu.name = menuName;
             //texture

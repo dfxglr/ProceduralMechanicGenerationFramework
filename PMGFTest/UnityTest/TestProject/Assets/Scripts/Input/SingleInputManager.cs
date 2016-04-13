@@ -17,6 +17,7 @@ namespace UN_SingleInputManager
         //variales
         Boolean quit = false;
         Boolean withConsole = true;
+        public Boolean inMenu;
         //Boolean inMenu = true;
         //booleans use for single press action with buttons, keyEventargs class could obsolete the use of these, but is being a dick for now reason so fuck it
         
@@ -93,7 +94,7 @@ namespace UN_SingleInputManager
             //Exits the program
             
             //IN MENU
-            if (SingleMenuManager.Instance.IsMenuSelected())
+            if (inMenu)
             {
                 //-------------------------------------------------------------------// w, s
                 // w 
@@ -163,6 +164,8 @@ namespace UN_SingleInputManager
                 if (Input.GetKeyDown(KeyCode.Return) && !enterIsPressed)
                 {
                     enterIsPressed = true;
+                    //clears so fort he instantiation
+                    SingleMenuManager.Instance.DestroyAll();
                     //place desired function below
                     SingleMenuManager.Instance.ActivateButton(withConsole);
                     //in case the button swaps to new menu
@@ -181,6 +184,8 @@ namespace UN_SingleInputManager
                 if (Input.GetKeyDown(KeyCode.Space) && !spaceIsPressed)
                 {
                     spaceIsPressed = true;
+                    //clears so fort he instantiation
+                    SingleMenuManager.Instance.DestroyAll();
                     //place desired function below
                     SingleMenuManager.Instance.ActivateButton(withConsole);
                     //in case the button swaps to new menu
@@ -197,29 +202,16 @@ namespace UN_SingleInputManager
                     }
                 }
                 //-------------------------------------------------------------------//
-
-                //-------------------------------------------------------------------// reseting the bools for each key, this used for only pressing once
-                ResetBool(KeyCode.W, ref wIsPressed);
-                ResetBool(KeyCode.S, ref sIsPressed);
-                ResetBool(KeyCode.UpArrow, ref upIsPressed);
-                ResetBool(KeyCode.DownArrow, ref downIsPressed);
-                ResetBool(KeyCode.Return, ref enterIsPressed);
-                ResetBool(KeyCode.Space, ref spaceIsPressed);
-                //-------------------------------------------------------------------//
             }
             //NOT IN MENU
             else
             {
-                //insert code containing the controls needed for game aka : w,a,s,d - up,left,down,right - enter,space - escape
-
-                //escape key should bring you to options menu and pause the game using SingleMenuManager.Instance.Pause();
-
-                //basically place what is needed as game input here
                 //-------------------------------------------------------------------// escape for options menu
                 if (Input.GetKeyDown(KeyCode.Escape) && !escapeIsPressed)
                 {
                     escapeIsPressed = true;
                     //place desired function below
+                    //SingleMenuManager.Instance.DestroyAll();
                     SingleMenuManager.Instance.SelectMenu(7);
                     //in case the button swaps to new menu
                     SingleMenuManager.Instance.SelectFirstOrActiveButton();
@@ -227,21 +219,30 @@ namespace UN_SingleInputManager
                     SingleMenuManager.Instance.InstantiateCurrent();
                     //unity selector update
                     SingleMenuManager.Instance.DisplayUnitySelected();
+
+                    //insert pausing of the game below
+                    //SingleMenuManager.Instance.PauseGame();
+
                     //displays the current console menu, if isConsole is true
                     if (withConsole)
                     {
                         SingleMenuManager.Instance.DisplayConsoleCurrent();
 
                     }
+                    //change input to be in menu
+                    SingleInputManager.Instance.inMenu = true;
                 }
                 //-------------------------------------------------------------------//
-
-
-
-                //-------------------------------------------------------------------//reseting the bools for each key, this used for only pressing once
-                ResetBool(KeyCode.Escape, ref escapeIsPressed);
-                //-------------------------------------------------------------------//
             }
-        }    
+            //-------------------------------------------------------------------// reseting the bools for each key, this used for only pressing once
+            ResetBool(KeyCode.Escape, ref escapeIsPressed);
+            ResetBool(KeyCode.W, ref wIsPressed);
+            ResetBool(KeyCode.S, ref sIsPressed);
+            ResetBool(KeyCode.UpArrow, ref upIsPressed);
+            ResetBool(KeyCode.DownArrow, ref downIsPressed);
+            ResetBool(KeyCode.Return, ref enterIsPressed);
+            ResetBool(KeyCode.Space, ref spaceIsPressed);
+            //-------------------------------------------------------------------//
+        }
     }
 }

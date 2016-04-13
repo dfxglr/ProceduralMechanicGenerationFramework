@@ -5,6 +5,7 @@ using System.Text;
 //using System.Threading.Tasks;
 using UN_Menu;
 using UN_Button;
+using UN_SingleInputManager;
 using UnityEngine;
 using System.Collections;
 
@@ -16,7 +17,7 @@ namespace UN_SingleMenuManager
         List<Menu> menuList = new List<Menu>();
         //(selectCount isnt used much other than in void Begin and even there is only used a few times, potential to change this) 
         //Boolean selectMenu = true;
-
+        public GameObject parrent;
         //rotation vector for turning the menu ins a specific direction 
         Vector3 MenuRotation;
         Vector4 DefaultColor;
@@ -47,7 +48,8 @@ namespace UN_SingleMenuManager
             //-------------------------------------------------// setup begin (change buttons and menue and shit here)
             //-------//rotation of buttons and menues display surfaces(unity stuff)
             MenuRotation = new Vector3(90, 180, 0);
-
+            //parrent - make sure its in the scene ofc
+            parrent = GameObject.Find("Main Camera");
             //color
             DefaultColor = new Vector4(0.0f,1.0f,0.0f,1.0f);
             TintColor = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -71,60 +73,57 @@ namespace UN_SingleMenuManager
             List<Button> EndMenuButtons = new List<Button>();
             List<Button> PauseMenuButtons = new List<Button>();
             //Main Menu
-            MainMenuButtons.Add(new Button("Start", 1, 0, -3));
-            MainMenuButtons.Add(new Button("Options", 3, 0, -6));
-            MainMenuButtons.Add(new Button("Exit", 0, -9));
-            MainMenu = new Menu("Welcome to PMGF", MainMenuButtons, 0, 0);
+            MainMenuButtons.Add(new Button("Start", 1, new Vector3(-6, 4, 15)));
+            MainMenuButtons.Add(new Button("Options", 3, new Vector3(-6, 1, 15)));
+            MainMenuButtons.Add(new Button("Exit", new Vector3(-6, -2, 15)));
+            MainMenu = new Menu("Welcome to PMGF", MainMenuButtons, new Vector3(0, 0, 16));
             //start menu 
-            StartMenuButtons.Add(new Button("New Game", 0, -3));
-            StartMenuButtons.Add(new Button("Previous Game", 0, -6));
-            StartMenuButtons.Add(new Button("Back", 0, 0, -9));
-            StartMenu = new Menu("START", StartMenuButtons, 0, 0);
+            StartMenuButtons.Add(new Button("New Game", new Vector3(-6, 4, 15)));
+            StartMenuButtons.Add(new Button("Previous Game", new Vector3(-6, 1, 15)));
+            StartMenuButtons.Add(new Button("Back", 0, new Vector3(-6, -2, 15)));
+            StartMenu = new Menu("START", StartMenuButtons, new Vector3(0, 0, 16));
             //restart menu 
-            RestartMenuButtons.Add(new Button("New Game", 0, -3));
-            RestartMenuButtons.Add(new Button("Previous Game", 0, -6));
-            RestartMenuButtons.Add(new Button("Exit", 0, -9));
+            RestartMenuButtons.Add(new Button("New Game", new Vector3(-6, 4, 15)));
+            RestartMenuButtons.Add(new Button("Previous Game", new Vector3(-6, 1, 15)));
+            RestartMenuButtons.Add(new Button("Exit", new Vector3(-6, -2, 15)));
             if (runInDebug)
             {
-                RestartMenuButtons.Add(new Button("Back", 6, 0, -12));
+                RestartMenuButtons.Add(new Button("Back", 6, new Vector3(-6, -5, 15)));
             }
-            RestartMenu = new Menu("RESTART", RestartMenuButtons, 0, 0);
+            RestartMenu = new Menu("RESTART", RestartMenuButtons, new Vector3(0, 0, 16));
             //options menu
-            OptionsMenuButtons.Add(new Button("Controls", 4, 0, -3));
-            OptionsMenuButtons.Add(new Button("Credits", 5, 0, -6));
+            OptionsMenuButtons.Add(new Button("Controls", 4, new Vector3(-6, 4, 15)));
+            OptionsMenuButtons.Add(new Button("Credits", 5, new Vector3(-6, 1, 15)));
             if (runInDebug)
             {
-                OptionsMenuButtons.Add(new Button("Debug", 8, 0, -9));
-                OptionsMenuButtons.Add(new Button("Back", 0, 0, -12));
+                OptionsMenuButtons.Add(new Button("Debug", 8, new Vector3(-6, -2, 15)));
+                OptionsMenuButtons.Add(new Button("Back", 0, new Vector3(-6, -5, 15)));
             }
             else
             {
-                OptionsMenuButtons.Add(new Button("Back", 0, 0, -9));
+                OptionsMenuButtons.Add(new Button("Back", 0, new Vector3(-6, -2, 15)));
             }
-            OptionsMenu = new Menu("OPTIONS", OptionsMenuButtons, 0, 0);
+            OptionsMenu = new Menu("OPTIONS", OptionsMenuButtons, new Vector3(0, 0, 16));
             //
             //controls menu
-            ControlsMenuButtons.Add(new Button("Back", 3, 0, -3));
-            ControlsMenu = new Menu("CONTROLS", ControlsMenuButtons, 0, 0);
+            ControlsMenuButtons.Add(new Button("Back", 3, new Vector3(-6, 4, 15)));
+            ControlsMenu = new Menu("CONTROLS", ControlsMenuButtons, new Vector3(0, 0, 16));
             //credits menu
-            CreditsMenuButtons.Add(new Button("Back", 3, 0, -3));
-            CreditsMenu = new Menu("CREDITS", CreditsMenuButtons, 0, 0);
+            CreditsMenuButtons.Add(new Button("Back", 3, new Vector3(-6, 4, 15)));
+            CreditsMenu = new Menu("CREDITS", CreditsMenuButtons, new Vector3(0, 0, 16));
             //End Menu
-            EndMenuButtons.Add(new Button("Restart", 2, 0, -3));
-            EndMenuButtons.Add(new Button("Exit", 0, -6));
+            EndMenuButtons.Add(new Button("Restart", 2, new Vector3(-6, 4, 15)));
+            EndMenuButtons.Add(new Button("Exit", new Vector3(-6, 1, 15)));
             if (runInDebug)
             {
-                EndMenuButtons.Add(new Button("Back", 8, 0, -9));
+                EndMenuButtons.Add(new Button("Back", 8, new Vector3(-6, -2, 15)));
             }
-            EndMenu = new Menu("GAME OVER", EndMenuButtons, 0, 0);
-            //In Game Options Menu
-            PauseMenuButtons.Add(new Button("Continue", 0, -3));
-            PauseMenuButtons.Add(new Button("Exit", 0, -6));
-            if (runInDebug)
-            {
-                PauseMenuButtons.Add(new Button("Back", 8, 0, -9));
-            }
-            PauseMenu = new Menu("PAUSE", PauseMenuButtons, 0, 0);
+            EndMenu = new Menu("GAME OVER", EndMenuButtons, new Vector3(0, 0, 16));
+            //Pause Menu
+            PauseMenuButtons.Add(new Button("Continue", new Vector3(-6, 4, 15)));
+            PauseMenuButtons.Add(new Button("Exit To Main", 0, new Vector3(-6, 1, 15)));
+            PauseMenuButtons.Add(new Button("Exit", new Vector3(-6, -2, 15)));
+            PauseMenu = new Menu("PAUSE", PauseMenuButtons, new Vector3(0, 0, 16));
             //adds to the list of menues - have main menu in the beginning always plz, dont be dick 
             menuList.Add(MainMenu);
             menuList.Add(StartMenu);
@@ -142,16 +141,17 @@ namespace UN_SingleMenuManager
                 //
                 List<Button> DebugMenuButtons = new List<Button>();
                 //Add degub buttons here
-                DebugMenuButtons.Add(new Button("Game Over", 6, 0, -3));
-                DebugMenuButtons.Add(new Button("Pause", 6, 0, -6));
-                DebugMenuButtons.Add(new Button("Back", 3, 0, -9));
-                DebugMenu = new Menu("DEBUG", DebugMenuButtons, 0, 0);
+                DebugMenuButtons.Add(new Button("Game Over", 6, new Vector3(-6, 4, 15)));
+                DebugMenuButtons.Add(new Button("Back", 3, new Vector3(-6, 1, 15)));
+                DebugMenu = new Menu("DEBUG", DebugMenuButtons, new Vector3(0, 0, 16));
                 menuList.Add(DebugMenu);
             }
             //-------------------------------------------------// setup end
             //selects the first menu in the menulist
             SingleMenuManager.Instance.SelectMenu(0);
             SingleMenuManager.Instance.SelectFirstOrActiveButton();
+            //
+            SingleInputManager.Instance.inMenu = true;
             //instantiates the selected menu
             SingleMenuManager.Instance.InstantiateCurrent();
             //diplay the selected button in unity and throwing default color on the rest
@@ -230,11 +230,9 @@ namespace UN_SingleMenuManager
             //checks to secure that function can be run if menulist is empty
             if (menuList != null)
             {
-                //display currently active menu, if there is any
                 //will work fine so long as no two menues are selected at the same time
                 foreach (Menu e in menuList)
                 {
-                    Destroy(e.menu);
                     if (e.buttonList != null)
                     {
                         foreach (Button e2 in e.buttonList)
@@ -247,6 +245,7 @@ namespace UN_SingleMenuManager
                         //error message for if no buttons are found in the button list
                         Console.WriteLine("error: no buttons were found in the button list");
                     }
+                    Destroy(e.menu);
                 }
             }
             else
@@ -651,7 +650,7 @@ namespace UN_SingleMenuManager
         }
 
         //pauses the game
-        public void Pause()
+        public void PauseGame()
         {
             // somehow pause the game when no menu is active
         }

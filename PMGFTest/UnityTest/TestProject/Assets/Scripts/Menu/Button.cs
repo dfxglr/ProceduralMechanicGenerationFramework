@@ -21,8 +21,7 @@ namespace UN_Button
         public GameObject button;
         //the base 100 is the default value so that 0 isnt, when there is not input, and is used for error message in buttons Back and Options atm
         int relatedMenu = 100;
-        float x;
-        float y;
+        Vector3 Pos;
         public Boolean isSelected;
         //private
         //protected
@@ -34,20 +33,18 @@ namespace UN_Button
         //-------------------------------------------//
 
         //compiler 1, base
-        public Button(string BN, float X, float Y)
+        public Button(string BN, Vector3 position)
         {
             buttonName = BN;
-            x = X;
-            y = Y;
+            Pos = position;
         }
 
         //complier 2, used for moving between menues
-        public Button(string BN, int R, float X, float Y)
+        public Button(string BN, int R, Vector3 position)
         {
             buttonName = BN;
             relatedMenu = R;
-            x = X;
-            y = Y;
+            Pos = position;
         }
 
         /*//compiler 3, base in console
@@ -62,14 +59,15 @@ namespace UN_Button
             buttonName = BN;
             relatedMenu = R;
         }//*/
-        
+
         //instantiates the button in unity terms, with conditions of: position, name, texture, rotation
         public void InstantiateButton()
         {
-            button =  Instantiate(Resources.Load("Prefabs/button"), new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            button =  Instantiate(Resources.Load("Prefabs/button"), Pos+SingleMenuManager.Instance.parrent.transform.position, Quaternion.identity) as GameObject;
             //----------------------------------//add what the object should do on instantiation here
-            //tags the instance with its name
-            //button.tag = buttonName;
+            //makes it a child of the main cam
+            button.transform.parent = SingleMenuManager.Instance.parrent.transform;
+            //name
             button.name = buttonName;
             //Texture
             button.GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/Buttons/" + buttonName) as Texture2D;
@@ -85,63 +83,61 @@ namespace UN_Button
             //buttonName must fit case names!!!
             switch (buttonName)
             {
-                case "Start":
-                    //insert start button function here and remove the writeline below - console need only
-                    //selects the related menu
-                    MoveToRelated();
-                    break;
-                case "Restart":
-                    //insert start button function here and remove the writeline below - console need only
-                    //selects the related menu
-                    MoveToRelated();
-                    break;
-                case "Exit":
-                    //insert exit button function here and remove the writeline below - console need only
-                    //quits the unity game
-                    Application.Quit();//is ignored in the editor and web player
-                    break;
                 case "Back":
-                    //insert back button function here and remove the writeline below - console need only
                     //selects the related menu
                     MoveToRelated();
                     break;
-                case "New Game":
-                    //insert try again button function here and remove the writeline below - console need only
-                    SingleMenuManager.Instance.DeSelectAllM();
-                    SingleMenuManager.Instance.DestroyAll();
-                    break;
-                case "Previous Game":
-                    //insert start menu function here and remove the writeline below - console need only
-                    break;
+                case "Continue":
+                    //
                 case "Controls":
-                    //insert start menu function here and remove the writeline below - console need only
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Credits":
-                    //insert start menu function here and remove the writeline below - console need only;
-                    //selects the related menu
-                    MoveToRelated();
-                    break;
-                case "Options":
-                    //insert start menu function here and remove the writeline below - console need only
                     //selects the related menu
                     MoveToRelated();
                     break;
                 case "Debug":
-                    //insert start menu function here and remove the writeline below - console need only
                     //selects the related menu
+                    MoveToRelated();
+                    break;
+                case "Exit":
+                    //quits the unity game
+                    //Application.Quit();//is ignored in the editor and web player
+                    break;
+                case "Exit To Main":
+                    //closes the game instance but keeps the application running and goes to main menu
                     MoveToRelated();
                     break;
                 case "Game Over":
-                    //insert start menu function here and remove the writeline below - console need only
                     //selects the related menu
                     MoveToRelated();
                     break;
+                case "New Game":
+                    //needed because button press instantiates the current menu
+                    SingleMenuManager.Instance.DeSelectAllM();
+                    //changes input to be not be in menu
+                    SingleInputManager.Instance.inMenu = false;
+                    // insert start new game function here below
+                    break;
+                case "Options":
+                    //selects the related menu
+                    MoveToRelated();
+                    break;
+                case "Previous Game":
+                    break;
+                case "Restart":
+                    //selects the related menu
+                    MoveToRelated();
+                    break;
+                case "Start":
+                    //selects the related menu
+                    MoveToRelated();
+                    break; 
                 default:
                     //error message for if a button is none of the premade buttons have been selected and activated
                     Console.WriteLine("Default button, tried to execute a button action, however none of the premade button options were selected or activated");
-                    Debug.Log("Default button, tried to execute button action, however none of the premade button options were selelcted or activated");
+                    Debug.Log("Default button, tried to execute button action for "+buttonName+", however none of the premade button options were selelcted or activated");
                     break;
             }
         }
@@ -153,7 +149,6 @@ namespace UN_Button
             if (relatedMenu != 100 && SingleMenuManager.Instance.MenuCount() != 0 && relatedMenu <= SingleMenuManager.Instance.MenuCount())
             {
                 //unity objects
-                SingleMenuManager.Instance.DestroyAll();
                 SingleMenuManager.Instance.SelectMenu(relatedMenu);
             }
             else

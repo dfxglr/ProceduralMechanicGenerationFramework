@@ -46,7 +46,7 @@ public class SingleGameManager : MonoBehaviour
     public void Start()
     {
         SingleMenuManager.Instance.Setup(true);
-        SingleInputManager.Instance.Setup(true);
+        SingleInputManager.Instance.Setup(false);
     }
     //runs all the time
     public void Update()
