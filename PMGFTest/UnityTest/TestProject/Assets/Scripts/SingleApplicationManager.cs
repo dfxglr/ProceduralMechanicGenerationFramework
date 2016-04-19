@@ -1,30 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-using UN_SingleInputManager;
-using UN_SingleMenuManager;
+using PMFG.PMGUnity.Managers;
+
+//this is the main program application, manages other managers
+
 
 //-----------------------------------------------------------------------// unity singleton for gameManager
-public class SingleGameManager : MonoBehaviour
+public class SingleApplicationManager : MonoBehaviour
 {
-    protected SingleGameManager() { }
-    private static SingleGameManager instance = null;
-    public static SingleGameManager Instance
+    protected SingleApplicationManager() { }
+    private static SingleApplicationManager instance = null;
+    public static SingleApplicationManager Instance
     {
         get
         {
-            if (SingleGameManager.instance == null)
+            if (SingleApplicationManager.instance == null)
             {
                 // dont destroy on load lets the game manager survive when switching scenes
-                DontDestroyOnLoad(SingleGameManager.instance);
-                SingleGameManager.instance = new SingleGameManager();
+                DontDestroyOnLoad(SingleApplicationManager.instance);
+                SingleApplicationManager.instance = new SingleApplicationManager();
             }
-            return SingleGameManager.instance;
+            return SingleApplicationManager.instance;
         }
 
     }
-//-----------------------------------------------------------------------//
-    public static SingleGameManager InstanceOBJ { get; private set; }
+    //-----------------------------------------------------------------------//
+    public static SingleApplicationManager InstanceOBJ { get; private set; }
 
     private void Awake()
     {
@@ -39,7 +41,7 @@ public class SingleGameManager : MonoBehaviour
     // might not be needed for now
     public void OnApplicationQuit()
     {
-        SingleGameManager.instance = null;
+        SingleApplicationManager.instance = null;
     }
     //-----------------------------------------------------------------------//*/
     // runs once in the beginning(Awake() is before this however)
@@ -47,6 +49,7 @@ public class SingleGameManager : MonoBehaviour
     {
         SingleMenuManager.Instance.Setup(true);
         SingleInputManager.Instance.Setup(false);
+        SingleMapManager.Instance.Setup();
     }
     //runs all the time
     public void Update()

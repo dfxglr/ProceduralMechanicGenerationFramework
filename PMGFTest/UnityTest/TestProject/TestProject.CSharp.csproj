@@ -64,14 +64,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\DestroyTest.cs" />
-    <Compile Include="Assets\Scripts\GameManagement\SingleGameManager.cs" />
     <Compile Include="Assets\Scripts\Input\SingleInputManager.cs" />
+    <Compile Include="Assets\Scripts\Map\SingleMapManager.cs" />
     <Compile Include="Assets\Scripts\Menu\Button.cs" />
     <Compile Include="Assets\Scripts\Menu\Menu.cs" />
     <Compile Include="Assets\Scripts\Menu\SingleMenuManager.cs" />
+    <Compile Include="Assets\Scripts\SingleApplicationManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Resources\Shaders\MenuAndButton.shader" />
+    <None Include="Assets\Resources\Shaders\SimpleTexture.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
