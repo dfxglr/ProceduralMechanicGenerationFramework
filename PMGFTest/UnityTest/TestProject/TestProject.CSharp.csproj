@@ -64,6 +64,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\DestroyTest.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\GenericStack.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGActor.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGChangeFunction.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGChangeFunctionsCollection.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGConditionFunction.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGConditionFunctionsCollection.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGCore.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGEvent.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGEventDynamic.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGEventFixed.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGExecuteList.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGFunction.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGMethod.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGTimeStep.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGUtilityFunction.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGUtilityFunctionsCollection.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGValueFunction.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGValueFunctionsCollection.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\Core\PMGValueStack.cs" />
+    <Compile Include="Assets\Scripts\GameGeneration\SingleGameGenerationManager.cs" />
     <Compile Include="Assets\Scripts\Input\SingleInputManager.cs" />
     <Compile Include="Assets\Scripts\Map\SingleMapManager.cs" />
     <Compile Include="Assets\Scripts\Menu\Button.cs" />
