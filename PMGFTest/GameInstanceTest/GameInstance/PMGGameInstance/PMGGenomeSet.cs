@@ -12,7 +12,7 @@ namespace PMGF
         {
             //actors
             public List<int> actorGenome = new List<int>();
-            public List<int> actorPositions = new List<int>();
+            public List<int> actorPositionsGenome = new List<int>();
             //events
 
             //methods
@@ -23,7 +23,9 @@ namespace PMGF
 
             public void TestPMGGenomeSet()
             {
-                //test genome 
+                /*/test genome
+                actorGenome.Add(3);
+                actorGenome.Add(3);
                 actorGenome.Add(-1);//A
                 actorGenome.Add(3);
                 actorGenome.Add(3);
@@ -31,17 +33,50 @@ namespace PMGF
                 actorGenome.Add(4);
                 actorGenome.Add(1);
                 actorGenome.Add(-1);//A
-                actorGenome.Add(2);
+                actorGenome.Add(-1);//A
                 actorGenome.Add(-1);//A
                 actorGenome.Add(0);
                 actorGenome.Add(0);
                 actorGenome.Add(8);
                 actorGenome.Add(4);
                 actorGenome.Add(3);
+                actorGenome.Add(-1);//*/
+
+                actorGenome.Add(2);
+                actorGenome.Add(6);
+                actorGenome.Add(0);
+                actorGenome.Add(-1);
+                actorGenome.Add(0);
+                actorGenome.Add(2);
+                actorGenome.Add(6);
+                actorGenome.Add(0);
+                actorGenome.Add(-1);
+                actorGenome.Add(0);
+                actorGenome.Add(2);
+                actorGenome.Add(-1);
+                actorGenome.Add(-1);
+                actorGenome.Add(6);
+                actorGenome.Add(0);
+                actorGenome.Add(-1);
+                actorGenome.Add(0);
+                actorGenome.Add(2);
+                actorGenome.Add(6);
+                actorGenome.Add(0);
+                actorGenome.Add(-1);
+                actorGenome.Add(0);
+                actorGenome.Add(2);
+                actorGenome.Add(6);
+                actorGenome.Add(0);
+                actorGenome.Add(-1);
+                actorGenome.Add(0);
+
+
+
+
 
                 //test positions
 
-                //first pos available in map
+                /*/first pos available in map
                 actorGenome.Add(0);//type
                 actorGenome.Add(1);//x
                 actorGenome.Add(1);//y
@@ -69,7 +104,7 @@ namespace PMGF
                 //
                 actorGenome.Add(3);
                 actorGenome.Add(3);
-                actorGenome.Add(3);
+                actorGenome.Add(3);//*/
 
             }
         }
