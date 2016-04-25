@@ -76,35 +76,54 @@ namespace PMGF
 
                 //test positions
 
-                /*/first pos available in map
-                actorGenome.Add(0);//type
-                actorGenome.Add(1);//x
-                actorGenome.Add(1);//y
+                //type 0
+                actorPositionsGenome.Add(0);//type
+                actorPositionsGenome.Add(1);//x
+                actorPositionsGenome.Add(1);//y
 
-                //inside wall
-                actorGenome.Add(1);
-                actorGenome.Add(7);
-                actorGenome.Add(7);
+                //type 1
+                actorPositionsGenome.Add(1);
+                actorPositionsGenome.Add(2);
+                actorPositionsGenome.Add(2);
 
-                //close to map center
-                actorGenome.Add(1);
-                actorGenome.Add(24);
-                actorGenome.Add(17);
-                
-                //
-                actorGenome.Add(2);
-                actorGenome.Add(1);
-                actorGenome.Add(8);
-                
-                //
-                actorGenome.Add(2);
-                actorGenome.Add(3);
-                actorGenome.Add(3);
-                
-                //
-                actorGenome.Add(3);
-                actorGenome.Add(3);
-                actorGenome.Add(3);//*/
+                //type 2
+                actorPositionsGenome.Add(2);
+                actorPositionsGenome.Add(3);
+                actorPositionsGenome.Add(3);
+
+                //jump to type 4
+                actorPositionsGenome.Add(4);
+                actorPositionsGenome.Add(6);
+                actorPositionsGenome.Add(6);
+
+                //type 0 again
+                actorPositionsGenome.Add(0);
+                actorPositionsGenome.Add(7);
+                actorPositionsGenome.Add(7);
+
+                //type 11, which dosent exist in the type genome
+                actorPositionsGenome.Add(11);
+                actorPositionsGenome.Add(12);
+                actorPositionsGenome.Add(12);
+            
+                //type 3
+                actorPositionsGenome.Add(3);
+                actorPositionsGenome.Add(4);
+                actorPositionsGenome.Add(4);
+
+                //type 11, which dosent exist in the type genome, again
+                actorPositionsGenome.Add(11);
+                actorPositionsGenome.Add(12);
+                actorPositionsGenome.Add(12);
+
+                //type 4 again, but with error of being too short
+                actorPositionsGenome.Add(4);
+                //actorPositionsGenome.Add(10);
+                //actorPositionsGenome.Add(3);
+
+                /*actorPositionsGenome.Add(0);
+                actorPositionsGenome.Add(2);
+                actorPositionsGenome.Add(3);//*/
 
             }
         }

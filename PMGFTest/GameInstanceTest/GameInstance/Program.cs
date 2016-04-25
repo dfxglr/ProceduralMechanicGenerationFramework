@@ -15,8 +15,15 @@ namespace GameInstance
             testset.TestPMGGenomeSet();
 
             PMGSingleGameInstance testInstance = new PMGSingleGameInstance();
-            testInstance.DecodeGenome(testset);
+
+            //decodes the entire set
+            testInstance.DecodeGenomeSet(testset);
+            
+            //jsut for checking that genomes got correctly decoded
             testInstance.DisplayActorTypeList();
+            testInstance.DisplayActorTypePossplit3List();
+
+            //genome error report
             testInstance.DisplayGenomeSetErrors();
             
 
