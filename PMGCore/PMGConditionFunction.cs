@@ -3,17 +3,19 @@ namespace PMGF
 	namespace PMGCore
 	{
 
-		public class PMGConditionFunction : PMGFunction
+		public sealed class PMGConditionFunction : PMGFunction
 		{
 			// Condition functions can get values from the valustacks
 
-			public PMGConditionFunction()
+			public PMGConditionFunction(int whichFunction) : base(whichFunction)
 			{
+                Type = FunctionType.CONDITION;
 			}
 
-			public virtual bool Evaluate()
-			{
-			}
+            public override bool Do(PMGActor actor, PMGValueStack localStack)
+            {
+                return actor.Core.ConditionFunctions.Collection[_whichFunction](actor, localStack);
+            }
 		}
 
 

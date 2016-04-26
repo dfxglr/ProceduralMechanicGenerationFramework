@@ -14,9 +14,35 @@ Core:
 Generative Part:
     Translate genome -> implementations of classes
 
+    SVLC
+
+    Multi-layer genome -> 2 separate genomes?
+        How would that work with variable length?
+
+    Repair functions:
+        Fix empty actors/methods/etc
+
+        
+
+    CCE:
+        overriding fitness func in lib:
+            fit():
+                get best + individual -> set
+                get rand + individual -> set
+
+                fitness_pmg(sets)
+
+                is fitness better than previous best from species? (save/no)
+
+                return best_fitness
+
+        override population to handle multiple species?
+
+
 handling constants?
 
 
 
 convert all castings using is/as, also add exception handling to any place that does casting
+
 
