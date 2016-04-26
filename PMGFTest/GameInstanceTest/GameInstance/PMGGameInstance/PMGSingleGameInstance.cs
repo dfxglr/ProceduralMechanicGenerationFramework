@@ -41,8 +41,9 @@ namespace PMGF
             List<Vector> statsWithoutActors = new List<Vector>();
 
             //actor position genome
-            //IndexInGenome, ActorType, X,Y
-            List<List<int>> positionsWithUndefinedActorType = new List<List<int>>();
+            //IndexInGenome, ActorType
+            List<List<int>> UndefinedActorType = new List<List<int>>();
+            List<Vector> DefinedActorTypeWithFlawedPosition = new List<Vector>();
 
             //event genome
             
@@ -141,20 +142,17 @@ namespace PMGF
                         else
                         {
                             //error: not actor type found macthing the actor type position
-                            positionsWithUndefinedActorType.Add(new List<int>());
-                            positionsWithUndefinedActorType[errorCount].Add(mainIndex);
-                            positionsWithUndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex]);
-                            errorCount++;
+                            DefinedActorTypeWithFlawedPosition.Add(new Vector(mainIndex, _genomeSet.actorPositionsGenome[mainIndex]));
                         }
                     }
                     else
                     {
                         //error
-                        positionsWithUndefinedActorType.Add(new List<int>());
-                        positionsWithUndefinedActorType[errorCount].Add(mainIndex);
-                        positionsWithUndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex]);
-                        positionsWithUndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex + 1]);
-                        positionsWithUndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex + 2]);
+                        UndefinedActorType.Add(new List<int>());
+                        UndefinedActorType[errorCount].Add(mainIndex);
+                        UndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex]);
+                        UndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex + 1]);
+                        UndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex + 2]);
                         errorCount++;
                     }
                 }
@@ -198,7 +196,7 @@ namespace PMGF
             //debug displey function for checking all things have been put into actor list correctly
             public void DisplayActorTypePossplit3List()
             {
-                Console.WriteLine("ActorTypes, and where:");
+                Console.WriteLine("Which, and where:");
                 for (int i = 0; i < actorTypePositions.Count; i++)
                 {
 
@@ -232,8 +230,24 @@ namespace PMGF
                     Console.WriteLine(" at index: " + e.X + ", with value: "+e.Y);
                 }
 
-
-
+                //actor type positions genome
+                Console.WriteLine("ACTOR TYPE POSITIONS GENOME:");
+                //
+                Console.WriteLine("undefined actor types:");
+                Console.WriteLine(" in total: " + UndefinedActorType.Count);
+                for(int i = 0; i < UndefinedActorType.Count;i++)
+                {
+                    Console.Write(" type: " + UndefinedActorType[i][1]);
+                    Console.Write(" at index: " + UndefinedActorType[i][0]);
+                    Console.WriteLine(" at position (" + UndefinedActorType[i][2]+ " " + UndefinedActorType[i][3]+")");
+                }
+                //
+                Console.WriteLine("defined types with uncomplete position:");
+                Console.WriteLine(" in total: " + DefinedActorTypeWithFlawedPosition.Count);
+                foreach (Vector e in DefinedActorTypeWithFlawedPosition)
+                {
+                    Console.WriteLine(" at index: " + e.X + ", with value: " + e.Y);
+                }
                 //events
                 //methods
                 //--------------------------------------------------------------------------------------//

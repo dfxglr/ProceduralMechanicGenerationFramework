@@ -112,9 +112,9 @@ namespace PMGF
                 actorPositionsGenome.Add(4);
 
                 //type 11, which dosent exist in the type genome, again
-                actorPositionsGenome.Add(11);
                 actorPositionsGenome.Add(12);
-                actorPositionsGenome.Add(12);
+                actorPositionsGenome.Add(14);
+                actorPositionsGenome.Add(14);
 
                 //type 4 again, but with error of being too short
                 actorPositionsGenome.Add(4);
