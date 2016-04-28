@@ -31,8 +31,9 @@ namespace PMGF
             List<int> actorWithoutStats = new List<int>();
             //(indexInGenome,value)
             List<List<int>> statsWithoutActors = new List<List<int>>();
-            //less than 2
-            bool NoActorTypesInGenome = false;
+            //
+            bool ActorTypesGenomeLengthLessThanOne = false;
+            bool anyActorFound = false;
 
             //actor position genome
             //IndexInGenome, ActorType
@@ -41,8 +42,8 @@ namespace PMGF
             List<List<int>> DefinedActorTypeWithFlawedPosition = new List<List<int>>();
             //this can only occur if the genome is too short
             List<List<int>> UndefinedActorTypeWithFlawedPosition = new List<List<int>>();
-            //less than 3
-            bool NoActorTypePositionsInGenome = false;
+            //
+            bool ActorTypePositionsGenomeLengthLessThanTwo = false;
 
             //event genome
 
@@ -58,129 +59,139 @@ namespace PMGF
             private void DecodeActorGenome()
             {
                 int actorTypeIndex = 0;
-                bool untilFirstActor = true;
-                //runs through the actor genome
-                for (int mainIndex = 0; mainIndex < _genomeSet.actorGenome.Count; mainIndex++)
+                int statsWOAErrors = 0;
+                
+                //check genome length 
+                if (_genomeSet.actorGenome.Count > 1)
                 {
-                    //checks for new actor type
-                    if (_genomeSet.actorGenome[mainIndex] == -1)
+                    //runs through the actor genome
+                    for (int mainIndex = 0; mainIndex < _genomeSet.actorGenome.Count; mainIndex++)
                     {
-                        //check that list dosent end with an actor
-                        if (mainIndex + 1 != _genomeSet.actorGenome.Count)
+                        //checks for new actor type
+                        if (_genomeSet.actorGenome[mainIndex] == -1)
                         {
-                            //check that a new actor dosentstart right after the current one
-                            if (_genomeSet.actorGenome[mainIndex + 1] != -1)
+                            //check that list dosent end with an actor
+                            if (mainIndex + 1 != _genomeSet.actorGenome.Count)
                             {
-                                //add new type to type list
-                                actorTypes.Add(new List<int>());
-
-                                //begins at the current actor type in the genome list
-                                for (int subIndex = mainIndex + 1; subIndex < _genomeSet.actorGenome.Count; subIndex++)
+                                //check that a new actor dosentstart right after the current one
+                                if (_genomeSet.actorGenome[mainIndex + 1] != -1)
                                 {
-                                    //break out when new actor is met
-                                    if (_genomeSet.actorGenome[subIndex] == -1)
+                                    //add new type to type list
+                                    actorTypes.Add(new List<int>());
+
+                                    //begins at the current actor type in the genome list
+                                    for (int subIndex = mainIndex + 1; subIndex < _genomeSet.actorGenome.Count; subIndex++)
                                     {
-                                        break;
+                                        //break out when new actor is met
+                                        if (_genomeSet.actorGenome[subIndex] == -1)
+                                        {
+                                            break;
+                                        }
+                                        //adds to the value to the actor type list
+                                        else
+                                        {
+                                            actorTypes[actorTypeIndex].Add(_genomeSet.actorGenome[subIndex]);
+                                        }
                                     }
-                                    //adds to the value to the actor type list
-                                    else
-                                    {
-                                        actorTypes[actorTypeIndex].Add(_genomeSet.actorGenome[subIndex]);
-                                    }
+                                    //counts up the actor type index
+                                    actorTypeIndex++;
                                 }
-                                //counts up the actor type index
-                                actorTypeIndex++;
+                                else
+                                {
+                                    //Error: genome has 1 actor with no stats at position: genome[e]
+                                    actorWithoutStats.Add(mainIndex);
+                                }
+                                //untilFirstActor = false;
                             }
                             else
                             {
-                                //Error: genome has 1 actor with no stats at position: genome[e]
+                                //error: genome has one actor with no stats at position: genome.count-1
                                 actorWithoutStats.Add(mainIndex);
                             }
-                            //untilFirstActor = false;
+                            //happens at every time we hit an actor in the genome, tho only needs to happen once, after first actor is made
+                            anyActorFound = true;
                         }
-                        else
+                        else if (!anyActorFound)
                         {
-                            //error: genome has one actor with no stats at position: genome.count-1
-                            actorWithoutStats.Add(mainIndex);
+                            //error: genome has a stat with no parrent actor in the start of the genome
+                            statsWithoutActors.Add(new List<int>());
+                            statsWithoutActors[statsWOAErrors].Add(mainIndex);
+                            statsWithoutActors[statsWOAErrors].Add(_genomeSet.actorGenome[mainIndex]);
+                            statsWOAErrors++;
                         }
-                        //happens at every time we hit an actor in the genome, tho only needs to happen once, after first actor is made
-                        untilFirstActor = false;
-                    }
-                    else if (untilFirstActor)
-                    {
-                        //error: genome has a stat with no parrent actor in the start of the genome
-                        statsWithoutActors.Add(new List<int>());
-                        statsWithoutActors[0].Add(mainIndex);
-                        statsWithoutActors[0].Add(_genomeSet.actorGenome[mainIndex]);
                     }
                 }
-                //checks if any actor types has been added to the actor types list
-                if (actorTypes.Count < 1)
+                else
                 {
-                    NoActorTypesInGenome = true;
+                    //error genome to short to make anything
+                    ActorTypesGenomeLengthLessThanOne = true;
                 }
             }
             //decode actor position
             public void DecodeActorPosGenome()
             {
                 int PosListIndex = 0;
-                int errorCount = 0;
-                //runs through the actor positon genome and splits it into a 2d lists of lists of int 
-                for (int mainIndex = 0; mainIndex < _genomeSet.actorPositionsGenome.Count; mainIndex += 3)
+                int DefinedActorWFPErrorC = 0;
+                int UndefinedActorErrorC = 0;
+
+                //check genome length
+                if (_genomeSet.actorPositionsGenome.Count > 2)
                 {
-                    //cross refences to see it the type declarations matches the position type
-                    if (_genomeSet.actorPositionsGenome[mainIndex] < actorTypes.Count)
+                    //check is for no actors
+                    if (anyActorFound)
                     {
-                        //checks for lack of coordianates
-                        if (mainIndex + 2 < _genomeSet.actorPositionsGenome.Count)
+                        //runs through the actor positon genome and splits it into a 2d lists of lists of int 
+                        for (int mainIndex = 0; mainIndex < _genomeSet.actorPositionsGenome.Count; mainIndex += 3)
                         {
-                            //adds a new type and position to the split 3 list
-                            actorTypePositions.Add(new List<int>());
-                            //split the genome into sections 2d list of lists of 3
-                            for (int subIndex = mainIndex; subIndex < mainIndex + 3; subIndex++)
+                            //cross refences to see it the type declarations matches the position type
+                            if (_genomeSet.actorPositionsGenome[mainIndex] < actorTypes.Count)
                             {
-                                //checks for out of bounce at end of genome
-                                actorTypePositions[PosListIndex].Add(_genomeSet.actorPositionsGenome[subIndex]);
+                                //checks for lack of coordianates
+                                if (mainIndex + 2 < _genomeSet.actorPositionsGenome.Count)
+                                {
+                                    //adds new list 
+                                    actorTypePositions.Add(new List<int>());
+                                    //takes values from mainIndex and the following two
+                                    for (int subIndex = mainIndex; subIndex < mainIndex + 3; subIndex++)
+                                    {
+                                        actorTypePositions[PosListIndex].Add(_genomeSet.actorPositionsGenome[subIndex]);
+                                    }
+                                    PosListIndex++;
+                                }
+                                else
+                                {
+                                    //error: not actor type found macthing the actor type position
+                                    DefinedActorTypeWithFlawedPosition.Add(new List<int>());
+                                    DefinedActorTypeWithFlawedPosition[DefinedActorWFPErrorC].Add(mainIndex);
+                                    DefinedActorTypeWithFlawedPosition[DefinedActorWFPErrorC].Add(_genomeSet.actorPositionsGenome[mainIndex]);
+                                    DefinedActorWFPErrorC++;
+                                }
                             }
-                            PosListIndex++;
-                        }
-                        else
-                        {
-                            //error: not actor type found macthing the actor type position
-                            DefinedActorTypeWithFlawedPosition.Add(new List<int>());
-                            DefinedActorTypeWithFlawedPosition[0].Add(mainIndex);
-                            DefinedActorTypeWithFlawedPosition[1].Add(_genomeSet.actorGenome[mainIndex]);
-                        }
-                    }
-                    else
-                    {
-                        //check if 
-                        if (actorTypes.Count > 0)
-                        {
-                            //error: actor type position does not ahve a corrosponding actor type in the actor type list
-                            UndefinedActorType.Add(new List<int>());
-                            UndefinedActorType[errorCount].Add(mainIndex);
-                            UndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex]);
-                            UndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex + 1]);
-                            UndefinedActorType[errorCount].Add(_genomeSet.actorPositionsGenome[mainIndex + 2]);
-                            errorCount++;
-                        }
-                        else
-                        {
-                            Console.WriteLine("i am run apparrently");
-                            //error: 
-                            UndefinedActorTypeWithFlawedPosition.Add(new List<int>());
-                            UndefinedActorTypeWithFlawedPosition[0].Add(mainIndex);
-                            UndefinedActorTypeWithFlawedPosition[0].Add(_genomeSet.actorPositionsGenome[mainIndex]);
-                            //*/
+                            else
+                            {
+                                //error: actor type position does not have a corrosponding actor type in the actor type list
+                                UndefinedActorType.Add(new List<int>());
+                                //index
+                                UndefinedActorType[UndefinedActorErrorC].Add(mainIndex);
+                                //type
+                                UndefinedActorType[UndefinedActorErrorC].Add(_genomeSet.actorPositionsGenome[mainIndex]);
+                                //position
+                                if (mainIndex + 2 < _genomeSet.actorPositionsGenome.Count)
+                                {
+                                    //x
+                                    UndefinedActorType[UndefinedActorErrorC].Add(_genomeSet.actorPositionsGenome[mainIndex + 1]);
+                                    //y
+                                    UndefinedActorType[UndefinedActorErrorC].Add(_genomeSet.actorPositionsGenome[mainIndex + 2]);
+                                }
+                                UndefinedActorErrorC++;
+                            }
                         }
                     }
                 }
-                //Console.WriteLine(actorTypePositions[0].Count);
-                //check if any possition has been added to the actor type positions list
-                if (actorTypePositions.Count < 1)
+                else
                 {
-                    NoActorTypePositionsInGenome = true;
+                    //error: actor positions genome too short to make anything
+                    ActorTypePositionsGenomeLengthLessThanTwo = true;
                 }
             }
             //"decode" the methods genome
@@ -209,56 +220,90 @@ namespace PMGF
 
                 //actors genome
                 Console.WriteLine("ACTOR GENOME:");
-                //
-                if (NoActorTypesInGenome)
+                //checking if genome is too short to produce any result
+                if (!ActorTypesGenomeLengthLessThanOne)
                 {
-                    Console.WriteLine(" genome, is either too short, has a single type with to few parameters, or has no types at all");
-                }
+                    //check for in there are any actors
+                    if (anyActorFound) {
+                        //displays total amount of actors with not stats, and their index in the genome
+                        Console.WriteLine("Actors with no stats:");
+                        Console.WriteLine(" in total: " + actorWithoutStats.Count);
+                        foreach (int e in actorWithoutStats)
+                        {
+                            Console.WriteLine(" at index: " + e);
+                        }
 
-                //
-                Console.WriteLine("Actors with no stats:");
-                Console.WriteLine(" in total: " + actorWithoutStats.Count);
-                foreach (int e in actorWithoutStats)
-                {
-                    Console.WriteLine(" at index: " + e);
+                        //displays the stats that has not parrent actor if any, in the beginning of the genome
+                        Console.WriteLine("Stats with no actor in the start of genome:");
+                        Console.WriteLine(" in total: " + statsWithoutActors.Count);
+                        for (int i = 0; i < statsWithoutActors.Count; i++)
+                        {
+                            Console.WriteLine(" at index: " + statsWithoutActors[i][0] + ", with value: " + statsWithoutActors[i][1]);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine(" no actor types found in genome");
+                    }
                 }
-                //
-                Console.WriteLine("Stats with no actor in the start of genome:");
-                Console.WriteLine(" in total: " + statsWithoutActors.Count);
-                foreach (List<int> e in statsWithoutActors)
+                else
                 {
-                    Console.WriteLine(" at index: " + e[0] + ", with value: " + e[1]);
+                    Console.WriteLine(" genome is too short to create any actors(count less than 1)");
                 }
-
                 //actor type positions genome
                 Console.WriteLine("ACTOR TYPE POSITIONS GENOME:");
-                //
-                if (NoActorTypePositionsInGenome)
-                {
-                    Console.WriteLine(" genome, is either too short, or has a single type which lacks 1 or all coords");
-                }
-                //
-                Console.WriteLine("undefined actor types:");
-                Console.WriteLine(" in total: " + UndefinedActorType.Count);
-                for (int i = 0; i < UndefinedActorType.Count; i++)
-                {
-                    Console.Write(" type: " + UndefinedActorType[i][1] + ",");
-                    Console.WriteLine(" at index: " + UndefinedActorType[i][0] + ",");
 
-                    //Console.WriteLine(" at position (" + UndefinedActorType[i][2]+ " " + UndefinedActorType[i][3]+")");
-                }
-                //
-                Console.WriteLine("defined types with uncomplete position:");
-                Console.WriteLine(" in total: " + DefinedActorTypeWithFlawedPosition.Count);
-                foreach (List<int> e in DefinedActorTypeWithFlawedPosition)
+                //check for genome is too short
+                if (!ActorTypePositionsGenomeLengthLessThanTwo)
                 {
-                    Console.WriteLine(" type: " + e[0] + ", at index: " + e[1]);
-                }
-                Console.WriteLine("undefined types with uncomplete position(only 1):");
-                for (int i = 0; i < UndefinedActorTypeWithFlawedPosition.Count; i++)
-                {
+                    //check for actor genome too short
+                    if (!ActorTypesGenomeLengthLessThanOne)
+                    {
+                        // check for no actors founds
+                        if (anyActorFound)
+                        {
+                            //undefined actor types in the actor type position genome
+                            Console.WriteLine("undefined actor types:");
+                            Console.WriteLine(" in total: " + UndefinedActorType.Count);
+                            for (int i = 0; i < UndefinedActorType.Count; i++)
+                            {
+                                Console.Write(" at index: " + UndefinedActorType[i][0] + ", type: " + UndefinedActorType[i][1]);
+                                //check for if position has both coords, by checking length of list
+                                if (UndefinedActorType[i].Count > 2)
+                                {
+                                    Console.Write(", at position: ");
+                                    Console.Write("(" + UndefinedActorType[i][2]);
+                                    Console.WriteLine(" " + UndefinedActorType[i][3] + ")");
+                                }
+                                else
+                                {
+                                    Console.WriteLine(", at position: (? ?)");
+                                }
+                            }
 
+                            //defined actor types with incomplete positions
+                            Console.WriteLine("defined types with uncomplete position(only 1 at the end):");
+                            Console.WriteLine(" in total: " + DefinedActorTypeWithFlawedPosition.Count);
+                            foreach (List<int> e in DefinedActorTypeWithFlawedPosition)
+                            {
+                                Console.WriteLine(" at index: " + e[0] + ", type: " + e[1]);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(" actor type genome has not actor types");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine(" actor position genome is of sufficient length, however actor type genome is also to short to have any complete actors");
+                    }
                 }
+                else
+                {
+                    Console.WriteLine(" actor positions genome is too short to have any complete positions(count is less than 3)");
+                }
+
                 //events
                 //methods
                 //--------------------------------------------------------------------------------------//
@@ -266,7 +311,7 @@ namespace PMGF
             //debug displey function for checking all things have been put into actor list correctly
             public void DisplayActorTypeList()
             {
-                Console.WriteLine("ActorTypes:");
+                Console.WriteLine("Parsed Actor Types:");
                 for (int i = 0; i < actorTypes.Count; i++)
                 {
                     Console.Write("[" + i + "] with stats: ");
@@ -280,7 +325,7 @@ namespace PMGF
             //debug displey function for checking all things have been put into actor list correctly
             public void DisplayActorTypePossplit3List()
             {
-                Console.WriteLine("Which, and where:");
+                Console.WriteLine("Which actor type, and where:");
                 for (int i = 0; i < actorTypePositions.Count; i++)
                 {
 

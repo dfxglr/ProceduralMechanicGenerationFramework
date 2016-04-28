@@ -30,10 +30,10 @@ namespace PMGF
                 actorGenome.Add(2);
                 actorGenome.Add(6);
                 actorGenome.Add(0);
-                //actorGenome.Add(-1);
+                actorGenome.Add(-1);
                 actorGenome.Add(0);
                 actorGenome.Add(2);
-                /*actorGenome.Add(6);
+                actorGenome.Add(6);
                 actorGenome.Add(0);
                 actorGenome.Add(-1);
                 actorGenome.Add(0);
@@ -62,14 +62,14 @@ namespace PMGF
                 //test positions
 
                 //type 0
-                actorPositionsGenome.Add(0);//type
+                actorPositionsGenome.Add(24);//type
                 actorPositionsGenome.Add(1);//x
                 actorPositionsGenome.Add(1);//y
 
-                /*/type 1
+                //type 1
                 actorPositionsGenome.Add(1);
                 actorPositionsGenome.Add(2);
-                actorPositionsGenome.Add(2);
+                /*actorPositionsGenome.Add(2);
 
                 //type 2
                 actorPositionsGenome.Add(2);
@@ -89,7 +89,7 @@ namespace PMGF
                 //type 11, which dosent exist in the type genome
                 actorPositionsGenome.Add(11);
                 actorPositionsGenome.Add(12);
-                actorPositionsGenome.Add(12);
+                //actorPositionsGenome.Add(12);
             
                 //type 3
                 actorPositionsGenome.Add(3);
