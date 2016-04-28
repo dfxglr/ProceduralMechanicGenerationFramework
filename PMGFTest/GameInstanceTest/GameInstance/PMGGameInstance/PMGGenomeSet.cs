@@ -14,37 +14,34 @@ namespace PMGF
             public List<int> actorGenome = new List<int>();
             public List<int> actorPositionsGenome = new List<int>();
             //events
-
+            public List<List<int>> eventGenome = new List<List<int>>();
             //methods
+            public List<List<int>> methodGenome = new List<List<int>>();
+
             public PMGGenomeSet()
             {
-
             }
 
             public void TestPMGGenomeSet()
             {
-                /*/test genome
-                actorGenome.Add(3);
-                actorGenome.Add(3);
-                actorGenome.Add(-1);//A
-                actorGenome.Add(3);
-                actorGenome.Add(3);
-                actorGenome.Add(0);
-                actorGenome.Add(4);
-                actorGenome.Add(1);
-                actorGenome.Add(-1);//A
-                actorGenome.Add(-1);//A
-                actorGenome.Add(-1);//A
-                actorGenome.Add(0);
-                actorGenome.Add(0);
-                actorGenome.Add(8);
-                actorGenome.Add(4);
-                actorGenome.Add(3);
-                actorGenome.Add(-1);//*/
+                //test genome
+
 
                 actorGenome.Add(2);
                 actorGenome.Add(6);
                 actorGenome.Add(0);
+                //actorGenome.Add(-1);
+                actorGenome.Add(0);
+                actorGenome.Add(2);
+                /*actorGenome.Add(6);
+                actorGenome.Add(0);
+                actorGenome.Add(-1);
+                actorGenome.Add(0);
+                actorGenome.Add(2);
+                actorGenome.Add(-1);
+                actorGenome.Add(-1);
+                actorGenome.Add(6);
+                actorGenome.Add(0);
                 actorGenome.Add(-1);
                 actorGenome.Add(0);
                 actorGenome.Add(2);
@@ -53,22 +50,10 @@ namespace PMGF
                 actorGenome.Add(-1);
                 actorGenome.Add(0);
                 actorGenome.Add(2);
-                actorGenome.Add(-1);
-                actorGenome.Add(-1);
                 actorGenome.Add(6);
                 actorGenome.Add(0);
                 actorGenome.Add(-1);
-                actorGenome.Add(0);
-                actorGenome.Add(2);
-                actorGenome.Add(6);
-                actorGenome.Add(0);
-                actorGenome.Add(-1);
-                actorGenome.Add(0);
-                actorGenome.Add(2);
-                actorGenome.Add(6);
-                actorGenome.Add(0);
-                actorGenome.Add(-1);
-                actorGenome.Add(0);
+                actorGenome.Add(0);//*/
 
 
 
@@ -81,7 +66,7 @@ namespace PMGF
                 actorPositionsGenome.Add(1);//x
                 actorPositionsGenome.Add(1);//y
 
-                //type 1
+                /*/type 1
                 actorPositionsGenome.Add(1);
                 actorPositionsGenome.Add(2);
                 actorPositionsGenome.Add(2);
@@ -119,11 +104,11 @@ namespace PMGF
                 //type 4 again, but with error of being too short
                 actorPositionsGenome.Add(4);
                 //actorPositionsGenome.Add(10);
-                //actorPositionsGenome.Add(3);
+                //actorPositionsGenome.Add(3);//*/
 
-                /*actorPositionsGenome.Add(0);
-                actorPositionsGenome.Add(2);
-                actorPositionsGenome.Add(3);//*/
+                //events
+
+
 
             }
         }
