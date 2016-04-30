@@ -63,7 +63,8 @@
     <Compile Include="PMGGameInstance\Core\PMGValueFunction.cs" />
     <Compile Include="PMGGameInstance\Core\PMGValueFunctionsCollection.cs" />
     <Compile Include="PMGGameInstance\Core\PMGValueStack.cs" />
-    <Compile Include="PMGGameInstance\PMGGenomeParse.cs" />
+    <Compile Include="PMGGameInstance\Generator\PMGGenomeEnums.cs" />
+    <Compile Include="PMGGameInstance\Generator\PMGGenomeParse.cs" />
     <Compile Include="PMGGameInstance\PMGGenomeSet.cs" />
     <Compile Include="PMGGameInstance\PMGMap.cs" />
     <Compile Include="PMGGameInstance\PMGSingleGameInstance.cs" />

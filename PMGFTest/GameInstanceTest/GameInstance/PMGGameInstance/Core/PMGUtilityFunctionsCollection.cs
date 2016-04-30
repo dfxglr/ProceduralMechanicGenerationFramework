@@ -41,7 +41,7 @@ namespace PMGF
                 // if an int is in stack that is over 1k (we push 1337 by default)
                 // Then we change the value function to #1 (instead of #0)
                 // In this case pushing 42 instead
-                int intFromStack = System.Convert.ToInt32(ownerM._valueStack.GetValueOfType(ValueType.INT));
+                int intFromStack = ownerM._valueStack.PopInt();
 
 
                 if( intFromStack > 1000)

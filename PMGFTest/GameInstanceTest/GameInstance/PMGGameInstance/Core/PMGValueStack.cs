@@ -25,6 +25,59 @@ namespace PMGF
                 IntStack = new GenericStack<int>();
             }
 
+
+
+            /*
+             * Get, Pop, and Push functions for all ValueTypes
+             */
+
+            // Get, Pop, and Push for ValueType.INT
+            public int GetInt()
+            {
+                return System.Convert.ToInt32(GetValueOfType(ValueType.INT));
+            }
+
+            public int PopInt()
+            {
+                return System.Convert.ToInt32(PopValueOfType(ValueType.INT));
+            }
+
+            public void Push(int val)
+            {
+                IntStack.Push(val);
+            }
+
+            // Get, Pop, and Push for ValueType.ACTOR
+            public PMGActor GetActor()
+            {
+                PMGActor tA = GetValueOfType(ValueType.ACTOR) as PMGActor;
+
+                if(tA == null)
+                    throw new System.InvalidCastException("Getting actor value and casting as actor failed and returned null.");
+
+                return tA;
+            }
+
+            public PMGActor PopActor()
+            {
+                PMGActor tA = PopValueOfType(ValueType.ACTOR) as PMGActor;
+
+                if(tA == null)
+                    throw new System.InvalidCastException("Getting actor value and casting as actor failed and returned null.");
+
+                return tA;
+            }
+
+            public void Push(PMGActor val)
+            {
+                ActorStack.Push(val);
+            }
+
+
+
+            /*
+             * Generic get/pop values of type t
+             */
             public object GetValueOfType(ValueType t)
             {
                 // Return value of the specified type, or throw error
@@ -59,6 +112,9 @@ namespace PMGF
             }
 
 
+            /*
+             * Generic Push value of type t
+             */
             public void PushValueOfType(object val, ValueType t)
             {
                 // Push a value of type or return error
@@ -79,18 +135,6 @@ namespace PMGF
 
             }
 
-            // Overloading Push functions
-            // INT
-            public void Push(int val)
-            {
-                IntStack.Push(val);
-            }
-
-            // ACTOR
-            public void Push(PMGActor val)
-            {
-                ActorStack.Push(val);
-            }
 
 
 		}

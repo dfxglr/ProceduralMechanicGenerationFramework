@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PMGF.PMGGenerator;
 
 namespace PMGF
 {
@@ -12,6 +13,8 @@ namespace PMGF
         {
             //local genome set
             PMGGenomeSet _genomeSet;
+            
+            
 
 
             //----------------------------------------------------------------//parsed lists
@@ -20,8 +23,12 @@ namespace PMGF
             List<List<int>> actorTypes = new List<List<int>>();
             //actor type positions and amounts sorta
             List<List<int>> actorTypePositions = new List<List<int>>();
+            //index list for event genome
+            List<int> eventIndexList = new List<int>();
+            //index list for mehtod genome
+            List<int> methodIndexList = new List<int>();
 
-            
+
             //----------------------------------------------------------------//
 
             //-------------------------------------------------------------------------------//error counting
@@ -32,7 +39,7 @@ namespace PMGF
             //(indexInGenome,value)
             List<List<int>> statsWithoutActors = new List<List<int>>();
             //
-            bool ActorTypesGenomeLengthLessThanOne = false;
+            bool ActorTypesGenomeLengthLessThanTwo = false;
             bool anyActorFound = false;
 
             //actor position genome
@@ -43,12 +50,19 @@ namespace PMGF
             //this can only occur if the genome is too short
             List<List<int>> UndefinedActorTypeWithFlawedPosition = new List<List<int>>();
             //
-            bool ActorTypePositionsGenomeLengthLessThanTwo = false;
+            bool ActorTypePositionsGenomeLengthLessThanThree = false;
 
             //event genome
+            List<int> IncompleteEvents = new List<int>();
+            //
+            bool EventGenomeLengthLessThanThree = false;
+            bool anyEventFound = false;
 
             //method genome
-
+            List<int> IncompleteMethods = new List<int>();
+            //
+            bool MethodGenomeLengthLessThanTwo = false;
+            bool anyMethodFound = false;
             //-------------------------------------------------------------------------------//
 
 
@@ -62,19 +76,19 @@ namespace PMGF
                 int statsWOAErrors = 0;
                 
                 //check genome length 
-                if (_genomeSet.actorGenome.Count > 1)
+                if (_genomeSet.actorGenome.Count > 2)
                 {
                     //runs through the actor genome
                     for (int mainIndex = 0; mainIndex < _genomeSet.actorGenome.Count; mainIndex++)
                     {
                         //checks for new actor type
-                        if (_genomeSet.actorGenome[mainIndex] == -1)
+                        if (_genomeSet.actorGenome[mainIndex] == (int)GenomeKeys.ActorKey)
                         {
                             //check that list dosent end with an actor
-                            if (mainIndex + 1 != _genomeSet.actorGenome.Count)
+                            if (mainIndex + 2 < _genomeSet.actorGenome.Count)
                             {
                                 //check that a new actor dosentstart right after the current one
-                                if (_genomeSet.actorGenome[mainIndex + 1] != -1)
+                                if (_genomeSet.actorGenome[mainIndex + 1] != (int)GenomeKeys.ActorKey && _genomeSet.actorGenome[mainIndex + 2] != (int)GenomeKeys.ActorKey)
                                 {
                                     //add new type to type list
                                     actorTypes.Add(new List<int>());
@@ -83,7 +97,7 @@ namespace PMGF
                                     for (int subIndex = mainIndex + 1; subIndex < _genomeSet.actorGenome.Count; subIndex++)
                                     {
                                         //break out when new actor is met
-                                        if (_genomeSet.actorGenome[subIndex] == -1)
+                                        if (_genomeSet.actorGenome[subIndex] == (int)GenomeKeys.ActorKey)
                                         {
                                             break;
                                         }
@@ -101,7 +115,6 @@ namespace PMGF
                                     //Error: genome has 1 actor with no stats at position: genome[e]
                                     actorWithoutStats.Add(mainIndex);
                                 }
-                                //untilFirstActor = false;
                             }
                             else
                             {
@@ -124,7 +137,7 @@ namespace PMGF
                 else
                 {
                     //error genome to short to make anything
-                    ActorTypesGenomeLengthLessThanOne = true;
+                    ActorTypesGenomeLengthLessThanTwo = true;
                 }
             }
             //decode actor position
@@ -191,17 +204,101 @@ namespace PMGF
                 else
                 {
                     //error: actor positions genome too short to make anything
-                    ActorTypePositionsGenomeLengthLessThanTwo = true;
+                    ActorTypePositionsGenomeLengthLessThanThree = true;
                 }
             }
             //"decode" the methods genome
             public void DecodeMethodGenome()
             {
-                //check for: null, lack of event start in the beginning of genome, having event with a lack of  
+                //check for length more that 1
+                if (_genomeSet.methodGenome.Count > 1)
+                {
+                    for (int mainIndex = 0; mainIndex < _genomeSet.methodGenome.Count; mainIndex++)
+                    {
+                        //check for new event
+                        if (_genomeSet.methodGenome[mainIndex][0] == (int)GenomeKeys.MethodKey)
+                        {
+                            //check that list dosent end with an event
+                            if (mainIndex + 1 < _genomeSet.methodGenome.Count)
+                            {
+                                //check that a new actor dosentstart right after the current one
+                                if (_genomeSet.methodGenome[mainIndex + 1][0] != (int)GenomeKeys.MethodKey)
+                                {
+                                    //count up new event beginnings
+                                    methodIndexList.Add(mainIndex);
+
+                                }
+                                else
+                                {
+                                    //error: event with no condition and valuefunc
+                                    IncompleteMethods.Add(mainIndex);
+                                }
+                            }
+                            else
+                            {
+                                //error: event with no condition and valuefunc
+                                IncompleteMethods.Add(mainIndex);
+                            }
+                            anyMethodFound = true;
+                        }
+                        else if (!anyMethodFound)
+                        {
+                            //error: genome contains no events
+                            //Console.WriteLine(" no balls");
+                        }//*/
+                    }
+                }
+                else
+                {
+                    // error: genome is too short to make a single event(count less than 2)
+                    MethodGenomeLengthLessThanTwo = true;
+                }
             }
             public void DecodeEventGenome()
             {
-                //check for: null, 
+                //check for length more that 1
+                if (_genomeSet.eventGenome.Count > 2)
+                {
+                    for (int mainIndex = 0; mainIndex < _genomeSet.eventGenome.Count; mainIndex++)
+                    {
+                        //check for new event
+                        if (_genomeSet.eventGenome[mainIndex][0] == (int)GenomeKeys.EventKey)
+                        {
+                            //check that list dosent end with an event
+                            if (mainIndex + 2 < _genomeSet.eventGenome.Count)
+                            {
+                                //check that a new actor dosentstart right after the current one
+                                if (_genomeSet.eventGenome[mainIndex + 1][0] != (int)GenomeKeys.EventKey && _genomeSet.eventGenome[mainIndex + 2][0] != (int)GenomeKeys.EventKey)
+                                {
+                                    //count up new event beginnings
+                                    eventIndexList.Add(mainIndex);
+                                      
+                                }
+                                else
+                                {
+                                    //error: event with no condition and valuefunc
+                                    IncompleteEvents.Add(mainIndex);
+                                }
+                            }
+                            else
+                            {
+                                //error: event with no condition and valuefunc
+                                IncompleteEvents.Add(mainIndex);
+                            }
+                            anyEventFound = true;
+                        }
+                        else if(!anyEventFound)
+                        {
+                            //error: genome contains no events
+                            //Console.WriteLine(" no balls");
+                        }//*/
+                    }
+                }
+                else
+                {
+                    // error: genome is too short to make a single event(count less than 2)
+                    EventGenomeLengthLessThanThree = true;
+                }       
             }
 
             //decode entire genome
@@ -218,10 +315,11 @@ namespace PMGF
                 //--------------------------------------------------------------------------------------//
                 Console.WriteLine("GENOME SET ERROR REPORT:");
 
+                //--------------------------------------------//
                 //actors genome
                 Console.WriteLine("ACTOR GENOME:");
                 //checking if genome is too short to produce any result
-                if (!ActorTypesGenomeLengthLessThanOne)
+                if (!ActorTypesGenomeLengthLessThanTwo)
                 {
                     //check for in there are any actors
                     if (anyActorFound) {
@@ -250,14 +348,15 @@ namespace PMGF
                 {
                     Console.WriteLine(" genome is too short to create any actors(count less than 1)");
                 }
+                //--------------------------------------------//
                 //actor type positions genome
                 Console.WriteLine("ACTOR TYPE POSITIONS GENOME:");
 
                 //check for genome is too short
-                if (!ActorTypePositionsGenomeLengthLessThanTwo)
+                if (!ActorTypePositionsGenomeLengthLessThanThree)
                 {
                     //check for actor genome too short
-                    if (!ActorTypesGenomeLengthLessThanOne)
+                    if (!ActorTypesGenomeLengthLessThanTwo)
                     {
                         // check for no actors founds
                         if (anyActorFound)
@@ -303,9 +402,58 @@ namespace PMGF
                 {
                     Console.WriteLine(" actor positions genome is too short to have any complete positions(count is less than 3)");
                 }
+                //--------------------------------------------//
+                //event genome
+                Console.WriteLine("EVENT GENOME");
+                //check for length
+                if (!EventGenomeLengthLessThanThree) {
+                    //check for any events
+                    if (anyEventFound) {
+                        Console.WriteLine(" Incomplete events");
+                        Console.WriteLine(" In total: "+IncompleteEvents.Count);
 
-                //events
-                //methods
+                        foreach(int e in IncompleteEvents)
+                        {
+                            Console.WriteLine(" at index: " + e);
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine(" event genome does not contain any event types");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(" event genome too short to have any complete events");
+                }
+                //--------------------------------------------//
+                //method genome
+                Console.WriteLine("METHOD GENOME");
+                //check for length
+                if (!MethodGenomeLengthLessThanTwo)
+                {
+                    //check for any events
+                    if (anyMethodFound)
+                    {
+                        Console.WriteLine(" Incomplete methods");
+                        Console.WriteLine(" In total: " + IncompleteMethods.Count);
+
+                        foreach (int e in IncompleteMethods)
+                        {
+                            Console.WriteLine(" at index: " + e);
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine(" method genome does not contain any event types");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(" method genome too short to have any complete events");
+                }
                 //--------------------------------------------------------------------------------------//
             }
             //debug displey function for checking all things have been put into actor list correctly
@@ -337,7 +485,14 @@ namespace PMGF
                     Console.WriteLine(")");
                 }
             }
-
+            public void DisplayEventList()
+            {
+                /*Console.WriteLine("event index list"+ eventIndexList.Count);
+                for(int i = 0; i< eventIndexList.Count;i++)
+                {
+                    Console.WriteLine("new event at index: "+ eventIndexList[i]);
+                }//*/
+            }
         }
     }
 }
