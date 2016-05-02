@@ -11,8 +11,8 @@ namespace PMGF
     {
         class PMGGenomeParse
         {
-            //local genome set
-            PMGGenomeSet _genomeSet;
+            //local genome set tho it needs to be public 
+            public PMGGenomeSet _genomeSet;
             //----------------------------------------------------------------//parsed lists
             //actors types
             public List<List<int>> actorTypes = new List<List<int>>();

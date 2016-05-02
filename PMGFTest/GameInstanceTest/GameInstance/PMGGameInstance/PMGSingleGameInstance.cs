@@ -20,10 +20,16 @@ namespace PMGF
             
                 
             //actors
-            List<PMGActor> Actors = new List<PMGActor>();
+            List<PMGActor> CreatedActors = new List<PMGActor>();
+            List<PMGActor> SpawnedActors = new List<PMGActor>();
             //methods
+            List<PMGMethod> Methods = new List<PMGMethod>();
+            List<List<PMGExecuteList>> MethodsExecutelists = new List<List<PMGExecuteList>>(); 
             //events
-            //actors new iD
+            List<PMGEvent> Events = new List<PMGEvent>();
+            //actors new iD - shouldhave the lenght of the actor type positions list, and contain the id for each actor there, starting from 1000
+            List<int> ActorIDs = new List<int>();
+
 
 
             
@@ -43,32 +49,90 @@ namespace PMGF
             // builds the instance
             public void BuildInstance(PMGGenomeSet TobeParsed)
             {
-
-
-
-
                 //decode genome set
                 ParsedSet.DecodeGenomeSet(TobeParsed);
 
                 //make core
                 PMGGameCore MainCore = new PMGGameCore();
 
-                //create actors
-                foreach (int e in ParsedSet.actorTypes[0])
-                {
-                    //add to created actors
-                    Actors.Add(new PMGActor(MainCore));
+
+                //create actors, methods and event and add them to the actors
+                //mainlist
+                for (int i = 0; i< ParsedSet.actorTypes.Count;i++) {
+                    //add new actor
+                    CreatedActors.Add(new PMGActor(MainCore));
+                    //sublist
+                    for(int j = 0; j< ParsedSet.actorTypes[i].Count; j++)
+                    {
+                        //is it even, time for method
+                        if (j%2 == 0)
+                        {
+                            //check the index list to see if 
+                            for (int e =0; e < ParsedSet.methodIndexList.Count;e++) {
+                                //if the value is an index in the method index list
+                                if (ParsedSet.actorTypes[i][j] == e)
+                                {
+                                    //save index in actortypes
+                                    //save amount of methods
+                                    //add method
+                                }
+                                else
+                                {
+                                    // error: Method not found in 
+                                }
+                            }
+                            //add method
+                        }
+                        //if its odd, time for event
+                        else
+                        {
+                            //add event 
+                        }   
+                    }
                 }
-                //create methods
-                foreach(int e in ParsedSet.eventIndexList)
+
+
+                //add executelists to methods
+
+                foreach (int j in ParsedSet.methodIndexList) {
+                    //check through method genome
+                    for (int i = ParsedSet.methodIndexList[j] + 1; i < ParsedSet._genomeSet.methodGenome.Count; i++)
+                    {
+                            
+                    }
+                }
+          
+                //--------------------------------// testing stuff, this is only here because our collections are empty atm
+                // Create functions for the methods
+                PMGValueFunction testValF = new PMGValueFunction(0);//works for event too
+                PMGUtilityFunction testUtilF = new PMGUtilityFunction(0);
+                PMGChangeFunction testChgF = new PMGChangeFunction(0);
+                //create functions for the events
+                PMGConditionFunction testCondF = new PMGConditionFunction(0);
+                //--------------------------------//
+                
+
+                //add execute lists for mehtods
+                
+                //add functions to executelists
+
+
+                //create events
+                foreach (int e in ParsedSet.eventIndexList)
                 {
-                    //create from event genome
-                    //put into event
+                    //create from method genome
+                    //put into method list
+                    //Events.Add(new PMGEvent(which method, which actor, which behavior));
                 }
 
 
+                //add functions to methods
+                //
 
-                //give actors unique ID
+
+
+
+                //give actors unique ID very last
 
                 ////build events 
 

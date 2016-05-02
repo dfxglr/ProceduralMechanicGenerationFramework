@@ -76,7 +76,10 @@ namespace PMGF
                 {
                     // Execute next step
                     CurrentStep = _steps[_stepIter];
-                    _steps[_stepIter].Execute();
+                    if (CurrentStep != null)
+                    {
+                        _steps[_stepIter].Execute();
+                    }
                     _stepIter++;
                 }
             }

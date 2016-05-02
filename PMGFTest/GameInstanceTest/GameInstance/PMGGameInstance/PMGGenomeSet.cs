@@ -48,6 +48,7 @@ namespace PMGF
                 actorGenome.Add((int)GenomeKeys.ActorKey);
                 actorGenome.Add(6);
                 actorGenome.Add(0);
+                actorGenome.Add(11);
                 //new actor
                 actorGenome.Add((int)GenomeKeys.ActorKey);
                 actorGenome.Add(0);
@@ -60,6 +61,7 @@ namespace PMGF
                 actorGenome.Add(2);
                 actorGenome.Add(6);
                 actorGenome.Add(0);
+                actorGenome.Add(11);
                 //new actor
                 actorGenome.Add((int)GenomeKeys.ActorKey);
                 actorGenome.Add(0);//*/
