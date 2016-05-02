@@ -2,7 +2,7 @@ namespace PMGF
 {
     namespace PMGCore
     {
-        public class PMGCore
+        public class PMGGameCore
         {
             // Collection of value functions
             public PMGValueFunctionsCollection ValueFunctions = new PMGValueFunctionsCollection();
@@ -21,7 +21,7 @@ namespace PMGF
             public PMGValueStack WorldStack = new PMGValueStack();
             public int WorldTimeSteps;
 
-            public PMGCore()
+            public PMGGameCore()
             {
                 // Initialize collections of functions
                 ValueFunctions.Initialize();

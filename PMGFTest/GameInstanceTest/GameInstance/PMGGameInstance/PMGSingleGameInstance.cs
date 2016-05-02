@@ -15,15 +15,22 @@ namespace PMGF
             //creating a map
             PMGMap _Map = new PMGMap();
 
-
+            
             public PMGGenomeParse ParsedSet = new PMGGenomeParse();
             
                 
-            //actors in map
-            List<PMGActor> mapActors = new List<PMGActor>();
+            //actors
+            List<PMGActor> Actors = new List<PMGActor>();
+            //methods
+            //events
+            //actors new iD
 
 
             
+            //instance build erros
+            //actors in walls
+            //undefined methods
+            //undefined events
 
 
             public PMGSingleGameInstance()
@@ -34,13 +41,50 @@ namespace PMGF
            
             
             // builds the instance
-            public void BuildInstance()
+            public void BuildInstance(PMGGenomeSet TobeParsed)
             {
+
+
+
+
+                //decode genome set
+                ParsedSet.DecodeGenomeSet(TobeParsed);
+
+                //make core
+                PMGGameCore MainCore = new PMGGameCore();
+
+                //create actors
+                foreach (int e in ParsedSet.actorTypes[0])
+                {
+                    //add to created actors
+                    Actors.Add(new PMGActor(MainCore));
+                }
+                //create methods
+                foreach(int e in ParsedSet.eventIndexList)
+                {
+                    //create from event genome
+                    //put into event
+                }
+
+
+
+                //give actors unique ID
+
+                ////build events 
+
+
+
                 //uses map, decoded genome lists, mimicks setup of coretest
                 //core first
                 //actors 
                 //methods
                 //events
+            }
+
+            public void RunTimeSteps(int timeSteps)
+            {
+
+
             }
 
             /*//add new list for new event to event type list
