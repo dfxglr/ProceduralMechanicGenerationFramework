@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMGCCETest", "PMGCCETest.csproj", "{1E439F6A-D380-4650-9994-C5B7EF9C710E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticSharp.Infrastructure.Framework", "..\..\GeneticSharp\src\GeneticSharp.Infrastructure.Framework\GeneticSharp.Infrastructure.Framework.csproj", "{1498D792-D02B-4A9E-8AFC-24AEBA0DEE54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticSharp.Infrastructure.Threading", "..\..\GeneticSharp\src\GeneticSharp.Infrastructure.Threading\GeneticSharp.Infrastructure.Threading.csproj", "{F7887A7C-89E6-483A-A762-0A8FE6FCD923}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticSharp.Domain", "..\..\GeneticSharp\src\GeneticSharp.Domain\GeneticSharp.Domain.csproj", "{C76DC1AD-FC7E-4168-BD19-101FF84A43F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1498D792-D02B-4A9E-8AFC-24AEBA0DEE54}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1498D792-D02B-4A9E-8AFC-24AEBA0DEE54}.Debug|x86.Build.0 = Debug|Any CPU
+		{1498D792-D02B-4A9E-8AFC-24AEBA0DEE54}.Release|x86.ActiveCfg = Release|Any CPU
+		{1498D792-D02B-4A9E-8AFC-24AEBA0DEE54}.Release|x86.Build.0 = Release|Any CPU
+		{1E439F6A-D380-4650-9994-C5B7EF9C710E}.Debug|x86.ActiveCfg = Debug|x86
+		{1E439F6A-D380-4650-9994-C5B7EF9C710E}.Debug|x86.Build.0 = Debug|x86
+		{1E439F6A-D380-4650-9994-C5B7EF9C710E}.Release|x86.ActiveCfg = Release|x86
+		{1E439F6A-D380-4650-9994-C5B7EF9C710E}.Release|x86.Build.0 = Release|x86
+		{C76DC1AD-FC7E-4168-BD19-101FF84A43F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C76DC1AD-FC7E-4168-BD19-101FF84A43F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{C76DC1AD-FC7E-4168-BD19-101FF84A43F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{C76DC1AD-FC7E-4168-BD19-101FF84A43F7}.Release|x86.Build.0 = Release|Any CPU
+		{F7887A7C-89E6-483A-A762-0A8FE6FCD923}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F7887A7C-89E6-483A-A762-0A8FE6FCD923}.Debug|x86.Build.0 = Debug|Any CPU
+		{F7887A7C-89E6-483A-A762-0A8FE6FCD923}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7887A7C-89E6-483A-A762-0A8FE6FCD923}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
