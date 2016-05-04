@@ -53,6 +53,7 @@ namespace PMGF
             //-----------------------//
             //method genome
             List<int> IncompleteMethods = new List<int>();
+
             //
             bool MethodGenomeLengthLessThanTwo = false;
             bool anyMethodFound = false;

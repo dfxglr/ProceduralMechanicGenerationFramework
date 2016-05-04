@@ -38,12 +38,17 @@ namespace PMGF
                 actorGenome.Add(2);
                 actorGenome.Add(6);
                 actorGenome.Add(0);
+                actorGenome.Add(10);
+                actorGenome.Add(0);
                 //new actor
                 actorGenome.Add((int)GenomeKeys.ActorKey);
                 actorGenome.Add(0);
                 actorGenome.Add(2);
                 //new actor
                 actorGenome.Add((int)GenomeKeys.ActorKey);
+                actorGenome.Add((int)GenomeKeys.ActorKey);
+                actorGenome.Add(2);
+
                 //new actor
                 actorGenome.Add((int)GenomeKeys.ActorKey);
                 actorGenome.Add(6);
@@ -65,7 +70,7 @@ namespace PMGF
                 //new actor
                 actorGenome.Add((int)GenomeKeys.ActorKey);
                 actorGenome.Add(0);//*/
-                actorGenome.Add(0);//*/
+                //actorGenome.Add(0);//*/
 
 
 
@@ -199,32 +204,32 @@ namespace PMGF
 
                 methodGenome.Add(new List<int>());
                 //new 
-                methodGenome[1].Add((int)GenomeKeys.ValueFunc);
-                methodGenome[1].Add(1);
-
-                /*methodGenome.Add(new List<int>());
-                //new 
-                methodGenome[2].Add((int)GenomeKeys.ChangeFunc);
-                methodGenome[2].Add(1);
+                methodGenome[1].Add((int)GenomeKeys.ChangeFunc);
+                methodGenome[1].Add(3);
 
                 methodGenome.Add(new List<int>());
                 //new 
-                methodGenome[3].Add((int)GenomeKeys.TimeStep);
+                methodGenome[2].Add((int)GenomeKeys.TimeStep);
+                methodGenome[2].Add(5);
+
+                methodGenome.Add(new List<int>());
+                //new 
+                methodGenome[3].Add((int)GenomeKeys.ChangeFunc);
                 methodGenome[3].Add(1);
 
                 methodGenome.Add(new List<int>());
                 //new 
-                methodGenome[4].Add((int)GenomeKeys.ChangeFunc);
-                methodGenome[4].Add(2);
+                methodGenome[4].Add((int)GenomeKeys.TimeStep);
+                methodGenome[4].Add(5);
 
                 methodGenome.Add(new List<int>());
                 //new 
-                methodGenome[5].Add((int)GenomeKeys.ValueFunc);
-                methodGenome[5].Add(2);
+                methodGenome[5].Add((int)GenomeKeys.UtilFunc);
+                methodGenome[5].Add(1);
 
                 methodGenome.Add(new List<int>());
                 //new 
-                methodGenome[6].Add((int)GenomeKeys.ValueFunc);
+                methodGenome[6].Add((int)GenomeKeys.MethodKey);
                 methodGenome[6].Add(3);
 
                 methodGenome.Add(new List<int>());
@@ -259,7 +264,7 @@ namespace PMGF
 
                 methodGenome.Add(new List<int>());
                 //new 
-                methodGenome[13].Add((int)GenomeKeys.MethodKey);
+                methodGenome[13].Add((int)GenomeKeys.ValueFunc);
                 methodGenome[13].Add(5);//*/
             }
         }
