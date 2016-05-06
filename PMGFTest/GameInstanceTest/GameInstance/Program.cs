@@ -19,14 +19,18 @@ namespace GameInstance
             //decodes the entire set
             //testGameInstance.ParsedSet.DecodeGenomeSet(testset);
             testGameInstance.BuildInstance(testset);
-        
+
+
+            
+            
+
             //jsut for checking that genomes got correctly decoded
-            testGameInstance.ParsedSet.DisplayActorTypeList();
-            testGameInstance.ParsedSet.DisplayActorTypePossplit3List();
+            //testGameInstance.ParsedSet.DisplayActorTypeList();
+            //testGameInstance.ParsedSet.DisplayActorTypePossplit3List();
 
             //genome error report
-            testGameInstance.ParsedSet.GenomeSetErrorReport();
-            
+            //testGameInstance.ParsedSet.GenomeSetErrorReport();
+
 
             Console.ReadKey();
         }

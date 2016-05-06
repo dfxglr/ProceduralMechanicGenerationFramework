@@ -48,7 +48,7 @@ namespace PMGF
 
 
 
-            // builds the instance
+            // builds the instance--- dont stare too long into the abyss
             public void BuildInstance(PMGGenomeSet TobeParsed)
             {
                 //decode genome set
@@ -82,239 +82,393 @@ namespace PMGF
                     {
                         Console.WriteLine("actor : " + i);
                     }
-                    //sublist of actor stats
-                    for(int j = 0; j< ParsedSet.actorTypes[i].Count; j++)
-                    {
-                        
-                        
-                        PMGMethod CurrentMethod = new PMGMethod();
-                        PMGEvent CurrentEvent;
 
-                        //is it even, time for method
+                    //gets overwritten by how ever many method and event pairs the actor types has 
+                    PMGMethod CurrentMethod = new PMGMethod();
+                    PMGEvent CurrentEvent;
+
+                    bool CurrentMethodComeplete = false;
+                    bool eventTypeFound = false;
+                    //sublist of actor stats
+                    for (int j = 0; j< ParsedSet.actorTypes[i].Count; j++)
+                    {
+                        //is it even, time for method--------------------------------------------------------------------------//
                         if (j%2 == 0)
                         {
                             if (debug) {
                                 Console.WriteLine("    method type: " + ParsedSet.actorTypes[i][j]);
                             }
                             //check the index list to see if 
-                            for (int e = 0; e < ParsedSet.methodIndexList.Count;e++) {
+                            for (int e = 0; e < ParsedSet.methodIndexList.Count;e++)
+                            {
 
-                                bool TypeFound = false;
+                                
+                                bool methodTypeFound = false;
+                                
                                 //if the value is an index in the method index list
-                                if (ParsedSet.actorTypes[i][j] == ParsedSet.methodIndexList[e])
+                                if (ParsedSet.actorTypes[i][j] == e)
                                 {
                                     //type found is set to true
-                                    TypeFound = true;
+                                    methodTypeFound = true;
                                     if (debug) {
-                                        Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " detected at index: " + e);
+                                        Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " detected at genome index: " + ParsedSet.methodIndexList[e]);
                                         Console.WriteLine("            list of executelists created for method type: " + ParsedSet.actorTypes[i][j]);
                                     }
                                     //new list of executelist for current method
-                                    List<PMGExecuteList> CurrentMethodExecuteLists = new List<PMGExecuteList>(); // = new PMGExecuteList(CurrentMethod as object, FunctionOwnerType.METHOD, CreatedActors[i]);
+                                    List<PMGExecuteList> CurrentMethodExecuteLists = new List<PMGExecuteList>();
 
                                     //
                                     int Findex = 0;
                                     List<List<int>> functionIndex = new List<List<int>>();
-                                    int timeIndex = 0;
                                     
 
                                     //goes through method genome to make execute lists
                                     for (int ex = ParsedSet.methodIndexList[e]+1; ex<ParsedSet._genomeSet.methodGenome.Count;ex++)
                                     {
-                                        //check for new method
-                                        if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.MethodKey)
+                                        //check for new method or new timestep or the end of the genome
+                                        if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.MethodKey|| ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.TimeStep || ex == ParsedSet._genomeSet.methodGenome.Count-1)
                                         {
-                                            Console.WriteLine("                added new executelist");
-                                            //create new execution list
-                                            CurrentMethodExecuteLists.Add(new PMGExecuteList(CurrentMethod as object, FunctionOwnerType.METHOD, CreatedActors[i]));
-
-
-                                            for (int f = 0; f < functionIndex.Count; f++)
+                                            //add last function in the genome only if end is hit
+                                            if (ex == ParsedSet._genomeSet.methodGenome.Count - 1)
                                             {
-                                                
-                                                //add functions to the last execute list
-                                                //if value function
-                                                if (functionIndex[f][0] == (int)GenomeKeys.ValueFunc)
-                                                {
-                                                    Console.WriteLine("                    value function detected");
-                                                    //check if its in the collections                                                    
-                                                    if (functionIndex[f][1] < MainCore.ValueFunctions.Collection.Count)
-                                                    {
-                                                        Console.WriteLine("                        value function type: "+ functionIndex[f][1]+ " added to executelist: "+ (CurrentMethodExecuteLists.Count - 1));
-                                                        //add function to currentmethodexecutelits[timeindex]
-                                                        CurrentMethodExecuteLists[CurrentMethodExecuteLists.Count - 1]._functions.Add(new PMGValueFunction(functionIndex[f][1]));
-
-                                                    }
-                                                    else
-                                                    {
-                                                        //error: value function requested not found in the collections
-                                                        Console.WriteLine("                        value function type: " + functionIndex[f][1]+" was not found");
-                                                    }
-                                                }
-                                                // else if change function
-                                                else if (functionIndex[f][0] == (int)GenomeKeys.ChangeFunc)
-                                                {
-                                                    Console.WriteLine("                    change function detected");
-                                                    //check if its in the collections                                                    
-                                                    if (functionIndex[f][1] < MainCore.ChangeFunctions.Collection.Count)
-                                                    {
-                                                        Console.WriteLine("                        change function type: " + functionIndex[f][1] + " added to executelist: " + (CurrentMethodExecuteLists.Count - 1));
-                                                        CurrentMethodExecuteLists[CurrentMethodExecuteLists.Count - 1]._functions.Add(new PMGChangeFunction(functionIndex[f][1]));
-                                                    }
-                                                    else
-                                                    {
-                                                        //error: change function requested not found in the collections
-                                                        Console.WriteLine("                        change function type: " + functionIndex[f][1] + " was not found");
-                                                    }
-                                                }
-                                                //else utility function
-                                                else
-                                                {
-                                                    Console.WriteLine("                    utility function detected");
-                                                    //check if its in the collections                                                    
-                                                    if (functionIndex[f][1] < MainCore.UtilityFunctions.Collection.Count)
-                                                    {
-                                                        Console.WriteLine("                        utility function type: " + functionIndex[f][1] + " added to executelist: " + (CurrentMethodExecuteLists.Count - 1));
-                                                        CurrentMethodExecuteLists[CurrentMethodExecuteLists.Count - 1]._functions.Add(new PMGUtilityFunction(functionIndex[f][1]));
-                                                    }
-                                                    else
-                                                    {
-                                                        //error: utility function requested not found in the collections
-                                                        Console.WriteLine("                        utility function type: " + functionIndex[f][1] + " was not found");
-
-                                                    }
-                                                }
+                                                functionIndex.Add(new List<int>());
+                                                functionIndex[Findex].Add(ParsedSet._genomeSet.methodGenome[ex][0]);
+                                                functionIndex[Findex].Add(ParsedSet._genomeSet.methodGenome[ex][1]);
+                                                Findex++;
                                             }
-                                            //breaks out at the next method found
-                                            break;
-                                        }
-                                        //check for timesteps between current and new method
-                                        else if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.TimeStep)
-                                        {
-                                            
-                                            //checks for timestep right after first method
-                                            if (functionIndex.Count > 0)
-                                            {
-                                                
+                                            //make sure there are functions to add to a new executelist
+                                            if (functionIndex.Count>0) {
                                                 //create new execution list
                                                 CurrentMethodExecuteLists.Add(new PMGExecuteList(CurrentMethod as object, FunctionOwnerType.METHOD, CreatedActors[i]));
-                                                Console.WriteLine("                added executelist: " + (CurrentMethodExecuteLists.Count - 1));
-
-                                                //add functions to current methods execute list before time step
+                                                if (debug)
+                                                {
+                                                    Console.WriteLine("                added new executelist: " + (CurrentMethodExecuteLists.Count - 1));
+                                                }
+                                                //
                                                 for (int f = 0; f < functionIndex.Count; f++)
                                                 {
                                                     //add functions to the last execute list
                                                     //if value function
                                                     if (functionIndex[f][0] == (int)GenomeKeys.ValueFunc)
                                                     {
-                                                        Console.WriteLine("                    value function detected");
+                                                        if (debug)
+                                                        {
+                                                            Console.WriteLine("                    value function detected");
+                                                        }
                                                         //check if its in the collections                                                    
                                                         if (functionIndex[f][1] < MainCore.ValueFunctions.Collection.Count)
                                                         {
-                                                            Console.WriteLine("                        value function type: " + functionIndex[f][1] + " added to executelist: " + (CurrentMethodExecuteLists.Count - 1));
                                                             //add function to currentmethodexecutelits[timeindex]
                                                             CurrentMethodExecuteLists[CurrentMethodExecuteLists.Count - 1]._functions.Add(new PMGValueFunction(functionIndex[f][1]));
-
+                                                            if (debug)
+                                                            {
+                                                                Console.WriteLine("                        value function type: " + functionIndex[f][1] + " added to executelist: " + (CurrentMethodExecuteLists.Count - 1));
+                                                            }
                                                         }
                                                         else
                                                         {
                                                             //error: value function requested not found in the collections
-                                                            Console.WriteLine("                        value function type: " + functionIndex[f][1] + " was not found");
+                                                            if (debug)
+                                                            {
+                                                                Console.WriteLine("                        value function type: " + functionIndex[f][1] + " was not found");
+                                                            }
+                                                            //NOTE: adds every time the same number which is annoying but need fix later
+                                                            ParsedSet.UnknownValueFunctionType.Add(functionIndex[f][1]);
                                                         }
                                                     }
                                                     // else if change function
                                                     else if (functionIndex[f][0] == (int)GenomeKeys.ChangeFunc)
                                                     {
-                                                        Console.WriteLine("                    change function detected");
+                                                        if (debug)
+                                                        {
+                                                            Console.WriteLine("                    change function detected");
+                                                        }
                                                         //check if its in the collections                                                    
                                                         if (functionIndex[f][1] < MainCore.ChangeFunctions.Collection.Count)
                                                         {
-                                                            Console.WriteLine("                        change function type: " + functionIndex[f][1] + " added to executelist: " + (CurrentMethodExecuteLists.Count - 1));
                                                             CurrentMethodExecuteLists[CurrentMethodExecuteLists.Count - 1]._functions.Add(new PMGChangeFunction(functionIndex[f][1]));
+                                                            if (debug)
+                                                            {
+                                                                Console.WriteLine("                        change function type: " + functionIndex[f][1] + " added to executelist: " + (CurrentMethodExecuteLists.Count - 1));
+                                                            }
                                                         }
                                                         else
                                                         {
                                                             //error: change function requested not found in the collections
-                                                            Console.WriteLine("                        change function type: " + functionIndex[f][1] + " was not found");
+
+                                                            if (debug)
+                                                            {
+                                                                Console.WriteLine("                        change function type: " + functionIndex[f][1] + " was not found");
+                                                            }
+                                                            //NOTE: adds every time the same number which is annoying but need fix later
+                                                            ParsedSet.UnknownChangeFunctionType.Add(functionIndex[f][1]);
                                                         }
                                                     }
                                                     //else utility function
                                                     else
                                                     {
-                                                        Console.WriteLine("                    utility function detected");
+                                                        if (debug)
+                                                        {
+                                                            Console.WriteLine("                    utility function detected");
+                                                        }
                                                         //check if its in the collections                                                    
                                                         if (functionIndex[f][1] < MainCore.UtilityFunctions.Collection.Count)
                                                         {
-                                                            Console.WriteLine("                        utility function type: " + functionIndex[f][1] + " added to executelist: " + (CurrentMethodExecuteLists.Count - 1));
                                                             CurrentMethodExecuteLists[CurrentMethodExecuteLists.Count - 1]._functions.Add(new PMGUtilityFunction(functionIndex[f][1]));
+                                                            if (debug)
+                                                            {
+                                                                Console.WriteLine("                        utility function type: " + functionIndex[f][1] + " added to executelist: " + (CurrentMethodExecuteLists.Count - 1));
+                                                            }
                                                         }
                                                         else
                                                         {
                                                             //error: utility function requested not found in the collections
-                                                            Console.WriteLine("                        utility function type: " + functionIndex[f][1] + " was not found");
-
+                                                            if (debug)
+                                                            {
+                                                                Console.WriteLine("                        utility function type: " + functionIndex[f][1] + " was not found");
+                                                            }
+                                                            //NOTE: adds every time the same number which is annoying but need fix later
+                                                            ParsedSet.UnknownUtilityFunctionType.Add(functionIndex[f][1]);
                                                         }
                                                     }
                                                 }
+                                            }
+                                            //breaks out when new method is found
+                                            if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.MethodKey) {
+                                                break;
+                                            }
+                                            //add empty executelists corrospoding to how many timesteps are needed
+                                            if(ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.TimeStep)
+                                            {
                                                 //adds null lists for how many timesteps needs to be added
                                                 for (int t = 0; t < ParsedSet._genomeSet.methodGenome[ex][1]; t++)
                                                 {
-                                                    Console.WriteLine("                added timestep as executelist: " + (CurrentMethodExecuteLists.Count - 1));
                                                     CurrentMethodExecuteLists.Add(null);
+                                                    Console.WriteLine("                added timestep as executelist: " + (CurrentMethodExecuteLists.Count - 1));
                                                 }
-                                            }
-                                            
-
-                                            timeIndex++;
-
-                                            //resets function index list
-                                            Findex = 0;
-                                            functionIndex = new List<List<int>>();                                            
+                                                //resets function index list
+                                                Findex = 0;
+                                                functionIndex = new List<List<int>>();
+                                            }   
                                         }
-                                        //check for anything thats not a method key or timestep
+                                        //check for anything thats not a method key or timestep or the end of the genome
                                         else
                                         {
-                                            //counts up the index
+                                            //counts up the function index
                                             functionIndex.Add(new List<int>());
                                             functionIndex[Findex].Add(ParsedSet._genomeSet.methodGenome[ex][0]);
                                             functionIndex[Findex].Add(ParsedSet._genomeSet.methodGenome[ex][1]);
                                             Findex++;
                                         }
                                     }
-                                    if (true)
+
+                                    //
+                                    if (debug)
+                                    {
+                                        Console.WriteLine("            list of executelists for method: "+ ParsedSet.actorTypes[i][j]+" finished");
+                                    }
+                                    //add every item in list of executelists to _steps in current method
+                                    for (int ms = 0;ms<CurrentMethodExecuteLists.Count;ms++)
+                                    {
+                                        CurrentMethod._steps.Add(CurrentMethodExecuteLists[ms]);
+                                        if (debug)
+                                        {
+                                            Console.WriteLine("                executelist: "+ms+" added to method: "+ ParsedSet.actorTypes[i][j]);
+                                        }
+                                    }
+                                    //
+                                    CurrentMethodComeplete = true;
+                                    if (debug)
+                                    {
+                                        Console.WriteLine("    method type: " + ParsedSet.actorTypes[i][j] + " comeplete");
+                                    }
+                                    //break when a type is found to avoid some uneeded loops
+                                    break;
+
+                                }
+                                else if(!methodTypeFound)
+                                {
+                                    // error: Method not found in method list
+                                    if (debug)
+                                    {
+                                        Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " not detected at genome index: " + ParsedSet.methodIndexList[e]);
+                                    }
+                                    //NOTE: adds every time the same number(does not take into account if the number is already there)
+                                    ParsedSet.MissingMethodTypes.Add(ParsedSet.actorTypes[i][j]);
+                                }
+                            }
+                        }
+                        //if its odd, time for event--------------------------------------------------------------------------//
+                        if(j % 2 != 0)
+                        {
+                            if (debug)
+                            {
+                                Console.WriteLine("     event type: " + ParsedSet.actorTypes[i][j]);
+                            }
+                            //check that this events method is found as current method
+                            if(CurrentMethodComeplete)
+                            {
+                                //resets
+                                CurrentMethodComeplete = false;
+                               
+                                //check through the event index list
+                                for (int e = 0; e < ParsedSet.eventIndexList.Count; e++)
+                                {
+                                    //resets it for next event
+                                    eventTypeFound = false;
+                                    //if the value is an index in the method index list
+                                    if (ParsedSet.actorTypes[i][j] == e)
                                     {
 
+                                        //event was in the list
+                                        eventTypeFound = true;
+                                        if (debug)
+                                        {
+                                            Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " detected at genome index: " + ParsedSet.eventIndexList[e]);
+                                        }
+
+                                        //assigns current event with current actor and current method for the event 
+                                        CurrentEvent = new PMGEvent(CurrentMethod, CreatedActors[i], (EventTriggerBehavior)ParsedSet._genomeSet.eventGenome[ParsedSet.eventIndexList[e]][1]);
+                                        if (debug)
+                                        {
+                                            Console.WriteLine("            event has (method: " + ParsedSet.actorTypes[i][j - 1]+ ", actor: " + i +", behavior: " + (EventTriggerBehavior)ParsedSet._genomeSet.eventGenome[ParsedSet.eventIndexList[e]][1]+")");
+                                        }
+                                        //create executelist for current event 
+                                        PMGExecuteList CurrentEventExecutelist = new PMGExecuteList(CurrentEvent as object, FunctionOwnerType.EVENT, CreatedActors[i]);
+                                        if (debug)
+                                        {
+                                            Console.WriteLine("                added new executelist");
+                                        }
+                                        //goes through event genome to add functions to current event executelist
+                                        for (int ex = ParsedSet.eventIndexList[e] + 1; ex < ParsedSet._genomeSet.eventGenome.Count; ex++)
+                                        {                                                                                  
+                                            //break when hitting next event or end
+                                            if (ParsedSet._genomeSet.eventGenome[ex][0] == (int)GenomeKeys.EventKey)
+                                            {
+                                                break;
+                                            }
+                                            //value
+                                            if (ParsedSet._genomeSet.eventGenome[ex][0] == (int)GenomeKeys.ValueFunc)
+                                            {
+                                                if (debug)
+                                                {
+                                                    Console.WriteLine("                    value function detected");
+                                                }
+                                                //check for if the type is in collection
+                                                if (ParsedSet._genomeSet.eventGenome[ex][1]< MainCore.ValueFunctions.Collection.Count)
+                                                {
+                                                    //adds value function to current event's conditions executelist
+                                                    CurrentEventExecutelist._functions.Add(new PMGValueFunction(ParsedSet._genomeSet.eventGenome[ex][1]));
+                                                    if (debug)
+                                                    {
+                                                        Console.WriteLine("                        value function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " added to executelist");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //error: value function type not found in collections
+                                                    if (debug)
+                                                    {
+                                                        Console.WriteLine("                        value function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
+                                                    }
+                                                }
+
+                                            }
+                                            //condition
+                                            if (ParsedSet._genomeSet.eventGenome[ex][0] == (int)GenomeKeys.CondFunc)
+                                            {
+                                                if (debug)
+                                                {
+                                                    Console.WriteLine("                    condition function detected");
+                                                }
+                                                //check for if the type is in collection
+                                                if (ParsedSet._genomeSet.eventGenome[ex][1] < MainCore.ConditionFunctions.Collection.Count)
+                                                {
+                                                    //adds condition function to current event's conditions executelist
+                                                    CurrentEventExecutelist._functions.Add(new PMGConditionFunction(ParsedSet._genomeSet.eventGenome[ex][1]));
+                                                    if (debug)
+                                                    {
+                                                        Console.WriteLine("                        condition function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " added to executelist");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //error: conditions function type not found in collections
+                                                    if (debug)
+                                                    {
+                                                        Console.WriteLine("                        condition function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
+                                                    }
+                                                }
+                                            }
+                                            //utility
+                                            if (ParsedSet._genomeSet.eventGenome[ex][0] == (int)GenomeKeys.UtilFunc)
+                                            {
+                                                if (debug)
+                                                {
+                                                    Console.WriteLine("                    utility function detected");
+                                                }
+                                                //check for if the type is in collection
+                                                if (ParsedSet._genomeSet.eventGenome[ex][1] < MainCore.UtilityFunctions.Collection.Count)
+                                                {
+                                                    //adds utility function to current event's conditions executelist
+                                                    CurrentEventExecutelist._functions.Add(new PMGUtilityFunction(ParsedSet._genomeSet.eventGenome[ex][1]));
+                                                    if (debug)
+                                                    {
+                                                        Console.WriteLine("                        utility function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " added to executelist");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //error: utility function type not found in collections
+                                                    if (debug)
+                                                    {
+                                                        Console.WriteLine("                        utility function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        //current event's conditions executelist gets filled with the current executelist
+                                        CurrentEvent._conditions = CurrentEventExecutelist;
+                                        //add event to actor
+                                        CreatedActors[i].Events.Add(CurrentEvent);
+                                        if (debug)
+                                        {
+                                            Console.WriteLine("                executelist is finished, and was added to event conditions");
+                                            Console.WriteLine("     event type: " + ParsedSet.actorTypes[i][j] + " comeplete, and added to actor: "+i);
+                                        }  
                                     }
                                     else
                                     {
-                                        //error: 
-                                    }
-                                    //add functions to those lists
-                                    //add all lists to current method
-                                    //CurrentMethod._steps.add(CurrentExList)
+                                        // error: event tye not found in even type index
+                                        if (debug)
+                                        {
+                                            Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " not detected at index: "+ParsedSet.eventIndexList[e]);
+                                        }
+                                    }                                      
                                 }
-                                else if(!TypeFound)
+                            }
+                            else
+                            {
+                                //error: no method for this event 
+                                if (debug)
                                 {
-                                    // error: Method not found in method list
-                                    Console.WriteLine("        type: "+ ParsedSet.actorTypes[i][j]+" not detected at index: "+e);
-                                    
-
-                                }//*/
-                            }///
-                        }
-                        //if its odd, time for event
-                        else if(j % 2 != 0)
-                        {
-                            Console.WriteLine("     event type: " + j);
-                            //add check for no method, in case when method does not match any on the list
-                            //add event
-                            //CurrentEvent = new PMGEvent(CurrentMethod, CreatedActors[i]/, behavior///);
-
-                            //at the end, add the event to the actor
-                            //CreatedActors[i].Events.Add(CurrentEvent);
-                        }///   
+                                    Console.WriteLine("        has NO method");
+                                }
+                            }
+                        }///                        
                     }///
+                    if (debug)
+                    {
+                        Console.WriteLine("actor: "+i+" comeplete");
+                    }
                 }///
+                //test find one actor's event's method's value function
+                if (debug)
+                {
+                    Console.WriteLine("Total number of created actor : "+ CreatedActors.Count);
+                    Console.WriteLine("first actor's first event's first method's first executelist's first step: "+CreatedActors[0].Events[0]._method._steps[0]._functions[0]);
+
+                }
             }
         }
     }

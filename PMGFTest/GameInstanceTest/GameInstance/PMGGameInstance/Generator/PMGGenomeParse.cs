@@ -22,7 +22,10 @@ namespace PMGF
             public List<int> eventIndexList = new List<int>();
             //index list for mehtod genome
             public List<int> methodIndexList = new List<int>();
-            //-------------------------------------------------------------------------------//error counting
+
+
+            //-------------------------------------------------------------------------------//
+            //Parser errors
             //-----------------------//
             //actor genome
             //indexInGenome
@@ -53,11 +56,19 @@ namespace PMGF
             //-----------------------//
             //method genome
             List<int> IncompleteMethods = new List<int>();
-
             //
             bool MethodGenomeLengthLessThanTwo = false;
             bool anyMethodFound = false;
+            //-----------------------//
             //-------------------------------------------------------------------------------//
+            //build errors - comming from game instance
+            public List<int> UnknownValueFunctionType = new List<int>();
+            public List<int> UnknownChangeFunctionType = new List<int>();
+            public List<int> UnknownUtilityFunctionType = new List<int>();
+            public List<int> UnknownConditionFunctionType = new List<int>();
+
+            public List<int> MissingMethodTypes = new List<int>();
+
 
 
             //constuctor
