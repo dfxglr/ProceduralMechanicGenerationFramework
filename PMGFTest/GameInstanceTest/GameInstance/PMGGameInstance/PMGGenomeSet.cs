@@ -188,7 +188,7 @@ namespace PMGF
                 eventGenome.Add(new List<int>());
                 //new condition fucntion
                 eventGenome[12].Add((int)GenomeKeys.CondFunc);
-                eventGenome[12].Add(2);
+                eventGenome[12].Add(1);
                 //
                 eventGenome.Add(new List<int>());
                 //new condition function

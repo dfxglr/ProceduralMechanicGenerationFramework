@@ -68,7 +68,7 @@ namespace PMGF
             public List<int> UnknownConditionFunctionType = new List<int>();
 
             public List<int> MissingMethodTypes = new List<int>();
-
+            public List<int> MissingEventTypes = new List<int>();
 
 
             //constuctor

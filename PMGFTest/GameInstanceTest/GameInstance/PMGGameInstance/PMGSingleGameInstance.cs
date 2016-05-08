@@ -17,20 +17,29 @@ namespace PMGF
             //creating a map
             PMGMap _Map = new PMGMap();
 
-            
+            //core
+            PMGGameCore MainCore = new PMGGameCore();
+
+
             public PMGGenomeParse ParsedSet = new PMGGenomeParse();
             
                 
             //actors
+            //created from parsed set
             List<PMGActor> CreatedActors = new List<PMGActor>();
+            //removed incomeplete actors from created actors, and made lsit of spawnable types
+            List<PMGActor> SpawnAbleActors = new List<PMGActor>();
+            //actors spawned in map
             List<PMGActor> SpawnedActors = new List<PMGActor>();
+            
+            //actors new iD - shouldhave the lenght of the spawned, and contain the id for each actor there, starting from 1000
+            List<int> ActorIDs = new List<int>();
             //methods
             List<PMGMethod> Methods = new List<PMGMethod>();
             List<List<PMGExecuteList>> MethodsExecutelists = new List<List<PMGExecuteList>>(); 
             //events
             List<PMGEvent> Events = new List<PMGEvent>();
-            //actors new iD - shouldhave the lenght of the actor type positions list, and contain the id for each actor there, starting from 1000
-            List<int> ActorIDs = new List<int>();
+            
 
 
 
@@ -48,14 +57,12 @@ namespace PMGF
 
 
 
-            // builds the instance--- dont stare too long into the abyss
-            public void BuildInstance(PMGGenomeSet TobeParsed)
+            // builds the instance
+            public void BuildInstance(PMGGenomeSet TobeParsed,bool debug)
             {
                 //decode genome set
-                ParsedSet.DecodeGenomeSet(TobeParsed);
-
-                //make core
-                PMGGameCore MainCore = new PMGGameCore();
+                ParsedSet.DecodeGenomeSet(TobeParsed);            
+                
 
             
                 //--------------------------------// testing stuff, this is only here because our collections are empty atm
@@ -67,20 +74,44 @@ namespace PMGF
                 PMGConditionFunction testCondF = new PMGConditionFunction(0);
                 ////--------------------------------//
 
-                //-----//
-                bool debug = true;
-                //-----//
+                // build actor types from parsed set
+                BuildActorTypes(debug);
 
+                // removes incomplete actor types before creating spawn list
+                RemoveIncompleteActortypes(debug);
+
+                //create spawn list
+                CreateSpawnTypeList(debug);
+
+                //replace first actor with player actor, but keep first method for action event
+
+                //createspawnlist, actorID's, and spawn actors into map
+                SpawnActors(debug);
+
+                
+                
+            }
+
+            // creates actors types from parsed set, counts up errors from missing methods and events, as well as missing value, utility, condition, and change functions
+            //dont stare too long into the abyss... 
+            //Downsides: 
+            //      the longer genomes, the longer time to finish becomes
+            //      missing functions, methods and events errors, are counted multiple times(does not check for if their are already missing)
+            //Upsides:
+            //      removes the need for a potato index system, which would otherwise be needed, as loop index accounts
+            //      does it all in one go, aka, when its done, its done, and no new actor types needs to be created
+            public void BuildActorTypes(bool debug)
+            {
                 //create actors, methods and event and add them to the actors
                 //mainlist of actor types
-                for (int i = 0; i< ParsedSet.actorTypes.Count;i++)
+                for (int i = 0; i < ParsedSet.actorTypes.Count; i++)
                 {
-                    
+
                     //add new actor to created actors
                     CreatedActors.Add(new PMGActor(MainCore));
                     if (debug)
                     {
-                        Console.WriteLine("actor : " + i);
+                        Console.WriteLine("Created-Actor : " + i);
                     }
 
                     //gets overwritten by how ever many method and event pairs the actor types has 
@@ -88,29 +119,30 @@ namespace PMGF
                     PMGEvent CurrentEvent;
 
                     bool CurrentMethodComeplete = false;
-                    bool eventTypeFound = false;
                     //sublist of actor stats
-                    for (int j = 0; j< ParsedSet.actorTypes[i].Count; j++)
+                    for (int j = 0; j < ParsedSet.actorTypes[i].Count; j++)
                     {
                         //is it even, time for method--------------------------------------------------------------------------//
-                        if (j%2 == 0)
+                        if (j % 2 == 0)
                         {
-                            if (debug) {
+                            if (debug)
+                            {
                                 Console.WriteLine("    method type: " + ParsedSet.actorTypes[i][j]);
                             }
                             //check the index list to see if 
-                            for (int e = 0; e < ParsedSet.methodIndexList.Count;e++)
+                            for (int e = 0; e < ParsedSet.methodIndexList.Count; e++)
                             {
 
-                                
+
                                 bool methodTypeFound = false;
-                                
+
                                 //if the value is an index in the method index list
                                 if (ParsedSet.actorTypes[i][j] == e)
                                 {
                                     //type found is set to true
                                     methodTypeFound = true;
-                                    if (debug) {
+                                    if (debug)
+                                    {
                                         Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " detected at genome index: " + ParsedSet.methodIndexList[e]);
                                         Console.WriteLine("            list of executelists created for method type: " + ParsedSet.actorTypes[i][j]);
                                     }
@@ -120,13 +152,13 @@ namespace PMGF
                                     //
                                     int Findex = 0;
                                     List<List<int>> functionIndex = new List<List<int>>();
-                                    
+
 
                                     //goes through method genome to make execute lists
-                                    for (int ex = ParsedSet.methodIndexList[e]+1; ex<ParsedSet._genomeSet.methodGenome.Count;ex++)
+                                    for (int ex = ParsedSet.methodIndexList[e] + 1; ex < ParsedSet._genomeSet.methodGenome.Count; ex++)
                                     {
                                         //check for new method or new timestep or the end of the genome
-                                        if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.MethodKey|| ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.TimeStep || ex == ParsedSet._genomeSet.methodGenome.Count-1)
+                                        if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.MethodKey || ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.TimeStep || ex == ParsedSet._genomeSet.methodGenome.Count - 1)
                                         {
                                             //add last function in the genome only if end is hit
                                             if (ex == ParsedSet._genomeSet.methodGenome.Count - 1)
@@ -137,7 +169,8 @@ namespace PMGF
                                                 Findex++;
                                             }
                                             //make sure there are functions to add to a new executelist
-                                            if (functionIndex.Count>0) {
+                                            if (functionIndex.Count > 0)
+                                            {
                                                 //create new execution list
                                                 CurrentMethodExecuteLists.Add(new PMGExecuteList(CurrentMethod as object, FunctionOwnerType.METHOD, CreatedActors[i]));
                                                 if (debug)
@@ -230,15 +263,37 @@ namespace PMGF
                                                             //NOTE: adds every time the same number which is annoying but need fix later
                                                             ParsedSet.UnknownUtilityFunctionType.Add(functionIndex[f][1]);
                                                         }
+                                                    }                                                    
+                                                }
+                                                //checks for execute lists with no functions in, if found, turns then to null, aka makes it a timestep
+                                                if (CurrentMethodExecuteLists[CurrentMethodExecuteLists.Count - 1]._functions.Count > 0)
+                                                {
+                                                    //has functions and we do nothing
+                                                    if (debug)
+                                                    {
+                                                        Console.WriteLine("                executelist: " + (CurrentMethodExecuteLists.Count - 1) + " comeplete");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //has no functions and we turn it into a time step
+                                                    //remove recently made list
+                                                    CurrentMethodExecuteLists.RemoveAt(CurrentMethodExecuteLists.Count - 1);
+                                                    //add timestep in its place
+                                                    CurrentMethodExecuteLists.Add(null);
+                                                    if (debug)
+                                                    {
+                                                        Console.WriteLine("                executelist: " + (CurrentMethodExecuteLists.Count - 1) + " incomeplete, was replaced by a timestep");
                                                     }
                                                 }
                                             }
                                             //breaks out when new method is found
-                                            if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.MethodKey) {
+                                            if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.MethodKey)
+                                            {
                                                 break;
                                             }
                                             //add empty executelists corrospoding to how many timesteps are needed
-                                            if(ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.TimeStep)
+                                            if (ParsedSet._genomeSet.methodGenome[ex][0] == (int)GenomeKeys.TimeStep)
                                             {
                                                 //adds null lists for how many timesteps needs to be added
                                                 for (int t = 0; t < ParsedSet._genomeSet.methodGenome[ex][1]; t++)
@@ -249,7 +304,7 @@ namespace PMGF
                                                 //resets function index list
                                                 Findex = 0;
                                                 functionIndex = new List<List<int>>();
-                                            }   
+                                            }
                                         }
                                         //check for anything thats not a method key or timestep or the end of the genome
                                         else
@@ -265,15 +320,15 @@ namespace PMGF
                                     //
                                     if (debug)
                                     {
-                                        Console.WriteLine("            list of executelists for method: "+ ParsedSet.actorTypes[i][j]+" finished");
+                                        Console.WriteLine("            list of executelists for method: " + ParsedSet.actorTypes[i][j] + " finished");
                                     }
                                     //add every item in list of executelists to _steps in current method
-                                    for (int ms = 0;ms<CurrentMethodExecuteLists.Count;ms++)
+                                    for (int ms = 0; ms < CurrentMethodExecuteLists.Count; ms++)
                                     {
                                         CurrentMethod._steps.Add(CurrentMethodExecuteLists[ms]);
                                         if (debug)
                                         {
-                                            Console.WriteLine("                executelist: "+ms+" added to method: "+ ParsedSet.actorTypes[i][j]);
+                                            Console.WriteLine("                executelist: " + ms + " added to method: " + ParsedSet.actorTypes[i][j]);
                                         }
                                     }
                                     //
@@ -286,7 +341,7 @@ namespace PMGF
                                     break;
 
                                 }
-                                else if(!methodTypeFound)
+                                else if (!methodTypeFound)
                                 {
                                     // error: Method not found in method list
                                     if (debug)
@@ -299,39 +354,35 @@ namespace PMGF
                             }
                         }
                         //if its odd, time for event--------------------------------------------------------------------------//
-                        if(j % 2 != 0)
+                        if (j % 2 != 0)
                         {
                             if (debug)
                             {
                                 Console.WriteLine("     event type: " + ParsedSet.actorTypes[i][j]);
                             }
                             //check that this events method is found as current method
-                            if(CurrentMethodComeplete)
+                            if (CurrentMethodComeplete)
                             {
                                 //resets
                                 CurrentMethodComeplete = false;
-                               
+                                bool CurrentEventFound = false;
+
                                 //check through the event index list
                                 for (int e = 0; e < ParsedSet.eventIndexList.Count; e++)
                                 {
-                                    //resets it for next event
-                                    eventTypeFound = false;
-                                    //if the value is an index in the method index list
+                                    //if the value is an index in the event index list
                                     if (ParsedSet.actorTypes[i][j] == e)
                                     {
-
-                                        //event was in the list
-                                        eventTypeFound = true;
+                                        CurrentEventFound = true;
                                         if (debug)
                                         {
                                             Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " detected at genome index: " + ParsedSet.eventIndexList[e]);
                                         }
-
                                         //assigns current event with current actor and current method for the event 
                                         CurrentEvent = new PMGEvent(CurrentMethod, CreatedActors[i], (EventTriggerBehavior)ParsedSet._genomeSet.eventGenome[ParsedSet.eventIndexList[e]][1]);
                                         if (debug)
                                         {
-                                            Console.WriteLine("            event has (method: " + ParsedSet.actorTypes[i][j - 1]+ ", actor: " + i +", behavior: " + (EventTriggerBehavior)ParsedSet._genomeSet.eventGenome[ParsedSet.eventIndexList[e]][1]+")");
+                                            Console.WriteLine("            event has (method: " + ParsedSet.actorTypes[i][j - 1] + ", actor: " + i + ", behavior: " + (EventTriggerBehavior)ParsedSet._genomeSet.eventGenome[ParsedSet.eventIndexList[e]][1] + ")");
                                         }
                                         //create executelist for current event 
                                         PMGExecuteList CurrentEventExecutelist = new PMGExecuteList(CurrentEvent as object, FunctionOwnerType.EVENT, CreatedActors[i]);
@@ -341,7 +392,7 @@ namespace PMGF
                                         }
                                         //goes through event genome to add functions to current event executelist
                                         for (int ex = ParsedSet.eventIndexList[e] + 1; ex < ParsedSet._genomeSet.eventGenome.Count; ex++)
-                                        {                                                                                  
+                                        {
                                             //break when hitting next event or end
                                             if (ParsedSet._genomeSet.eventGenome[ex][0] == (int)GenomeKeys.EventKey)
                                             {
@@ -355,7 +406,7 @@ namespace PMGF
                                                     Console.WriteLine("                    value function detected");
                                                 }
                                                 //check for if the type is in collection
-                                                if (ParsedSet._genomeSet.eventGenome[ex][1]< MainCore.ValueFunctions.Collection.Count)
+                                                if (ParsedSet._genomeSet.eventGenome[ex][1] < MainCore.ValueFunctions.Collection.Count)
                                                 {
                                                     //adds value function to current event's conditions executelist
                                                     CurrentEventExecutelist._functions.Add(new PMGValueFunction(ParsedSet._genomeSet.eventGenome[ex][1]));
@@ -367,6 +418,7 @@ namespace PMGF
                                                 else
                                                 {
                                                     //error: value function type not found in collections
+                                                    ParsedSet.UnknownValueFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
                                                     if (debug)
                                                     {
                                                         Console.WriteLine("                        value function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
@@ -394,6 +446,7 @@ namespace PMGF
                                                 else
                                                 {
                                                     //error: conditions function type not found in collections
+                                                    ParsedSet.UnknownConditionFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
                                                     if (debug)
                                                     {
                                                         Console.WriteLine("                        condition function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
@@ -420,6 +473,7 @@ namespace PMGF
                                                 else
                                                 {
                                                     //error: utility function type not found in collections
+                                                    ParsedSet.UnknownUtilityFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
                                                     if (debug)
                                                     {
                                                         Console.WriteLine("                        utility function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
@@ -427,24 +481,53 @@ namespace PMGF
                                                 }
                                             }
                                         }
-                                        //current event's conditions executelist gets filled with the current executelist
-                                        CurrentEvent._conditions = CurrentEventExecutelist;
-                                        //add event to actor
-                                        CreatedActors[i].Events.Add(CurrentEvent);
-                                        if (debug)
+                                        //check if any fucntions was added to the executelist
+                                        if (CurrentEventExecutelist._functions.Count > 0)
                                         {
-                                            Console.WriteLine("                executelist is finished, and was added to event conditions");
-                                            Console.WriteLine("     event type: " + ParsedSet.actorTypes[i][j] + " comeplete, and added to actor: "+i);
-                                        }  
+                                            //current event's conditions executelist gets filled with the current executelist
+                                            CurrentEvent._conditions = CurrentEventExecutelist;
+                                            
+                                            if (debug)
+                                            {
+                                                Console.WriteLine("                executelist complete, and was added to event conditions");                                                
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //error event executelsit has no functions and event found is set to false
+                                            CurrentEventFound = false;
+                                            if (debug)
+                                            {
+                                                Console.WriteLine("                executelist Incomplete");
+                                            }
+                                        }
+                                        //check for complete even
+                                        if (CurrentEventFound)
+                                        {
+                                            //add event to current actor
+                                            CreatedActors[i].Events.Add(CurrentEvent);
+                                            if (debug)
+                                            {
+
+                                                Console.WriteLine("     event type: " + ParsedSet.actorTypes[i][j] + " comeplete, and added to actor: " + i);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("     event type: " + ParsedSet.actorTypes[i][j] + " Incomeplete");
+                                        }
+
                                     }
+                                    //no event found
                                     else
                                     {
                                         // error: event tye not found in even type index
+                                        ParsedSet.MissingEventTypes.Add(ParsedSet.actorTypes[i][j]);
                                         if (debug)
                                         {
-                                            Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " not detected at index: "+ParsedSet.eventIndexList[e]);
+                                            Console.WriteLine("        type: " + ParsedSet.actorTypes[i][j] + " not detected at index: " + ParsedSet.eventIndexList[e]);
                                         }
-                                    }                                      
+                                    }
                                 }
                             }
                             else
@@ -455,20 +538,94 @@ namespace PMGF
                                     Console.WriteLine("        has NO method");
                                 }
                             }
+
+
                         }///                        
                     }///
-                    if (debug)
-                    {
-                        Console.WriteLine("actor: "+i+" comeplete");
+                    //creates list of bools for use, in remove incomplete actors
+                    if (CreatedActors[i].Events.Count > 0)
+                    {                        
+                        if (debug)
+                        {
+                            Console.WriteLine("Created-Actor: " + i + " comeplete");
+                        }
                     }
+                    else
+                    {                        
+                        Console.WriteLine("Created-Actor: " + i + " Icomeplete");
+                    }
+                    
                 }///
-                //test find one actor's event's method's value function
+            }
+
+            //removes incomplete actors
+            public void RemoveIncompleteActortypes(bool debug)
+            {
+               
+                //runs through newly created actor types
+                for (int i =0; i< CreatedActors.Count;i++)
+                {
+                    //check for incomplete
+                    if (CreatedActors[i].Events.Count==0)
+                    {
+                        CreatedActors[i] = null;
+                        
+                        if (debug)
+                        {
+                            Console.WriteLine("Created-Actor type: "+i+" was set to null, due to being incomplete");
+                        }
+                    }
+                }               
+            }
+
+            //creates the actually spawnable types
+            public void CreateSpawnTypeList(bool debug)
+            {
+                
+                for (int i = 0;i < CreatedActors.Count;i++)
+                {
+                    if (CreatedActors[i] != null)
+                    {
+                        SpawnAbleActors.Add(CreatedActors[i]);
+                    }
+                    
+                }
                 if (debug)
                 {
-                    Console.WriteLine("Total number of created actor : "+ CreatedActors.Count);
-                    Console.WriteLine("first actor's first event's first method's first executelist's first step: "+CreatedActors[0].Events[0]._method._steps[0]._functions[0]);
-
+                    Console.WriteLine("Total new Spawnable Actor types: "+SpawnAbleActors.Count+" and the new types are:");
+                    for(int i = 0; i < SpawnAbleActors.Count;i++ )
+                    {
+                        Console.WriteLine("     Actor type: " + i);
+                    }
                 }
+                
+
+            }
+
+            //add player to spawnlist
+
+            //spawns in the actors if they are found in the spawnlist, and if their position is not within a wall
+            public void SpawnActors(bool debug)
+            {
+                //the first 0 in the actor type positions list will be the player, any 0 found after will not be spawned, to ofc only have 1 player
+                bool playerActorFound = false;
+
+                //if types there, 
+                for (int i = 0; i < ParsedSet.actorTypePositions.Count; i++)
+                {
+                    //checks if the type is in created types
+                    if (ParsedSet.actorTypePositions[i][0]<CreatedActors.Count)
+                    {
+
+                    }
+                    else
+                    {
+                        //error: actor type not found in created actors
+                    }
+                }
+                
+
+                //checks through map, finds wall/space, inserts actorID if space
             }
         }
     }
