@@ -79,19 +79,19 @@ namespace PMGF
                 //positions
 
                 //type 0
-                actorPositionsGenome.Add(24);//type
+                actorPositionsGenome.Add(1);//type
                 actorPositionsGenome.Add(1);//x
                 actorPositionsGenome.Add(1);//y
 
                 //type 1
+                actorPositionsGenome.Add(2);
                 actorPositionsGenome.Add(1);
-                actorPositionsGenome.Add(2);
-                actorPositionsGenome.Add(2);
+                actorPositionsGenome.Add(1);
 
                 //type 2
+                actorPositionsGenome.Add(3);
+                actorPositionsGenome.Add(4);
                 actorPositionsGenome.Add(2);
-                actorPositionsGenome.Add(3);
-                actorPositionsGenome.Add(3);
 
                 //jump to type 4
                 actorPositionsGenome.Add(4);
@@ -106,7 +106,7 @@ namespace PMGF
                 //type 11, which dosent exist in the type genome
                 actorPositionsGenome.Add(11);
                 actorPositionsGenome.Add(12);
-                //actorPositionsGenome.Add(12);
+                actorPositionsGenome.Add(12);
             
                 //type 3
                 actorPositionsGenome.Add(3);
@@ -148,7 +148,7 @@ namespace PMGF
                 eventGenome.Add(new List<int>());
                 //new condition function
                 eventGenome[4].Add((int)GenomeKeys.CondFunc);
-                eventGenome[4].Add(1);
+                eventGenome[4].Add(0);
                 //
                 eventGenome.Add(new List<int>());
                 //new condition function
@@ -163,7 +163,7 @@ namespace PMGF
                 eventGenome.Add(new List<int>());
                 //new event
                 eventGenome[7].Add((int)GenomeKeys.CondFunc);
-                eventGenome[7].Add(1);
+                eventGenome[7].Add(2);
                 //
                 eventGenome.Add(new List<int>());
                 //new condition function
@@ -204,8 +204,8 @@ namespace PMGF
 
                 methodGenome.Add(new List<int>());
                 //new 
-                methodGenome[1].Add((int)GenomeKeys.ValueFunc);
-                methodGenome[1].Add(1);
+                methodGenome[1].Add((int)GenomeKeys.UtilFunc);
+                methodGenome[1].Add(111);
 
                 methodGenome.Add(new List<int>());
                 //new 
@@ -244,7 +244,7 @@ namespace PMGF
 
                 methodGenome.Add(new List<int>());
                 //new 
-                methodGenome[9].Add((int)GenomeKeys.ChangeFunc);
+                methodGenome[9].Add((int)GenomeKeys.UtilFunc);
                 methodGenome[9].Add(6);
 
                 methodGenome.Add(new List<int>());

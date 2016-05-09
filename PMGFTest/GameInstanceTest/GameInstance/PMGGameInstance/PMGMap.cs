@@ -67,6 +67,18 @@ namespace PMGF
                 //uses defaults map
             }
             //maybe get and set functions here
+            public void DisplayConsole()
+            {
+                for (int y = 0; y < Map.GetLength(1); y++)
+                {
+                    
+                    for (int x = 0; x < Map.GetLength(0); x++)
+                    {
+                        Console.Write(Map[x,y]+".");
+                    }
+                    Console.WriteLine("\n");
+                }
+            }
         }               
     }
 }

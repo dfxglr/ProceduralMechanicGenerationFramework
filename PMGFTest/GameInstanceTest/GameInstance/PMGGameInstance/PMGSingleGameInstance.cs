@@ -32,8 +32,9 @@ namespace PMGF
             //actors spawned in map
             List<PMGActor> SpawnedActors = new List<PMGActor>();
             
-            //actors new iD - shouldhave the lenght of the spawned, and contain the id for each actor there, starting from 1000
+            //actors new iD - shouldhave the lenght of the spawnedactors, and contain the id for each actor there, starting from 1000
             List<int> ActorIDs = new List<int>();
+
             //methods
             List<PMGMethod> Methods = new List<PMGMethod>();
             List<List<PMGExecuteList>> MethodsExecutelists = new List<List<PMGExecuteList>>(); 
@@ -65,14 +66,7 @@ namespace PMGF
                 
 
             
-                //--------------------------------// testing stuff, this is only here because our collections are empty atm
-                // Create functions for the methods
-                PMGValueFunction testValF = new PMGValueFunction(0);//works for event too
-                PMGUtilityFunction testUtilF = new PMGUtilityFunction(0);
-                PMGChangeFunction testChgF = new PMGChangeFunction(0);
-                //create functions for the events
-                PMGConditionFunction testCondF = new PMGConditionFunction(0);
-                ////--------------------------------//
+                
 
                 // build actor types from parsed set
                 BuildActorTypes(debug);
@@ -85,11 +79,18 @@ namespace PMGF
 
                 //replace first actor with player actor, but keep first method for action event
 
-                //createspawnlist, actorID's, and spawn actors into map
-                SpawnActors(debug);
+                //createspawnlist, actorID's
+                SpawnActors(debug,1000);
 
+
+                //_Map.DisplayConsole();
+
+                /*foreach(List<int> e in ParsedSet.TypePlusFaultyStartPositions)
+                {
+                    Console.WriteLine("type"+e[0]+" ("+e[1]+","+e[2]+")");
+                }//*/
                 
-                
+
             }
 
             // creates actors types from parsed set, counts up errors from missing methods and events, as well as missing value, utility, condition, and change functions
@@ -191,7 +192,7 @@ namespace PMGF
                                                         //check if its in the collections                                                    
                                                         if (functionIndex[f][1] < MainCore.ValueFunctions.Collection.Count)
                                                         {
-                                                            //add function to currentmethodexecutelits[timeindex]
+                                                            //add function to currentmethodexecutelits[timeindex] if 
                                                             CurrentMethodExecuteLists[CurrentMethodExecuteLists.Count - 1]._functions.Add(new PMGValueFunction(functionIndex[f][1]));
                                                             if (debug)
                                                             {
@@ -205,8 +206,31 @@ namespace PMGF
                                                             {
                                                                 Console.WriteLine("                        value function type: " + functionIndex[f][1] + " was not found");
                                                             }
-                                                            //NOTE: adds every time the same number which is annoying but need fix later
-                                                            ParsedSet.UnknownValueFunctionType.Add(functionIndex[f][1]);
+
+                                                            //
+                                                            bool functionFound = false;                                                            
+                                                            if (ParsedSet.UnknownValueFunctionType.Count == 0)
+                                                            {
+                                                                ParsedSet.UnknownValueFunctionType.Add(functionIndex[f][1]);                                                               
+                                                            }
+                                                            else
+                                                            {                                                                
+                                                                //checks through the list to ensure we dont add the same type if its already unknown
+                                                                for (int q = 0; q < ParsedSet.UnknownValueFunctionType.Count; q++)
+                                                                {
+                                                                    //if its not found in the list add it
+                                                                    if (functionIndex[f][1] == ParsedSet.UnknownValueFunctionType[q])
+                                                                    {
+                                                                        //set to true
+                                                                        functionFound = true;
+                                                                    }
+                                                                }
+                                                                // found in list = false then add
+                                                                if (!functionFound)
+                                                                {
+                                                                    ParsedSet.UnknownValueFunctionType.Add(functionIndex[f][1]);                                                                    
+                                                                }                             
+                                                            }                                                                                                                                                                                                                                      
                                                         }
                                                     }
                                                     // else if change function
@@ -233,8 +257,30 @@ namespace PMGF
                                                             {
                                                                 Console.WriteLine("                        change function type: " + functionIndex[f][1] + " was not found");
                                                             }
-                                                            //NOTE: adds every time the same number which is annoying but need fix later
-                                                            ParsedSet.UnknownChangeFunctionType.Add(functionIndex[f][1]);
+                                                            //
+                                                            bool functionFound = false;
+                                                            if (ParsedSet.UnknownChangeFunctionType.Count == 0)
+                                                            {
+                                                                ParsedSet.UnknownChangeFunctionType.Add(functionIndex[f][1]);
+                                                            }
+                                                            else
+                                                            {
+                                                                //checks through the list to ensure we dont add the same type if its already unknown
+                                                                for (int q = 0; q < ParsedSet.UnknownChangeFunctionType.Count; q++)
+                                                                {
+                                                                    //if its not found in the list add it
+                                                                    if (functionIndex[f][1] == ParsedSet.UnknownChangeFunctionType[q])
+                                                                    {
+                                                                        //set to true
+                                                                        functionFound = true;
+                                                                    }
+                                                                }
+                                                                // found in list = false then add
+                                                                if (!functionFound)
+                                                                {
+                                                                    ParsedSet.UnknownChangeFunctionType.Add(functionIndex[f][1]);
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                     //else utility function
@@ -260,8 +306,30 @@ namespace PMGF
                                                             {
                                                                 Console.WriteLine("                        utility function type: " + functionIndex[f][1] + " was not found");
                                                             }
-                                                            //NOTE: adds every time the same number which is annoying but need fix later
-                                                            ParsedSet.UnknownUtilityFunctionType.Add(functionIndex[f][1]);
+                                                            //
+                                                            bool functionFound = false;
+                                                            if (ParsedSet.UnknownUtilityFunctionType.Count == 0)
+                                                            {
+                                                                ParsedSet.UnknownUtilityFunctionType.Add(functionIndex[f][1]);
+                                                            }
+                                                            else
+                                                            {
+                                                                //checks through the list to ensure we dont add the same type if its already unknown
+                                                                for (int q = 0; q < ParsedSet.UnknownUtilityFunctionType.Count; q++)
+                                                                {
+                                                                    //if its not found in the list add it
+                                                                    if (functionIndex[f][1] == ParsedSet.UnknownUtilityFunctionType[q])
+                                                                    {
+                                                                        //set to true
+                                                                        functionFound = true;
+                                                                    }
+                                                                }
+                                                                // found in list = false then add
+                                                                if (!functionFound)
+                                                                {
+                                                                    ParsedSet.UnknownUtilityFunctionType.Add(functionIndex[f][1]);
+                                                                }
+                                                            }
                                                         }
                                                     }                                                    
                                                 }
@@ -405,6 +473,7 @@ namespace PMGF
                                                 {
                                                     Console.WriteLine("                    value function detected");
                                                 }
+                                                
                                                 //check for if the type is in collection
                                                 if (ParsedSet._genomeSet.eventGenome[ex][1] < MainCore.ValueFunctions.Collection.Count)
                                                 {
@@ -418,13 +487,36 @@ namespace PMGF
                                                 else
                                                 {
                                                     //error: value function type not found in collections
-                                                    ParsedSet.UnknownValueFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                    
                                                     if (debug)
                                                     {
                                                         Console.WriteLine("                        value function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
                                                     }
+                                                    //
+                                                    bool functionFound = false;
+                                                    if (ParsedSet.UnknownValueFunctionType.Count == 0)
+                                                    {
+                                                        ParsedSet.UnknownValueFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                    }
+                                                    else
+                                                    {
+                                                        //checks through the list to ensure we dont add the same type if its already unknown
+                                                        for (int q = 0; q < ParsedSet.UnknownValueFunctionType.Count; q++)
+                                                        {
+                                                            //if its not found in the list add it
+                                                            if (ParsedSet._genomeSet.eventGenome[ex][1] == ParsedSet.UnknownValueFunctionType[q])
+                                                            {
+                                                                //set to true
+                                                                functionFound = true;
+                                                            }
+                                                        }
+                                                        // found in list = false then add
+                                                        if (!functionFound)
+                                                        {
+                                                            ParsedSet.UnknownValueFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                        }
+                                                    }
                                                 }
-
                                             }
                                             //condition
                                             if (ParsedSet._genomeSet.eventGenome[ex][0] == (int)GenomeKeys.CondFunc)
@@ -446,10 +538,34 @@ namespace PMGF
                                                 else
                                                 {
                                                     //error: conditions function type not found in collections
-                                                    ParsedSet.UnknownConditionFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                    
                                                     if (debug)
                                                     {
                                                         Console.WriteLine("                        condition function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
+                                                    }
+                                                    //
+                                                    bool functionFound = false;
+                                                    if (ParsedSet.UnknownConditionFunctionType.Count == 0)
+                                                    {
+                                                        ParsedSet.UnknownConditionFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                    }
+                                                    else
+                                                    {
+                                                        //checks through the list to ensure we dont add the same type if its already unknown
+                                                        for (int q = 0; q < ParsedSet.UnknownConditionFunctionType.Count; q++)
+                                                        {
+                                                            //if its not found in the list add it
+                                                            if (ParsedSet._genomeSet.eventGenome[ex][1] == ParsedSet.UnknownConditionFunctionType[q])
+                                                            {
+                                                                //set to true
+                                                                functionFound = true;
+                                                            }
+                                                        }
+                                                        // found in list = false then add
+                                                        if (!functionFound)
+                                                        {
+                                                            ParsedSet.UnknownConditionFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                        }
                                                     }
                                                 }
                                             }
@@ -473,10 +589,34 @@ namespace PMGF
                                                 else
                                                 {
                                                     //error: utility function type not found in collections
-                                                    ParsedSet.UnknownUtilityFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                    
                                                     if (debug)
                                                     {
                                                         Console.WriteLine("                        utility function type: " + ParsedSet._genomeSet.eventGenome[ex][1] + " was not found");
+                                                    }
+                                                    //
+                                                    bool functionFound = false;
+                                                    if (ParsedSet.UnknownUtilityFunctionType.Count == 0)
+                                                    {
+                                                        ParsedSet.UnknownUtilityFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                    }
+                                                    else
+                                                    {
+                                                        //checks through the list to ensure we dont add the same type if its already unknown
+                                                        for (int q = 0; q < ParsedSet.UnknownUtilityFunctionType.Count; q++)
+                                                        {
+                                                            //if its not found in the list add it
+                                                            if (ParsedSet._genomeSet.eventGenome[ex][1] == ParsedSet.UnknownUtilityFunctionType[q])
+                                                            {
+                                                                //set to true
+                                                                functionFound = true;
+                                                            }
+                                                        }
+                                                        // found in list = false then add
+                                                        if (!functionFound)
+                                                        {
+                                                            ParsedSet.UnknownUtilityFunctionType.Add(ParsedSet._genomeSet.eventGenome[ex][1]);
+                                                        }
                                                     }
                                                 }
                                             }
@@ -602,30 +742,133 @@ namespace PMGF
 
             }
 
-            //add player to spawnlist
+            //replace actor 0 with player actor, but keep first method for player action event
+
 
             //spawns in the actors if they are found in the spawnlist, and if their position is not within a wall
-            public void SpawnActors(bool debug)
+            public void SpawnActors(bool debug,int IDBase)
             {
                 //the first 0 in the actor type positions list will be the player, any 0 found after will not be spawned, to ofc only have 1 player
-                bool playerActorFound = false;
+                bool playerActorWasFound = false;
 
-                //if types there, 
+                if (debug)
+                {
+                    Console.WriteLine("Spawning Actors:");
+                }
+
+                //create spawn list 
                 for (int i = 0; i < ParsedSet.actorTypePositions.Count; i++)
                 {
-                    //checks if the type is in created types
-                    if (ParsedSet.actorTypePositions[i][0]<CreatedActors.Count)
+                    //checks if the type is in spawnable types
+                    if (ParsedSet.actorTypePositions[i][0] < SpawnAbleActors.Count)
                     {
+                        //checks for posisiton in map
+                        if (_Map.Map[ParsedSet.actorTypePositions[i][1], ParsedSet.actorTypePositions[i][2]] ==0)
+                        {
+                            //checks for first 0 and set it to the player, any 0 found there after is well fuck em
+                            if (ParsedSet.actorTypePositions[i][0] == 0)
+                            {
 
+                                if (!playerActorWasFound)
+                                {
+                                    //spawns the actor
+                                    SpawnedActors.Add(SpawnAbleActors[ParsedSet.actorTypePositions[i][0]]);                                  
+
+                                    //places its ID in the map
+                                    _Map.Map[ParsedSet.actorTypePositions[i][1], ParsedSet.actorTypePositions[i][2]] = (SpawnedActors.Count - 1 + IDBase);
+                                    
+
+                                    if (debug)
+                                    {
+                                        Console.WriteLine("     player actor  spawned at position[ "+ ParsedSet.actorTypePositions[i][1]+" , "+ ParsedSet.actorTypePositions[i][2]+" ] with ID: "+(SpawnedActors.Count-1+IDBase));
+                                    }
+                                }
+                                else
+                                {
+                                    //error more player actors found
+                                    ParsedSet.DuplicatePlayersInATPList.Add(i);
+                                    if (debug)
+                                    {
+                                        Console.WriteLine("     actor type: " + ParsedSet.actorTypePositions[i][0] + " Not spawned, due to already existing player actor");
+                                    }
+                                }
+                                playerActorWasFound = true;
+
+                            }
+                            else
+                            {
+                                //spawns the actor
+                                SpawnedActors.Add(SpawnAbleActors[ParsedSet.actorTypePositions[i][0]]);
+                                //places its ID in the map
+                                _Map.Map[ParsedSet.actorTypePositions[i][1], ParsedSet.actorTypePositions[i][2]] = (SpawnedActors.Count - 1 + IDBase);
+
+                                if (debug)
+                                {
+                                    Console.WriteLine("     actor type: " + ParsedSet.actorTypePositions[i][0] + " spawned at position[ "+ ParsedSet.actorTypePositions[i][1]+" , "+ ParsedSet.actorTypePositions[i][2]+" ] with ID: "+ (SpawnedActors.Count - 1 + IDBase));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //error: faulty position
+
+                            //however special case for 0
+                            if (ParsedSet.actorTypePositions[i][0] == 0) {
+                                ParsedSet.DuplicatePlayersInATPList.Add(i);
+                                if (debug)
+                                {
+                                    Console.WriteLine("     actor type: " + ParsedSet.actorTypePositions[i][0] + " Not spawned, due to position[ " + ParsedSet.actorTypePositions[i][1] + " , " + ParsedSet.actorTypePositions[i][2] + " ] not being free, counts existing player actor error");
+                                }
+                            }
+                            else
+                            {
+                                //add position error
+                                ParsedSet.TypePlusFaultyStartPositions.Add(new List<int>());
+                                ParsedSet.TypePlusFaultyStartPositions[ParsedSet.TypePlusFaultyStartPositions.Count - 1].Add(ParsedSet.actorTypePositions[i][0]);
+                                ParsedSet.TypePlusFaultyStartPositions[ParsedSet.TypePlusFaultyStartPositions.Count - 1].Add(ParsedSet.actorTypePositions[i][1]);
+                                ParsedSet.TypePlusFaultyStartPositions[ParsedSet.TypePlusFaultyStartPositions.Count - 1].Add(ParsedSet.actorTypePositions[i][2]);
+                                if (debug)
+                                {
+                                    Console.WriteLine("     actor type: " + ParsedSet.actorTypePositions[i][0] + " Not spawned, due to position[ " + ParsedSet.actorTypePositions[i][1] + " , " + ParsedSet.actorTypePositions[i][2] + " ] not being free");
+                                }
+                            }   
+                        }
                     }
                     else
                     {
-                        //error: actor type not found in created actors
-                    }
-                }
-                
+                        // error: requested actor type not found in spawnable actors actors
 
-                //checks through map, finds wall/space, inserts actorID if space
+                        if (debug)
+                        {
+                            Console.WriteLine("     actor type: " + ParsedSet.actorTypePositions[i][0] + " Not spawned, due to unfound type");
+                        }
+                        //
+                        bool actorFound = false;
+                        if (ParsedSet.ActorTypeNotFoundInSpawnedActorList.Count == 0)
+                        {
+                            ParsedSet.ActorTypeNotFoundInSpawnedActorList.Add(ParsedSet.actorTypePositions[i][0]);
+                        }
+                        else
+                        {
+                            //checks through the list to ensure we dont add the same type if its already unknown
+                            for (int q = 0; q < ParsedSet.ActorTypeNotFoundInSpawnedActorList.Count; q++)
+                            {
+                                //if its not found in the list add it
+                                if (ParsedSet.actorTypePositions[i][0] == ParsedSet.ActorTypeNotFoundInSpawnedActorList[q])
+                                {
+                                    //set to true
+                                    actorFound = true;
+                                }
+                            }
+                            // found in list = false then add
+                            if (!actorFound)
+                            {
+                                ParsedSet.ActorTypeNotFoundInSpawnedActorList.Add(ParsedSet.actorTypePositions[i][0]);
+                            }
+                        }
+
+                    }                    
+                }            
             }
         }
     }

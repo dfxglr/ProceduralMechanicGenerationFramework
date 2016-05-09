@@ -70,6 +70,13 @@ namespace PMGF
             public List<int> MissingMethodTypes = new List<int>();
             public List<int> MissingEventTypes = new List<int>();
 
+            //ATP = actor type positions list
+            //holds indexs in the ATP list where other type 0 was found
+            public List<int> DuplicatePlayersInATPList = new List<int>();
+            public List<int> ActorTypeNotFoundInSpawnedActorList = new List<int>();
+            public List<List<int>> TypePlusFaultyStartPositions = new List<List<int>>();
+            //
+
 
             //constuctor
             public PMGGenomeParse()
