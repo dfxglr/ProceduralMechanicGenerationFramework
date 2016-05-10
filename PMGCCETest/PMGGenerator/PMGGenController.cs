@@ -78,10 +78,29 @@ namespace PMGF
 				CCESpecies s = new CCESpecies ();
 				s.Selection = new StochasticUniversalSamplingSelection ();
 
-				// Replace with SVLC
-				s.Crossover = new OnePointCrossover ();
+				// Use SVLC 
+				s.Crossover = new SVLC ();
 
-				s.Mutation = new UniformMutation ();
+
+				// Using mutations with relative probabilites as done in SVLC paper
+				List<IMutation> muts = new List<IMutation> ();
+				List<float> relprob = new List<float> ();
+
+				muts.Add (new PointMutationSmall ());
+				relprob.Add (6);
+				muts.Add (new PointMutationLarge ());
+				relprob.Add (4);
+				muts.Add (new DeletionMutation ());
+				relprob.Add (5);
+				muts.Add (new InsertionMutation ());
+				relprob.Add (1);
+				muts.Add (new ReplicationMutation ());
+				relprob.Add (1);
+				muts.Add (new SlipMutation ());
+				relprob.Add (1);
+
+				s.Mutation = new MultipleMutations (muts, relprob);
+
 
 				s.Reinsertion = new FitnessBasedReinsertion ();
 

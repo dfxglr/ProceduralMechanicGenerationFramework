@@ -62,6 +62,10 @@
     <Compile Include="PMGGenerator\PMGMethodGenome.cs" />
     <Compile Include="PMGGenerator\PMGActorLocationGenome.cs" />
     <Compile Include="PMGEvaluator\PMGFitness.cs" />
+    <Compile Include="PMGGenerator\PMGGenomeParse.cs" />
+    <Compile Include="PMGGameInstance\PMGGenomeSet.cs" />
+    <Compile Include="PMGGameInstance\PMGMap.cs" />
+    <Compile Include="PMGGameInstance\PMGSingleGameInstance.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
