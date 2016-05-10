@@ -22,6 +22,11 @@ namespace PMGF
                 /*  0 */Collection.Add(CF_DebugWriteToConsole); // Write a msg to console
                 /*  1 */Collection.Add(CF_DoNothing);           // Do nothing
                 /*  2 */Collection.Add(CF_PushLeetToActor);     // Push 1337 to actor stack
+                /*  3 */    //action (space or enter button pressed)
+                /*  4 */    //Up     (w or arrowUp button pressed)
+                /*  5 */    //Left   (a or arrowLeft button pressed)
+                /*  6 */    //Down   (s or arrowDown button pressed)
+                /*  7 */    //Right  (d or arrowRight button pressed)
             }
 
 

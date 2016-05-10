@@ -99,7 +99,7 @@ namespace PMGF
                 actorPositionsGenome.Add(6);
 
                 //type 0 again
-                actorPositionsGenome.Add(0);
+                actorPositionsGenome.Add(4);
                 actorPositionsGenome.Add(7);
                 actorPositionsGenome.Add(7);
 
@@ -132,7 +132,7 @@ namespace PMGF
                 //
                 eventGenome.Add(new List<int>());
                 //new value function
-                eventGenome[1].Add((int)GenomeKeys.ValueFunc);
+                eventGenome[1].Add((int)GenomeKeys.EventKey);
                 eventGenome[1].Add(1);
                 //
                 eventGenome.Add(new List<int>());
@@ -147,7 +147,7 @@ namespace PMGF
                 //
                 eventGenome.Add(new List<int>());
                 //new condition function
-                eventGenome[4].Add((int)GenomeKeys.CondFunc);
+                eventGenome[4].Add((int)GenomeKeys.EventKey);
                 eventGenome[4].Add(0);
                 //
                 eventGenome.Add(new List<int>());
@@ -167,7 +167,7 @@ namespace PMGF
                 //
                 eventGenome.Add(new List<int>());
                 //new condition function
-                eventGenome[8].Add((int)GenomeKeys.UtilFunc);
+                eventGenome[8].Add((int)GenomeKeys.EventKey);
                 eventGenome[8].Add(6);
                 //
                 eventGenome.Add(new List<int>());
@@ -187,7 +187,7 @@ namespace PMGF
                 //
                 eventGenome.Add(new List<int>());
                 //new condition fucntion
-                eventGenome[12].Add((int)GenomeKeys.CondFunc);
+                eventGenome[12].Add((int)GenomeKeys.EventKey);
                 eventGenome[12].Add(1);
                 //
                 eventGenome.Add(new List<int>());

@@ -75,6 +75,8 @@ namespace PMGF
             public List<int> DuplicatePlayersInATPList = new List<int>();
             public List<int> ActorTypeNotFoundInSpawnedActorList = new List<int>();
             public List<List<int>> TypePlusFaultyStartPositions = new List<List<int>>();
+            //aka no player in the genome
+            public bool NoActorZeroFound;
             //
 
 
@@ -290,7 +292,7 @@ namespace PMGF
             public void DecodeEventGenome()
             {
                 //check for length more that 1
-                if (_genomeSet.eventGenome.Count > 2)
+                if (_genomeSet.eventGenome.Count > 1)
                 {
                     for (int mainIndex = 0; mainIndex < _genomeSet.eventGenome.Count; mainIndex++)
                     {
@@ -298,10 +300,10 @@ namespace PMGF
                         if (_genomeSet.eventGenome[mainIndex][0] == (int)GenomeKeys.EventKey)
                         {
                             //check that list dosent end with an event
-                            if (mainIndex + 2 < _genomeSet.eventGenome.Count)
+                            if (mainIndex + 1 < _genomeSet.eventGenome.Count)
                             {
                                 //check that a new actor dosentstart right after the current one
-                                if (_genomeSet.eventGenome[mainIndex + 1][0] != (int)GenomeKeys.EventKey && _genomeSet.eventGenome[mainIndex + 2][0] != (int)GenomeKeys.EventKey)
+                                if (_genomeSet.eventGenome[mainIndex + 1][0] != (int)GenomeKeys.EventKey)
                                 {
                                     //count up new event beginnings
                                     eventIndexList.Add(mainIndex);
