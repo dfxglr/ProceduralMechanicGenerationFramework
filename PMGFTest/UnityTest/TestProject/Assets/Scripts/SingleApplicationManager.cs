@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using PMGF.PMGUnity.Managers;
+using PMGF.PMGGenerator;
+using PMGF.PMGGameInstance;
 
 //this is the main program application, manages other managers
 
@@ -9,8 +11,9 @@ using PMGF.PMGUnity.Managers;
 //-----------------------------------------------------------------------// unity singleton for gameManager
 public class SingleApplicationManager : MonoBehaviour
 {
-    protected SingleApplicationManager() { }
-    private static SingleApplicationManager instance = null;
+
+    public  SingleApplicationManager() { }
+    static SingleApplicationManager instance = null;
     public static SingleApplicationManager Instance
     {
         get
@@ -47,14 +50,29 @@ public class SingleApplicationManager : MonoBehaviour
     // runs once in the beginning(Awake() is before this however)
     public void Start()
     {
+        
+
         SingleMenuManager.Instance.Setup(true);
         SingleInputManager.Instance.Setup(false);
         SingleMapManager.Instance.Setup();
+        //decodes and makes parsed set
+        SingleInstanceManager.Instance.setup();
     }
     //runs all the time
     public void Update()
     {
-        SingleInputManager.Instance.InputUpdate();
+        SingleInputManager.Instance.MenuInputUpdate();
+
+        //update actors when game is not paused
+        if (!SingleInputManager.Instance.inMenu && SingleInstanceManager.Instance.ThisGameForNow.SpawnedActors.Count >0)
+        {
+            SingleInstanceManager.Instance.ThisGameForNow.UpdateActors();
+        }
+
+        //update unity actors
+        SingleInstanceManager.Instance.UpdateUnityActors();
+
     }
+    
     //-----------------------------------------------------------------------//
 }

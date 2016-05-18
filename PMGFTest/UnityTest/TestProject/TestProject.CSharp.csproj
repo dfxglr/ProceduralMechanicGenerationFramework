@@ -90,10 +90,12 @@
     <Compile Include="Assets\Scripts\GameInstance\Menu\Menu.cs" />
     <Compile Include="Assets\Scripts\GameInstance\Menu\SingleMenuManager.cs" />
     <Compile Include="Assets\Scripts\GameInstance\PMGSingleGameInstance.cs" />
+    <Compile Include="Assets\Scripts\GameInstance\SingleInstanceManager.cs" />
     <Compile Include="Assets\Scripts\Generator\PMGGenomeEnums.cs" />
     <Compile Include="Assets\Scripts\Generator\PMGGenomeParse.cs" />
     <Compile Include="Assets\Scripts\Generator\PMGGenomeSet.cs" />
     <Compile Include="Assets\Scripts\SingleApplicationManager.cs" />
+    <Compile Include="Assets\potatoposition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Shaders\SimpleTexture.shader" />

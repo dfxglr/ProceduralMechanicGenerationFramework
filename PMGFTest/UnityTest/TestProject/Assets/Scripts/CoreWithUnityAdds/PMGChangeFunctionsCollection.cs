@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using PMGF.PMGGameInstance;
-
+using UnityEngine;
+using System.Collections;
 
 namespace PMGF
 {
@@ -67,6 +68,8 @@ namespace PMGF
                 {
                     actor.position[1] = actor.position[1] - 1;
                     Console.WriteLine("         moved up 1 step");
+                    Debug.Log("moved one step up");
+                    
                 }
                 else
                 {
@@ -81,6 +84,7 @@ namespace PMGF
                 {
                     actor.position[0] = actor.position[0] - 1;
                     Console.WriteLine("         moved left 1 step");
+                    Debug.Log("moved one step left");
                 }
                 else
                 {
@@ -94,6 +98,7 @@ namespace PMGF
                 {
                     actor.position[1] = actor.position[1] + 1;
                     Console.WriteLine("         moved down 1 step");
+                    Debug.Log("moved one step down");
                 }
                 else
                 {
@@ -107,6 +112,7 @@ namespace PMGF
                 {
                     actor.position[0] = actor.position[0] + 1;
                     Console.WriteLine("         moved right 1 step");
+                    Debug.Log("moved one step right");
                 }
                 else
                 {

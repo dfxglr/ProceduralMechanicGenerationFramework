@@ -9,7 +9,7 @@ namespace PMGF
 {
     namespace PMGGameInstance
     { 
-        class PMGGenomeSet
+        public class PMGGenomeSet
         {
             //actors
             public List<int> actorGenome = new List<int>();
@@ -89,7 +89,7 @@ namespace PMGF
                 //type 2
                 actorPositionsGenome.Add(0);
                 actorPositionsGenome.Add(2);
-                actorPositionsGenome.Add(2);
+                actorPositionsGenome.Add(3);
 
                 //jump to type 4
                 actorPositionsGenome.Add(1);

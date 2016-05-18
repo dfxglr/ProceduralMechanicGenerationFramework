@@ -9,7 +9,7 @@ namespace PMGF
 {
     namespace PMGGameInstance
     {
-        class PMGGenomeParse
+        public class PMGGenomeParse
         {
             //local genome set tho it needs to be public
             public PMGGenomeSet _genomeSet;

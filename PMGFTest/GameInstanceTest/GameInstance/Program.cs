@@ -24,8 +24,8 @@ namespace GameInstance
 
             //decodes the entire set
             //testGameInstance.ParsedSet.DecodeGenomeSet(testset);
-            
-            testGameInstance.BuildInstance(Parsedtestset,true);
+            testGameInstance.SetInternalParsedSet(Parsedtestset);
+            testGameInstance.BuildInstance(true);
 
 
 

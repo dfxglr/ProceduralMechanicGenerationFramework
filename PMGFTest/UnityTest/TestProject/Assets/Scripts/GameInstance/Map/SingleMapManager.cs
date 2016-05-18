@@ -68,9 +68,9 @@ namespace PMGF
                         }
                     }
 
-                    //test
-                    GameObject bob =  Instantiate(Resources.Load("Prefabs/Wall"), GameMap[6,2].transform.position+new Vector3(0,0,3), Quaternion.identity) as GameObject;
-                    bob.transform.parent = Anchor.transform;
+                    //test and showoff of how to place shit in the map
+                    //GameObject bob =  Instantiate(Resources.Load("Prefabs/Wall"), GameMap[6,2].transform.position+new Vector3(0,0,3), Quaternion.identity) as GameObject;
+                    //bob.transform.parent = Anchor.transform;
                 }
             }
         }

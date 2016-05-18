@@ -12,7 +12,7 @@ namespace PMGF
 {
     namespace PMGGameInstance
     {
-        class PMGSingleGameInstance
+        public class PMGSingleGameInstance
         {
             //new game core
             PMGGameCore MainCore = new PMGGameCore();
@@ -21,7 +21,7 @@ namespace PMGF
             PMGMap _Map = new PMGMap();
 
             //game set
-            //public PMGGenomeParse GameSet = new PMGGenomeParse();
+            public PMGGenomeParse GameSet = new PMGGenomeParse();
 
             //semi-static player genome
             //public PMGGenomeSet PlayerGenome = new PMGGenomeSet();
@@ -56,15 +56,19 @@ namespace PMGF
                
             }
 
+            public void SetInternalParsedSet(PMGGenomeParse InputSet)
+            {
+                GameSet = InputSet;
+            }
 
 
             // builds the instance
-            public void BuildInstance(PMGGenomeParse InputParsedset, bool debug)
+            public void BuildInstance( bool debug)
             {
                             
 
                 // build actor types from parsed set
-                BuildActorTypes(ref CreatedActors, InputParsedset, debug);
+                BuildActorTypes(ref CreatedActors, GameSet, debug);
 
                 // removes incomplete actor types before creating spawn list
                 RemoveIncompleteActortypes(ref CreatedActors,debug);
@@ -76,7 +80,7 @@ namespace PMGF
                 CreatePlayer();
 
                 //createspawnlist, actorID's
-                SpawnActors(ref InputParsedset, ref SpawnAbleActors ,ref SpawnedActors,debug);
+                SpawnActors(ref GameSet, ref SpawnAbleActors ,ref SpawnedActors,debug);
 
 
                 //_Map.DisplayConsole();

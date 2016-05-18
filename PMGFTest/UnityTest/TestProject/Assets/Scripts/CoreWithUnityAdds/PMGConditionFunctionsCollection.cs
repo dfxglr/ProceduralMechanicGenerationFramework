@@ -80,78 +80,63 @@ namespace PMGF
             public bool CF_Input_IsActionPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key action is pressed");
-                return true;
+                //return true;
 
                 if ((Input.GetKeyDown(KeyCode.Return) && !actionPressed) || (Input.GetKeyDown(KeyCode.Space) && !actionPressed))
                 {
                     actionPressed = true;        
                     return true;
-                }                
-                if (Input.GetKeyUp(KeyCode.Return) && Input.GetKeyUp(KeyCode.Space) && actionPressed)
-                {
-                    actionPressed = false;
                 }
+                actionPressed = false;
                 return false;  //*/
             }
             public bool CF_Input_IsUpPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key up is pressed");
 
-                return true;
+                //return true;
                 if ((Input.GetKeyDown(KeyCode.W) && !upPressed) || (Input.GetKeyDown(KeyCode.UpArrow) && !upPressed))
                 {
                     upPressed = true;
                     return true;
-                }
-                if (Input.GetKeyUp(KeyCode.W) && Input.GetKeyUp(KeyCode.UpArrow) && upPressed)
-                {
-                    upPressed = false;
-                }
+                }                
+                upPressed = false;
                 return false;//
             }
             public bool CF_Input_IsLeftPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key left is pressed");
-                return true;
+                //return true;
                 if ((Input.GetKeyDown(KeyCode.A) && !leftPressed) || (Input.GetKeyDown(KeyCode.LeftArrow) && !leftPressed))
                 {
                     leftPressed = true;
                     return true;
                 }
-                if (Input.GetKeyUp(KeyCode.A) && Input.GetKeyUp(KeyCode.LeftArrow) && leftPressed)
-                {
-                    leftPressed = false;
-                }
+                leftPressed = false;                
                 return false;
             }
             public bool CF_Input_IsDownPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key down is pressed");
-                return true;
+                //return true;
                 if ((Input.GetKeyDown(KeyCode.S) && !downPressed) || (Input.GetKeyDown(KeyCode.DownArrow) && !downPressed))
                 {
                     downPressed = true;
                     return true;
                 }
-                if (Input.GetKeyUp(KeyCode.S) && Input.GetKeyUp(KeyCode.DownArrow) && downPressed)
-                {
-                    downPressed = false;
-                }
+                downPressed = false;                
                 return false;//*/
             }
             public bool CF_Input_IsRightPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key right is  pressed");
-                return true;
+                //return true;
                 if ((Input.GetKeyDown(KeyCode.D) && !rightPressed) || (Input.GetKeyDown(KeyCode.RightArrow) && !rightPressed))
                 {
                     rightPressed = true;
                     return true;
                 }
-                if (Input.GetKeyUp(KeyCode.D) && Input.GetKeyUp(KeyCode.RightArrow) && rightPressed)
-                {
-                    rightPressed = false;
-                }
+                rightPressed = false;
                 return false;
             }
             public bool CF_Dectection_IsUpASpace(PMGActor actor, PMGValueStack localStack)
