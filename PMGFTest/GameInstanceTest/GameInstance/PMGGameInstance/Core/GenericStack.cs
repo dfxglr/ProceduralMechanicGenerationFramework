@@ -37,8 +37,9 @@ namespace PMGF
 				}
                 else
                 {
-					throw new System.InvalidOperationException ("Popping empty stack");
+                    throw new System.InvalidOperationException ("Popping empty stack");                   
 				}
+                
 
 			}
 

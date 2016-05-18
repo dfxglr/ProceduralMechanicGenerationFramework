@@ -17,6 +17,8 @@ namespace PMGF
 
             public PMGValueStack ValueStack = new PMGValueStack();
 
+            //position
+            public List<int> position = new List<int>();
 
             public PMGGameCore Core;
 

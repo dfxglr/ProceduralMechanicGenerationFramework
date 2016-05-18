@@ -19,7 +19,7 @@ namespace PMGF
             {
                 // Add all the functions you want
                 // f# */
-                /*  0 */Collection.Add(UF_DebugWriteToConsole); // Write a msg to console
+                /*  0 *///Collection.Add(UF_DebugWriteToConsole); // Write a msg to console
                 /*  1 */Collection.Add(UF_DoNothing);           // Do nothing
                 /*  2 */Collection.Add(UF_PushLeetToActor);     // Push 1337 to actor stack
             }

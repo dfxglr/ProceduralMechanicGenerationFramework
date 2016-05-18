@@ -20,7 +20,7 @@ namespace PMGF
             {
                 // Add all the functions you want
                 // f# */
-                /*  0 */Collection.Add(VF_DebugWriteToConsole); // Write a msg to console
+                /*  0 *///Collection.Add(VF_DebugWriteToConsole); // Write a msg to console
                         Collection.Add(VF_Push42ToLocal);
                 /*  1 */Collection.Add(VF_DoNothing);           // Do nothing
                 /*  2 */Collection.Add(VF_PushLeetToActor);     // Push 1337 to actor stack

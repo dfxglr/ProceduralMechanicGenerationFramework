@@ -41,7 +41,9 @@ namespace PMGF
                 // Get the local stack ready (need proper casting)
                 PMGValueStack localStack = null;
 
-                switch(_ownerType)
+                _exing = true;
+
+                switch (_ownerType)
                 {
                     case FunctionOwnerType.EVENT:
                         PMGEvent E = _owner as PMGEvent;
