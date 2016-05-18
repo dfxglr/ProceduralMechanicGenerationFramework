@@ -8,6 +8,7 @@ using System.Windows.Input;
 using PMGF.PMGCore;
 
 
+
 namespace GameInstance
 {
     class Program
@@ -17,12 +18,14 @@ namespace GameInstance
         {
             PMGGenomeSet testset = new PMGGenomeSet();
             testset.TestPMGGenomeSet();
-
+            PMGGenomeParse Parsedtestset = new PMGGenomeParse();
+            Parsedtestset.DecodeGenomeSet(testset);
             PMGSingleGameInstance testGameInstance = new PMGSingleGameInstance();
 
             //decodes the entire set
             //testGameInstance.ParsedSet.DecodeGenomeSet(testset);
-            testGameInstance.BuildInstance(testset,true);
+            
+            testGameInstance.BuildInstance(Parsedtestset,true);
 
 
 

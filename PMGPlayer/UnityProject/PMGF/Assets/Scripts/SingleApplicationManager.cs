@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using PMGF.PMGUnity.Managers;
+using PMGF.PMGGameInstance;
+
 
 //this is the main program application, manages other managers
 
@@ -9,6 +11,15 @@ using PMGF.PMGUnity.Managers;
 //-----------------------------------------------------------------------// unity singleton for gameManager
 public class SingleApplicationManager : MonoBehaviour
 {
+    //variables
+
+    //current instances set
+    PMGGenomeSet testset = new PMGGenomeSet();
+
+    //current instance
+    PMGSingleGameInstance ThisForNow;
+
+
     protected SingleApplicationManager() { }
     private static SingleApplicationManager instance = null;
     public static SingleApplicationManager Instance
@@ -47,6 +58,9 @@ public class SingleApplicationManager : MonoBehaviour
     // runs once in the beginning(Awake() is before this however)
     public void Start()
     {
+        //game instance
+        //ThisForNow = new PMGSingleGameInstance 
+
         SingleMenuManager.Instance.Setup(true);
         SingleInputManager.Instance.Setup(false);
         SingleMapManager.Instance.Setup();
@@ -54,7 +68,8 @@ public class SingleApplicationManager : MonoBehaviour
     //runs all the time
     public void Update()
     {
-        SingleInputManager.Instance.InputUpdate();
+        //input for menu
+        SingleInputManager.Instance.InputMenuUpdate();
     }
     //-----------------------------------------------------------------------//
 }
