@@ -63,12 +63,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\GenericStack.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGActor.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGChangeFunction.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGChangeFunctionsCollection.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGConditionFunction.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGConditionFunctionsCollection.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGEvent.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGEventDynamic.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGEventFixed.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGExecuteList.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGFunction.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGGameCore.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGMethod.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGTimeStep.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGUtilityFunction.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGUtilityFunctionsCollection.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGValueFunction.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGValueFunctionsCollection.cs" />
+    <Compile Include="Assets\Scripts\CoreWithUnityAdds\PMGValueStack.cs" />
     <Compile Include="Assets\Scripts\DestroyTest.cs" />
-    <Compile Include="Assets\Scripts\GameInstance\Input\SingleInputManager.cs" />
+    <Compile Include="Assets\Scripts\GameInstance\Map\PMGMap.cs" />
     <Compile Include="Assets\Scripts\GameInstance\Map\SingleMapManager.cs" />
     <Compile Include="Assets\Scripts\GameInstance\Menu\Button.cs" />
+    <Compile Include="Assets\Scripts\GameInstance\Menu\Input\SingleInputManager.cs" />
     <Compile Include="Assets\Scripts\GameInstance\Menu\Menu.cs" />
     <Compile Include="Assets\Scripts\GameInstance\Menu\SingleMenuManager.cs" />
+    <Compile Include="Assets\Scripts\GameInstance\PMGSingleGameInstance.cs" />
+    <Compile Include="Assets\Scripts\Generator\PMGGenomeEnums.cs" />
+    <Compile Include="Assets\Scripts\Generator\PMGGenomeParse.cs" />
+    <Compile Include="Assets\Scripts\Generator\PMGGenomeSet.cs" />
     <Compile Include="Assets\Scripts\SingleApplicationManager.cs" />
   </ItemGroup>
   <ItemGroup>
