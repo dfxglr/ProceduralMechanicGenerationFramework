@@ -78,13 +78,13 @@ namespace PMGF
                 actor.ValueStack.Push(420);
                 return true;
             }
-            
+           
             public bool CF_Input_IsActionPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key action is pressed");
-                //return true;
+                return true;
 
-                if ((Input.GetKeyDown(UnityEngine.KeyCode.Return) && !actionPressed) || (Input.GetKeyDown(KeyCode.Space) && !actionPressed))
+                if ((Input.GetKeyDown(KeyCode.Return) && !actionPressed) || (Input.GetKeyDown(KeyCode.Space) && !actionPressed))
                 {
                     actionPressed = true;        
                     return true;
@@ -99,7 +99,7 @@ namespace PMGF
             {
                 Console.WriteLine("     key up is pressed");
 
-                //return true;
+                return true;
                 if ((Input.GetKeyDown(KeyCode.W) && !upPressed) || (Input.GetKeyDown(KeyCode.UpArrow) && !upPressed))
                 {
                     upPressed = true;
@@ -114,7 +114,7 @@ namespace PMGF
             public bool CF_Input_IsLeftPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key left is pressed");
-                //return true;
+                return true;
                 if ((Input.GetKeyDown(KeyCode.A) && !leftPressed) || (Input.GetKeyDown(KeyCode.LeftArrow) && !leftPressed))
                 {
                     leftPressed = true;
@@ -129,7 +129,7 @@ namespace PMGF
             public bool CF_Input_IsDownPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key down is pressed");
-                //return true;
+                return true;
                 if ((Input.GetKeyDown(KeyCode.S) && !downPressed) || (Input.GetKeyDown(KeyCode.DownArrow) && !downPressed))
                 {
                     downPressed = true;
@@ -144,7 +144,7 @@ namespace PMGF
             public bool CF_Input_IsRightPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 Console.WriteLine("     key right is  pressed");
-                //return true;
+                return true;
                 if ((Input.GetKeyDown(KeyCode.D) && !rightPressed) || (Input.GetKeyDown(KeyCode.RightArrow) && !rightPressed))
                 {
                     rightPressed = true;
