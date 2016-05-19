@@ -363,7 +363,9 @@ namespace PMGF
                                                 for (int t = 0; t < InputSet._genomeSet.methodGenome[ex][1]; t++)
                                                 {
                                                     CurrentMethodExecuteLists.Add(null);
-                                                    Console.WriteLine("                added timestep as executelist: " + (CurrentMethodExecuteLists.Count - 1));
+
+													if(debug)
+                                                    	Console.WriteLine("                added timestep as executelist: " + (CurrentMethodExecuteLists.Count - 1));
                                                 }
                                                 //resets function index list
                                                 Findex = 0;
@@ -648,7 +650,8 @@ namespace PMGF
                                         }
                                         else
                                         {
-                                            Console.WriteLine("     event type: " + InputSet.actorTypes[i][j] + " Incomeplete");
+											if(debug)
+                                            	Console.WriteLine("     event type: " + InputSet.actorTypes[i][j] + " Incomeplete");
                                         }
                                         //break when a type is found to avoid some uneeded loops
                                         break;
@@ -678,6 +681,9 @@ namespace PMGF
                         }///                        
                     }///
                     //creates list of bools for use, in remove incomplete actors
+					if (debug)
+						Console.WriteLine ("Checking completeness");
+					
                     if (OutputActorList[i].Events.Count > 0)
                     {                        
                         if (debug)
@@ -687,7 +693,8 @@ namespace PMGF
                     }
                     else
                     {                        
-                        Console.WriteLine("Actor type: " + i + " Incomeplete");
+						if(debug)
+							Console.WriteLine("Actor type: " + i + " Incomeplete");
                     }
                     
                 }///
@@ -753,6 +760,9 @@ namespace PMGF
                     if (InputSet.actorTypePositions[i][0] < InputActorList.Count)
                     {
                         //checks for posisiton being an empty space in the map
+						if (debug)
+							Console.WriteLine ("Map stuff");
+
                         if (_Map.chart[InputSet.actorTypePositions[i][1], InputSet.actorTypePositions[i][2]] ==0)
                         {
                             //checks for first 0 and set it to the player, any 0 found there after is well fuck em
@@ -864,21 +874,24 @@ namespace PMGF
                     }                    
                 }                
                 //should player still not be found, first actor in the spawnedactor gets replaced with the player 
-                if (!playerActorWasFound)
+                if (!playerActorWasFound || InputSet.actorTypePositions.Count == 0)
                 {
                     //count up error, as we know the genome does not contain one or more players
                     InputSet.NoActorZeroFound = true;
 
-                    //give player 0 old guys method 0
-                    Player.Events[0]._method = OutputActorList[0].Events[0]._method;
 
-                    //adds its position to the player
-                    Player.position.Add(OutputActorList[0].position[0]);
-                    Player.position.Add(OutputActorList[0].position[1]);
+					if (OutputActorList.Count > 0) {
+						//give player 0 old guys method 0
+						Player.Events [0]._method = OutputActorList [0].Events [0]._method;
 
-                    //replaces 0 with the player
-                    OutputActorList[0] = Player;
-                    
+						//adds its position to the player
+						Player.position.Add (OutputActorList [0].position [0]);
+						Player.position.Add (OutputActorList [0].position [1]);
+
+						//replaces 0 with the player
+						OutputActorList [0] = Player;
+					} else
+						OutputActorList.Add (Player);
                   
 
                     if (debug)
@@ -1010,6 +1023,10 @@ namespace PMGF
 
                 //add to actor
                 Player.Events.Add(rightEvent);
+
+				Player.position.Add (1);
+				Player.position.Add (1);
+
                 //add player tag
                 Player.IsPlayer = true;                
 
@@ -1154,6 +1171,7 @@ namespace PMGF
 
                     }
                     //tells position
+
                     Console.WriteLine("actor: " + i + " is now at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
 
                 }

@@ -53,7 +53,7 @@ namespace PMGF
 						Console.Clear ();
 						Console.WriteLine ("Generation # {0}", ga.GenerationsNumber);
 						Console.WriteLine("Time: {0}", ga.TimeEvolving);
-						Console.WriteLine("Population sizes: {0}\t{1}\t{2}\t{3}", ga.Species[0].Population.CurrentGeneration.Chromosomes.Count,
+						/*Console.WriteLine("Population sizes: {0}\t{1}\t{2}\t{3}", ga.Species[0].Population.CurrentGeneration.Chromosomes.Count,
 																					ga.Species[1].Population.CurrentGeneration.Chromosomes.Count,
 																					ga.Species[2].Population.CurrentGeneration.Chromosomes.Count,
 																					ga.Species[3].Population.CurrentGeneration.Chromosomes.Count);
@@ -78,7 +78,7 @@ namespace PMGF
 						}
 
 						//System.Threading.Thread.Sleep(1000);
-							
+						*/	
 					};
 
 
