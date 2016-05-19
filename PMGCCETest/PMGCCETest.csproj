@@ -41,7 +41,6 @@
     <Compile Include="PMGCore\PMGChangeFunctionsCollection.cs" />
     <Compile Include="PMGCore\PMGConditionFunction.cs" />
     <Compile Include="PMGCore\PMGConditionFunctionsCollection.cs" />
-    <Compile Include="PMGCore\PMGCore.cs" />
     <Compile Include="PMGCore\PMGEvent.cs" />
     <Compile Include="PMGCore\PMGEventDynamic.cs" />
     <Compile Include="PMGCore\PMGEventFixed.cs" />
@@ -66,6 +65,9 @@
     <Compile Include="PMGGameInstance\PMGGenomeSet.cs" />
     <Compile Include="PMGGameInstance\PMGMap.cs" />
     <Compile Include="PMGGameInstance\PMGSingleGameInstance.cs" />
+    <Compile Include="PMGCore\PMGGameCore.cs" />
+    <Compile Include="DebugHelpers.cs" />
+    <Compile Include="PMGGenerator\PMGRepairFunction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Domain.Randomizations;
 
 using PMGF.PMGGameInstance;
 using PMGF.PMGGenerator;
@@ -32,27 +33,29 @@ namespace PMGF
 			}
 
 
-            public override double Evaluate(List<IChromosome> chromosomeSet)
+            public double Evaluate(List<IChromosome> chromosomeSet)
             {
 				double finalFitness = 0.0;
 
 
 				// Convert list of chromosomes to genome set
-				GenomeSet = ConvertChromosomeSetToGenomeSet(chromosomeSet);
+				//GenomeSet = ConvertChromosomeSetToGenomeSet(chromosomeSet);
 
 				// Parse the genome set
-				GenomeParser.DecodeGenomeSet(GenomeSet);
+				//GenomeParser.DecodeGenomeSet(GenomeSet);
 
 
 				// Weigh intrinsic/extrinsic
-				finalFitness = intrinsicWeight * IntrinsicFitness() + extrinsicWeight * ExtrinsicFitness();
+				//finalFitness = intrinsicWeight * IntrinsicFitness() + extrinsicWeight * ExtrinsicFitness();
 
-				return finalFitness;
+				//return finalFitness;
+				return RandomizationProvider.Current.GetFloat();
             }
 
 			private double IntrinsicFitness()
 			{
 				// Intrinsic fitnesses //
+				return 0f;
 
 			}
 
@@ -60,9 +63,10 @@ namespace PMGF
 			{
 				// Extrinsic fitnesses //
 				// Create a game instance
-				GInstance.BuildInstance(GenomeSet);
+				//GInstance.BuildInstance(GenomeSet);
 
 				// Run with various players and get extrinsic fitness
+				return 0f;
 			}
 
 
@@ -80,11 +84,11 @@ namespace PMGF
 
 				foreach (Gene g in chromoSet[0].GetGenes())
 				{
-					actorGenome.Add (g.Value as int);
+					actorGenome.Add ((int)g.Value);
 				}
 				foreach (Gene g in chromoSet[1].GetGenes())
 				{
-					actorPositionsGenome.Add (g.Value as int);
+					actorPositionsGenome.Add ((int)g.Value);
 				}
 				foreach (Gene g in chromoSet[2].GetGenes())
 				{

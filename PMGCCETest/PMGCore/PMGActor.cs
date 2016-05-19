@@ -18,9 +18,9 @@ namespace PMGF
             public PMGValueStack ValueStack = new PMGValueStack();
 
 
-            public PMGCore Core;
+            public PMGGameCore Core;
 
-		    public PMGActor(PMGCore _Core)
+		    public PMGActor(PMGGameCore _Core)
 		    {
                 Core = _Core;
 

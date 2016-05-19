@@ -33,6 +33,9 @@ namespace PMGF
 
 			public const int   MethodMaxInitLen = 100;
 
+
+			public const int MethodMaxGenomeLength = 100;
+
 	        //
 	        //
 	        // Event probabilities add up to 1
@@ -43,6 +46,8 @@ namespace PMGF
 
 			public const int   EventMaxInitLen = 100;
 
+			public const int EventMaxGenomeLength = 100;
+
 
 
 	        // Actor key probability
@@ -51,8 +56,13 @@ namespace PMGF
 			public const int   ActorMaxInitLen = 100;
 
 
+			public const int ActorMaxGenomeLength = 100;
+
+
 			public const int   ActorLocMaxInitLen = 100;
 
+
+			public const int ActorLocMaxGenomeLength = 400;
 
 
 		}
