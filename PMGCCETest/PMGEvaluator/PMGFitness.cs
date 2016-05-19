@@ -39,14 +39,14 @@ namespace PMGF
 
 
 				// Convert list of chromosomes to genome set
-				//GenomeSet = ConvertChromosomeSetToGenomeSet(chromosomeSet);
+				GenomeSet = ConvertChromosomeSetToGenomeSet(chromosomeSet);
 
 				// Parse the genome set
-				//GenomeParser.DecodeGenomeSet(GenomeSet);
+				GenomeParser.DecodeGenomeSet(GenomeSet);
 
 
 				// Weigh intrinsic/extrinsic
-				//finalFitness = intrinsicWeight * IntrinsicFitness() + extrinsicWeight * ExtrinsicFitness();
+				finalFitness = intrinsicWeight * IntrinsicFitness() + extrinsicWeight * ExtrinsicFitness();
 
 				//return finalFitness;
 				return RandomizationProvider.Current.GetFloat();
@@ -63,7 +63,8 @@ namespace PMGF
 			{
 				// Extrinsic fitnesses //
 				// Create a game instance
-				//GInstance.BuildInstance(GenomeSet);
+
+				GInstance.BuildInstance(GenomeSet);
 
 				// Run with various players and get extrinsic fitness
 				return 0f;
