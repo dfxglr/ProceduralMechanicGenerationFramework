@@ -17,7 +17,6 @@ namespace PMGF
         {
 
 			PMGGenomeSet GenomeSet;
-			PMGGenomeParse GenomeParser;
 
 			PMGSingleGameInstance GInstance;
 
@@ -28,7 +27,6 @@ namespace PMGF
 
 			public PMGFitness() : base()
 			{
-				GenomeParser = new PMGGenomeParse ();
 				GInstance = new PMGSingleGameInstance ();
 			}
 
@@ -42,7 +40,7 @@ namespace PMGF
 				GenomeSet = ConvertChromosomeSetToGenomeSet(chromosomeSet);
 
 				// Parse the genome set
-				GenomeParser.DecodeGenomeSet(GenomeSet);
+				GInstance.GameSet.DecodeGenomeSet(GenomeSet);
 
 
 				// Weigh intrinsic/extrinsic
@@ -64,7 +62,7 @@ namespace PMGF
 				// Extrinsic fitnesses //
 				// Create a game instance
 
-				GInstance.BuildInstance(GenomeSet);
+				GInstance.BuildInstance(false);
 
 				// Run with various players and get extrinsic fitness
 				return 0f;
