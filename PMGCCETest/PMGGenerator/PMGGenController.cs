@@ -27,17 +27,17 @@ namespace PMGF
 
 			// Use genome lengths as per PMGGenomeConfigurations
 
-			private const int ActorMinPopSize = 50;
-			private const int ActorMaxPopSize = 100;
+			private const int ActorMinPopSize = 10;
+			private const int ActorMaxPopSize = 50;
 
-			private const int MethodMinPopSize = 50;
-			private const int MethodMaxPopSize = 100;
+			private const int MethodMinPopSize = 10;
+			private const int MethodMaxPopSize = 50;
 
-			private const int ActorLocMinPopSize = 50;
-			private const int ActorLocMaxPopSize = 100;
+			private const int ActorLocMinPopSize = 10;
+			private const int ActorLocMaxPopSize = 50;
 
-			private const int EventMinPopSize = 50;
-			private const int EventMaxPopSize = 100;
+			private const int EventMinPopSize = 10;
+			private const int EventMaxPopSize = 50;
 
 
 			private int UtilityFunctionsCount;
@@ -52,11 +52,11 @@ namespace PMGF
 			public List<CCESpecies> CreateSpecies()
 			{
 				// Get counts
-				PMGCore pmgc = new PMGCore();
-				UtilityFunctionsCount = pmgc.UtilityFunctions.Count;
-				ValueFunctionsCount = pmgc.ValueFunctions.Count;
-				ChangeFunctionsCount = pmgc.ChangeFunctions.Count;
-				ConditionFunctionsCount = pmgc.Conditionfunctions.Count;
+				PMGGameCore pmgc = new PMGGameCore();
+				UtilityFunctionsCount = pmgc.UtilityFunctions.Collection.Count;
+				ValueFunctionsCount = pmgc.ValueFunctions.Collection.Count;
+				ChangeFunctionsCount = pmgc.ChangeFunctions.Collection.Count;
+				ConditionFunctionsCount = pmgc.ConditionFunctions.Collection.Count;
 
 				PMGMap map = new PMGMap ();
 				MapH = map.Map.GetLength (0);
@@ -78,10 +78,29 @@ namespace PMGF
 				CCESpecies s = new CCESpecies ();
 				s.Selection = new StochasticUniversalSamplingSelection ();
 
-				// Replace with SVLC
-				s.Crossover = new OnePointCrossover ();
+				// Use SVLC 
+				s.Crossover = new SVLC(2, 8);
 
-				s.Mutation = new UniformMutation ();
+
+				// Using mutations with relative probabilites as done in SVLC paper
+				List<IMutation> muts = new List<IMutation> ();
+				List<float> relprob = new List<float> ();
+
+				muts.Add (new PointMutationSmall ());
+				relprob.Add (6);
+				muts.Add (new PointMutationLarge ());
+				relprob.Add (4);
+				muts.Add (new DeletionMutation ());
+				relprob.Add (5);
+				muts.Add (new InsertionMutation ());
+				relprob.Add (1);
+				muts.Add (new ReplicationMutation ());
+				relprob.Add (1);
+				muts.Add (new SlipMutation ());
+				relprob.Add (1);
+
+				s.Mutation = new MultipleMutations (muts, relprob);
+
 
 				s.Reinsertion = new FitnessBasedReinsertion ();
 
@@ -93,27 +112,16 @@ namespace PMGF
 				// Add specific actor features to species
 				CCESpecies s = CommonFeatsSpecies ();
 				s.Name = "Actors";
+				s.ID = 0;
 
 				PMGActorGenome g = new PMGActorGenome (
 					                   RandomizationProvider.Current.GetInt (
-						                   2, PMGGenomeConfigurations.ActorMaxInitLen), PMGGenomeConfigurations.ActorMaxValue);
+						                   20, PMGGenomeConfigurations.ActorMaxInitLen), PMGGenomeConfigurations.ActorMaxValue);
 
 				// Add a population of actor genomes
 				s.Population = new Population(ActorMinPopSize, ActorMaxPopSize, g.CreateNew());
-				return s;
-			}
-
-			private CCESpecies CreateMethodSpecies()
-			{
-				// Add specific actor features to species
-				CCESpecies s = CommonFeatsSpecies ();
-				s.Name = "Methods";
-
-				PMGMethodGenome g = new PMGMethodGenome (
-					                    RandomizationProvider.Current.GetInt (2, PMGGenomeConfigurations.MethodMaxInitLen),
-					                    Math.Max (UtilityFunctionsCount, Math.Max (ValueFunctionsCount, ChangeFunctionsCount)));
-
-				s.Population = new Population (MethodMinPopSize, MethodMaxPopSize, g.CreateNew ());
+				s.Population.GenerationStrategy = new PerformanceGenerationStrategy (1);
+				s.Reparation = new PMGRepairFunction (s.ID);
 				return s;
 			}
 
@@ -122,12 +130,15 @@ namespace PMGF
 				// Add specific actor features to species
 				CCESpecies s = CommonFeatsSpecies ();
 				s.Name = "Actor Locations";
+				s.ID = 1;
 
 				PMGActorLocationGenome g = new PMGActorLocationGenome (
-					                           RandomizationProvider.Current.GetInt (2, PMGGenomeConfigurations.ActorLocMaxInitLen),
+					                           RandomizationProvider.Current.GetInt (20, PMGGenomeConfigurations.ActorLocMaxInitLen),
 					                           Math.Max (MapH, MapW));
 
 				s.Population = new Population (ActorLocMinPopSize, ActorLocMaxPopSize, g.CreateNew ());
+				s.Population.GenerationStrategy = new PerformanceGenerationStrategy (1);
+				s.Reparation = new PMGRepairFunction (s.ID);
 				return s;
 			}
 
@@ -136,12 +147,32 @@ namespace PMGF
 				// Add specific actor features to species
 				CCESpecies s = CommonFeatsSpecies ();
 				s.Name = "Events";
+				s.ID = 2;
 
 				PMGDynamicEventGenome g = new PMGDynamicEventGenome (
-					                          RandomizationProvider.Current.GetInt (2, PMGGenomeConfigurations.EventMaxInitLen),
+					                          RandomizationProvider.Current.GetInt (20, PMGGenomeConfigurations.EventMaxInitLen),
 					                          Math.Max (ValueFunctionsCount, Math.Max (UtilityFunctionsCount, ConditionFunctionsCount)));
 
 				s.Population = new Population (EventMinPopSize, EventMaxPopSize, g.CreateNew ());
+				s.Population.GenerationStrategy = new PerformanceGenerationStrategy (1);
+				s.Reparation = new PMGRepairFunction (s.ID);
+				return s;
+			}
+
+			private CCESpecies CreateMethodSpecies()
+			{
+				// Add specific actor features to species
+				CCESpecies s = CommonFeatsSpecies ();
+				s.Name = "Methods";
+				s.ID = 3;
+
+				PMGMethodGenome g = new PMGMethodGenome (
+					RandomizationProvider.Current.GetInt (20, PMGGenomeConfigurations.MethodMaxInitLen),
+					Math.Max (UtilityFunctionsCount, Math.Max (ValueFunctionsCount, ChangeFunctionsCount)));
+
+				s.Population = new Population (MethodMinPopSize, MethodMaxPopSize, g.CreateNew ());
+				s.Population.GenerationStrategy = new PerformanceGenerationStrategy (1);
+				s.Reparation = new PMGRepairFunction (s.ID);
 				return s;
 			}
 
@@ -156,6 +187,11 @@ namespace PMGF
 				// Create the termination function to be used
 				// ( time? )									H  M   S
 				return new TimeEvolvingTermination(new TimeSpan(0, 10, 0));
+			}
+
+			public void ConfigGA(GeneticAlgorithmCCE ga)
+			{
+				
 			}
 		}
 	}
