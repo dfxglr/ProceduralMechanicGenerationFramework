@@ -11,7 +11,7 @@ namespace PMGF
     {
         class PMGGenomeParse
         {
-            //local genome set tho it needs to be public 
+            //local genome set tho it needs to be public
             public PMGGenomeSet _genomeSet;
             //----------------------------------------------------------------//parsed lists
             //actors types
@@ -22,13 +22,18 @@ namespace PMGF
             public List<int> eventIndexList = new List<int>();
             //index list for mehtod genome
             public List<int> methodIndexList = new List<int>();
-            //-------------------------------------------------------------------------------//error counting
+
+
+            //-------------------------------------------------------------------------------//
+            //Parser errors
             //-----------------------//
             //actor genome
             //indexInGenome
             List<int> actorWithoutStats = new List<int>();
             //(indexInGenome,value)
             List<List<int>> statsWithoutActors = new List<List<int>>();
+            //
+            //List<List<int>> 
             //
             bool ActorTypesGenomeLengthLessThanTwo = false;
             bool anyActorFound = false;
@@ -54,7 +59,25 @@ namespace PMGF
             //
             bool MethodGenomeLengthLessThanTwo = false;
             bool anyMethodFound = false;
+            //-----------------------//
             //-------------------------------------------------------------------------------//
+            //build errors - comming from game instance
+            public List<int> UnknownValueFunctionType = new List<int>();
+            public List<int> UnknownChangeFunctionType = new List<int>();
+            public List<int> UnknownUtilityFunctionType = new List<int>();
+            public List<int> UnknownConditionFunctionType = new List<int>();
+
+            public List<int> MissingMethodTypes = new List<int>();
+            public List<int> MissingEventTypes = new List<int>();
+
+            //ATP = actor type positions list
+            //holds indexs in the ATP list where other type 0 was found
+            public List<int> DuplicatePlayersInATPList = new List<int>();
+            public List<int> ActorTypeNotFoundInSpawnedActorList = new List<int>();
+            public List<List<int>> TypePlusFaultyStartPositions = new List<List<int>>();
+            //aka no player in the genome
+            public bool NoActorZeroFound;
+            //
 
 
             //constuctor
@@ -72,7 +95,7 @@ namespace PMGF
             }
 
             //decode actor types
-            private void DecodeActorGenome()
+            public void DecodeActorGenome()
             {
                 int actorTypeIndex = 0;
                 int statsWOAErrors = 0;
@@ -109,6 +132,15 @@ namespace PMGF
                                             actorTypes[actorTypeIndex].Add(_genomeSet.actorGenome[subIndex]);
                                         }
                                     }
+                                    //check for odd length of stats list, to ensure we only get pairs
+                                    if (actorTypes[actorTypeIndex].Count%2 !=0)
+                                    {
+                                        actorTypes[actorTypeIndex].RemoveAt(actorTypes[actorTypeIndex].Count-1);
+                                        //error: stats list for actor x was odd, last item removed
+
+
+                                    }
+
                                     //counts up the actor type index
                                     actorTypeIndex++;
                                 }
@@ -223,22 +255,22 @@ namespace PMGF
                             //check that list dosent end with an event
                             if (mainIndex + 1 < _genomeSet.methodGenome.Count)
                             {
-                                //check that a new actor dosentstart right after the current one
+                                //check that a new method dosentstart right after the current one
                                 if (_genomeSet.methodGenome[mainIndex + 1][0] != (int)GenomeKeys.MethodKey)
                                 {
-                                    //count up new event beginnings
+                                    //count up new method beginnings
                                     methodIndexList.Add(mainIndex);
 
                                 }
                                 else
                                 {
-                                    //error: event with no condition and valuefunc
+                                    //error: method with no condition and valuefunc
                                     IncompleteMethods.Add(mainIndex);
                                 }
                             }
                             else
                             {
-                                //error: event with no condition and valuefunc
+                                //error: method with no condition and valuefunc
                                 IncompleteMethods.Add(mainIndex);
                             }
                             anyMethodFound = true;
@@ -260,7 +292,7 @@ namespace PMGF
             public void DecodeEventGenome()
             {
                 //check for length more that 1
-                if (_genomeSet.eventGenome.Count > 2)
+                if (_genomeSet.eventGenome.Count > 1)
                 {
                     for (int mainIndex = 0; mainIndex < _genomeSet.eventGenome.Count; mainIndex++)
                     {
@@ -268,10 +300,10 @@ namespace PMGF
                         if (_genomeSet.eventGenome[mainIndex][0] == (int)GenomeKeys.EventKey)
                         {
                             //check that list dosent end with an event
-                            if (mainIndex + 2 < _genomeSet.eventGenome.Count)
+                            if (mainIndex + 1 < _genomeSet.eventGenome.Count)
                             {
                                 //check that a new actor dosentstart right after the current one
-                                if (_genomeSet.eventGenome[mainIndex + 1][0] != (int)GenomeKeys.EventKey && _genomeSet.eventGenome[mainIndex + 2][0] != (int)GenomeKeys.EventKey)
+                                if (_genomeSet.eventGenome[mainIndex + 1][0] != (int)GenomeKeys.EventKey)
                                 {
                                     //count up new event beginnings
                                     eventIndexList.Add(mainIndex);
