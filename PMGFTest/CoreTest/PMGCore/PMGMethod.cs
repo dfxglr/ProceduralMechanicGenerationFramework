@@ -66,21 +66,19 @@ namespace PMGF
                 if(!_running)
                     return;
 
+                // Execute next step
+                CurrentStep = _steps[_stepIter];
+                if (CurrentStep != null)
+                {
+                    _steps[_stepIter].Execute();
+                }
+                _stepIter++;
+
                 // Go to next time step, unless done
-                if(_stepIter == _steps.Count)
+                if (_stepIter == _steps.Count)
                 {
                     // We are at last step (+1) - end it
                     ReachedEnd();
-                }
-                else
-                {
-                    // Execute next step
-                    CurrentStep = _steps[_stepIter];
-                    if (CurrentStep != null)
-                    {
-                        _steps[_stepIter].Execute();
-                    }
-                    _stepIter++;
                 }
             }
 

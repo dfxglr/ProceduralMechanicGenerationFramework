@@ -22,6 +22,7 @@ namespace PMGF
                 /*  0 */Collection.Add(CF_DebugWriteToConsole); // Write a msg to console
                 /*  1 */Collection.Add(CF_DoNothing);           // Do nothing
                 /*  2 */Collection.Add(CF_PushLeetToActor);     // Push 1337 to actor stack
+                Collection.Add(CF_Do);
             }
 
 
@@ -55,6 +56,11 @@ namespace PMGF
                 // push 1337 to actor stack
                 actor.ValueStack.Push(1337);
                 return true;
+            }
+            public bool CF_Do(PMGActor actor, PMGValueStack localStack)
+            {
+                // literally do nothing
+                return false;
             }
         }
     }

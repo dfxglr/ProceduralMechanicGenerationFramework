@@ -24,9 +24,9 @@ namespace PMGF
             public PMGGenomeParse GameSet = new PMGGenomeParse();
 
             //semi-static player genome
-            public PMGGenomeSet OutputGenome = new PMGGenomeSet();
-            public PMGGenomeParse PlayerSet = new PMGGenomeParse();
-            List<PMGActor> Player = new List<PMGActor>();                      
+            //public PMGGenomeSet PlayerGenome = new PMGGenomeSet();
+            //public PMGGenomeParse PlayerSet = new PMGGenomeParse();
+            public PMGActor Player;                    
                 
             //actors
             //created from parsed set
@@ -34,7 +34,7 @@ namespace PMGF
             //removed incomeplete actors from created actors, and made lsit of spawnable types
             List<PMGActor> SpawnAbleActors = new List<PMGActor>();
             //actors spawned in map
-            List<PMGActor> SpawnedActors = new List<PMGActor>();
+            public List<PMGActor> SpawnedActors = new List<PMGActor>();
             
             
 
@@ -51,19 +51,23 @@ namespace PMGF
 
             public PMGSingleGameInstance()
             {
-                Player.Add(new PMGActor(MainCore));               
+                Player = new PMGActor(MainCore);
+                //decode genome set
+               
+            }
+            public void SetInternalParsedSet(PMGGenomeParse InputSet)
+            {
+                GameSet = InputSet;
             }
 
 
-
             // builds the instance
-            public void BuildInstance(PMGGenomeSet InputSet,bool debug)
+            public void BuildInstance(bool debug)
             {
-                //decode genome set
-                GameSet.DecodeGenomeSet(InputSet);            
+                            
 
                 // build actor types from parsed set
-                BuildActorTypes(ref CreatedActors,GameSet,debug);
+                BuildActorTypes(ref CreatedActors, GameSet, debug);
 
                 // removes incomplete actor types before creating spawn list
                 RemoveIncompleteActortypes(ref CreatedActors,debug);
@@ -71,23 +75,14 @@ namespace PMGF
                 //create spawn list
                 CreateSpawnTypeList(ref CreatedActors,ref SpawnAbleActors,debug);
 
-                //make player genome
-                MakePlayerGenome(ref OutputGenome);
-                //decome it
-                PlayerSet.DecodeGenomeSet(OutputGenome);
-                //build player
-                if (debug)
-                {
-                    Console.WriteLine("Player actor: ");
-                }
-                BuildActorTypes(ref Player, PlayerSet, debug);
-
+                //make player 
+                CreatePlayer();
 
                 //createspawnlist, actorID's
-                SpawnActors(ref GameSet, ref SpawnAbleActors ,ref SpawnedActors,1000,debug);
+                SpawnActors(ref GameSet, ref SpawnAbleActors ,ref SpawnedActors,debug);
 
 
-                _Map.DisplayConsole();
+                //_Map.DisplayConsole();
 
                 
                 
@@ -104,6 +99,7 @@ namespace PMGF
             //      does it all in one go, aka, when its done, its done, and no new actor types needs to be created
             public void BuildActorTypes(ref List<PMGActor>OutputActorList, PMGGenomeParse InputSet, bool debug)
             {
+                
                 //create actors, methods and event and add them to the actors
                 //mainlist of actor types
                 for (int i = 0; i < InputSet.actorTypes.Count; i++)
@@ -115,7 +111,6 @@ namespace PMGF
                     {
                         Console.WriteLine("Actor type : " + i);
                     }
-
                     //gets overwritten by how ever many method and event pairs the actor types has 
                     PMGMethod CurrentMethod = new PMGMethod();
                     PMGEvent CurrentEvent;
@@ -124,6 +119,9 @@ namespace PMGF
                     //sublist of actor stats
                     for (int j = 0; j < InputSet.actorTypes[i].Count; j++)
                     {
+                        
+
+
                         //is it even, time for method--------------------------------------------------------------------------//
                         if (j % 2 == 0)
                         {
@@ -391,14 +389,11 @@ namespace PMGF
                                     {
                                         Console.WriteLine("            list of executelists for method: " + InputSet.actorTypes[i][j] + " finished");
                                     }
-                                    //add every item in list of executelists to _steps in current method
-                                    for (int ms = 0; ms < CurrentMethodExecuteLists.Count; ms++)
+                                    //add every item in list of executelists to _steps in current method                                    
+                                    CurrentMethod._steps = CurrentMethodExecuteLists;
+                                    if (debug)
                                     {
-                                        CurrentMethod._steps.Add(CurrentMethodExecuteLists[ms]);
-                                        if (debug)
-                                        {
-                                            Console.WriteLine("                executelist: " + ms + " added to method: " + InputSet.actorTypes[i][j]);
-                                        }
+                                            Console.WriteLine("                executelist:   added to method: " + InputSet.actorTypes[i][j]);
                                     }
                                     //
                                     CurrentMethodComeplete = true;
@@ -742,7 +737,8 @@ namespace PMGF
             }
 
             //spawns in the actors if they are found in the spawnlist, and if their position is not within a wall
-            public void SpawnActors(ref PMGGenomeParse InputSet, ref List<PMGActor> InputActorList, ref List<PMGActor> OutputActorList,int IDBase,bool debug)
+            //also adds the player
+            public void SpawnActors(ref PMGGenomeParse InputSet, ref List<PMGActor> InputActorList, ref List<PMGActor> OutputActorList,bool debug)
             {
 
                 //the first 0 in the actor type positions list will be the player, any 0 found after will not be spawned, to ofc only have 1 player
@@ -759,8 +755,8 @@ namespace PMGF
                     //checks if the type is in spawnable types
                     if (InputSet.actorTypePositions[i][0] < InputActorList.Count)
                     {
-                        //checks for posisiton in map
-                        if (_Map.Map[InputSet.actorTypePositions[i][1], InputSet.actorTypePositions[i][2]] ==0)
+                        //checks for posisiton being an empty space in the map
+                        if (_Map.chart[InputSet.actorTypePositions[i][1], InputSet.actorTypePositions[i][2]] ==0)
                         {
                             //checks for first 0 and set it to the player, any 0 found there after is well fuck em
                             if (InputSet.actorTypePositions[i][0] == 0)
@@ -769,18 +765,18 @@ namespace PMGF
                                 if (!playerActorWasFound)
                                 {
                                     //give player 0 old guys method 0
-                                    Player[0].Events[0]._method = OutputActorList[0].Events[0]._method;
+                                    //Player.Events[0]._method = OutputActorList[0].Events[0]._method;
 
                                     //spawns player
-                                    OutputActorList.Add(Player[0]);
-                                                                                                           
-                                    //places its ID in the map
-                                    _Map.Map[InputSet.actorTypePositions[i][1], InputSet.actorTypePositions[i][2]] = (OutputActorList.Count - 1 + IDBase);
-                                    
+                                    OutputActorList.Add(Player);
+
+                                    //give the actor its position
+                                    OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][1]);
+                                    OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][2]);
 
                                     if (debug)
                                     {
-                                        Console.WriteLine("     player actor  spawned at position[ "+ InputSet.actorTypePositions[i][1]+" , "+ InputSet.actorTypePositions[i][2]+" ] with ID: "+(SpawnedActors.Count-1+IDBase));
+                                        Console.WriteLine("     player actor  spawned at position[ "+ InputSet.actorTypePositions[i][1]+" , "+ InputSet.actorTypePositions[i][2]+" ] with ID: "+(SpawnedActors.Count-1));
                                     }
                                 }
                                 else
@@ -797,13 +793,15 @@ namespace PMGF
                             }
                             else
                             {
-                                //spawns the actor
+                                //
                                 OutputActorList.Add(InputActorList[InputSet.actorTypePositions[i][0]]);
-                                //places its ID in the map
-                                _Map.Map[InputSet.actorTypePositions[i][1], InputSet.actorTypePositions[i][2]] = (OutputActorList.Count - 1 + IDBase);
+                                //gives the actor its position
+                                OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][1]);
+                                OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][2]);
+
                                 if (debug)
                                 {
-                                    Console.WriteLine("     actor type: " + InputSet.actorTypePositions[i][0] + " spawned at position[ "+ InputSet.actorTypePositions[i][1]+" , "+ InputSet.actorTypePositions[i][2]+" ] with ID: "+ (OutputActorList.Count - 1 + IDBase));
+                                    Console.WriteLine("     actor type: " + InputSet.actorTypePositions[i][0] + " spawned at position[ "+ InputSet.actorTypePositions[i][1]+" , "+ InputSet.actorTypePositions[i][2]+" ] with ID: "+ (OutputActorList.Count - 1));
                                 }
                             }
                         }
@@ -816,7 +814,7 @@ namespace PMGF
                                 InputSet.DuplicatePlayersInATPList.Add(i);
                                 if (debug)
                                 {
-                                    Console.WriteLine("     actor type: " + InputSet.actorTypePositions[i][0] + " Not spawned, due to position[ " + InputSet.actorTypePositions[i][1] + " , " + InputSet.actorTypePositions[i][2] + " ] not being free, counts existing player actor error");
+                                    Console.WriteLine("     actor type: " + InputSet.actorTypePositions[i][0] + " Not spawned, due to position[ " + InputSet.actorTypePositions[i][1] + " , " + InputSet.actorTypePositions[i][2] + " ] being a wall, counts existing player actor error");
                                 }
                             }
                             else
@@ -828,7 +826,7 @@ namespace PMGF
                                 InputSet.TypePlusFaultyStartPositions[InputSet.TypePlusFaultyStartPositions.Count - 1].Add(InputSet.actorTypePositions[i][2]);
                                 if (debug)
                                 {
-                                    Console.WriteLine("     actor type: " + InputSet.actorTypePositions[i][0] + " Not spawned, due to position[ " + InputSet.actorTypePositions[i][1] + " , " + InputSet.actorTypePositions[i][2] + " ] not being free");
+                                    Console.WriteLine("     actor type: " + InputSet.actorTypePositions[i][0] + " Not spawned, due to position[ " + InputSet.actorTypePositions[i][1] + " , " + InputSet.actorTypePositions[i][2] + " ] being a wall");
                                 }
                             }   
                         }
@@ -875,34 +873,159 @@ namespace PMGF
                     InputSet.NoActorZeroFound = true;
 
                     //give player 0 old guys method 0
-                    Player[0].Events[0]._method = OutputActorList[0].Events[0]._method;
-                    
+                    Player.Events[0]._method = OutputActorList[0].Events[0]._method;
+
+                    //adds its position to the player
+                    Player.position.Add(OutputActorList[0].position[0]);
+                    Player.position.Add(OutputActorList[0].position[1]);
+
                     //replaces 0 with the player
-                    OutputActorList[0] = Player[0];
+                    OutputActorList[0] = Player;
+                    
+                  
+
                     if (debug)
                     {
-                        Console.WriteLine("     player actor replaced SpawnedActor[0], and had method: "+ Player[0].Events[0]._method.GetType());
+                        Console.WriteLine("     player actor replaced SpawnedActor[0], and had method: "+ Player.Events[0]._method.GetType());
                     }
-                }
+                }//*/
                 if (debug)
                 {
                     Console.WriteLine("Spawning comeplete, and following actors(by ID) are in the map");
                     for(int e = 0; e< SpawnedActors.Count;e++)
                     {
-                        Console.WriteLine("     actor: "+(e+IDBase));
+                        Console.WriteLine("     actor ID: "+(e));
                     }
                 }
             }
 
-            //adde stuff to player genome
+            //make the player actor
+            public void CreatePlayer()
+            {
+                //action ------
+                //method 
+                PMGMethod actionMethod = new PMGMethod();                
+                List<PMGExecuteList> actionMethodListOfExelist = new List<PMGExecuteList>(); // made in case we need more execute lists
+
+                PMGExecuteList actionMethodList = new PMGExecuteList(actionMethod as object, FunctionOwnerType.METHOD, Player);
+                actionMethodList._functions.Add(new PMGChangeFunction(2)); // default is the same as move up, should be changed to the actor its replacing
+                actionMethodListOfExelist.Add(actionMethodList);
+
+
+                actionMethod._steps = actionMethodListOfExelist;
+                //event
+                PMGEvent actionEvent = new PMGEvent(actionMethod, Player); // has default bahavior ALWAYS, might need to change that
+
+                PMGExecuteList actionEventList = new PMGExecuteList(actionEvent as object, FunctionOwnerType.EVENT, Player);
+                actionEventList._functions.Add(new PMGConditionFunction(3));
+
+                actionEvent._conditions = actionEventList;
+
+                //add to actor
+                Player.Events.Add(actionEvent);
+
+                //Up ---------
+                //method 
+                PMGMethod upMethod = new PMGMethod();
+                List<PMGExecuteList> upMethodListOfExelist = new List<PMGExecuteList>(); // made in case we need more execute lists
+
+                PMGExecuteList upMethodList = new PMGExecuteList(upMethod as object, FunctionOwnerType.METHOD, Player);
+                upMethodList._functions.Add(new PMGChangeFunction(2)); // default is the same as move up, should be changed to the actor its replacing
+                upMethodListOfExelist.Add(upMethodList);
+
+                upMethod._steps = upMethodListOfExelist;
+                //event
+                PMGEvent upEvent = new PMGEvent(upMethod, Player); // has default bahavior ALWAYS, might need to change that
+
+                PMGExecuteList upEventList = new PMGExecuteList(upEvent as object, FunctionOwnerType.EVENT, Player);
+                upEventList._functions.Add(new PMGConditionFunction(4));
+                upEventList._functions.Add(new PMGConditionFunction(8));
+
+                upEvent._conditions = upEventList;
+
+                //add to actor
+                Player.Events.Add(upEvent);
+
+                //Left -------
+                //method 
+                PMGMethod leftMethod = new PMGMethod();
+                List<PMGExecuteList> leftMethodListOfExelist = new List<PMGExecuteList>(); // made in case we need more execute lists
+
+                PMGExecuteList leftMethodList = new PMGExecuteList(leftMethod as object, FunctionOwnerType.METHOD, Player);
+                leftMethodList._functions.Add(new PMGChangeFunction(3)); // default is the same as move up, should be changed to the actor its replacing
+                leftMethodListOfExelist.Add(leftMethodList);
+
+                leftMethod._steps = leftMethodListOfExelist;
+                //event
+                PMGEvent leftEvent = new PMGEvent(leftMethod, Player); // has default bahavior ALWAYS, might need to change that
+
+                PMGExecuteList leftEventList = new PMGExecuteList(leftEvent as object, FunctionOwnerType.EVENT, Player);
+                leftEventList._functions.Add(new PMGConditionFunction(5));
+                leftEventList._functions.Add(new PMGConditionFunction(9));
+
+                leftEvent._conditions = leftEventList;
+
+                //add to actor
+                Player.Events.Add(leftEvent);
+
+                //Down -------
+                //method 
+                PMGMethod downMethod = new PMGMethod();
+                List<PMGExecuteList> downMethodListOfExelist = new List<PMGExecuteList>(); // made in case we need more execute lists
+
+                PMGExecuteList downMethodList = new PMGExecuteList(downMethod as object, FunctionOwnerType.METHOD, Player);
+                downMethodList._functions.Add(new PMGChangeFunction(4)); // default is the same as move up, should be changed to the actor its replacing
+                downMethodListOfExelist.Add(downMethodList);
+
+                downMethod._steps = downMethodListOfExelist;
+                //event
+                PMGEvent downEvent = new PMGEvent(downMethod, Player); // has default bahavior ALWAYS, might need to change that
+
+                PMGExecuteList downEventList = new PMGExecuteList(downEvent as object, FunctionOwnerType.EVENT, Player);
+                downEventList._functions.Add(new PMGConditionFunction(6));
+                downEventList._functions.Add(new PMGConditionFunction(10));
+
+
+                downEvent._conditions = downEventList;
+
+                //add to actor
+                Player.Events.Add(downEvent);
+
+                //Right ------
+                //method 
+                PMGMethod rightMethod = new PMGMethod();
+                List<PMGExecuteList> rightMethodListOfExelist = new List<PMGExecuteList>(); // made in case we need more execute lists
+
+                PMGExecuteList rightMethodList = new PMGExecuteList(rightMethod as object, FunctionOwnerType.METHOD, Player);
+                rightMethodList._functions.Add(new PMGChangeFunction(5)); // default is the same as move up, should be changed to the actor its replacing
+                rightMethodListOfExelist.Add(rightMethodList);
+
+                rightMethod._steps = rightMethodListOfExelist;
+                //event
+                PMGEvent rightEvent = new PMGEvent(rightMethod, Player); // has default bahavior ALWAYS, might need to change that
+
+                PMGExecuteList rightEventList = new PMGExecuteList(rightEvent as object, FunctionOwnerType.EVENT, Player);
+                rightEventList._functions.Add(new PMGConditionFunction(7));
+                rightEventList._functions.Add(new PMGConditionFunction(11));
+
+
+                rightEvent._conditions = rightEventList;
+
+                //add to actor
+                Player.Events.Add(rightEvent);
+                
+
+            }
+
+            //NOT USED
             public void MakePlayerGenome(ref PMGGenomeSet OutputGenome)
             {
-                //actor genome                
+                /*/actor genome                
                 OutputGenome.actorGenome.Add((int)GenomeKeys.ActorKey); //Le Player
                 //first set of method and event
                 OutputGenome.actorGenome.Add(0); // default action is same as UP
                 OutputGenome.actorGenome.Add(0); // event for action button pressed
-                //second set of method and event
+                /second set of method and event
                 OutputGenome.actorGenome.Add(0); // method for UP
                 OutputGenome.actorGenome.Add(1); // event for UP button pressed
                 //third set of method and event
@@ -913,7 +1036,14 @@ namespace PMGF
                 OutputGenome.actorGenome.Add(3); // event for DOWN button pressed
                 //fifth set of method and event
                 OutputGenome.actorGenome.Add(3); // method for RIGHT
-                OutputGenome.actorGenome.Add(4); // event for RIGHT button pressed
+                OutputGenome.actorGenome.Add(4); // event for RIGHT button pressed//
+
+                //actor position?????
+                OutputGenome.actorPositionsGenome.Add(0);//type
+                OutputGenome.actorPositionsGenome.Add(5);//x
+                OutputGenome.actorPositionsGenome.Add(3);
+
+
 
                 //method genome - could need some value or utility functions, future decides
                 OutputGenome.methodGenome.Add(new List<int>()); // method 0
@@ -921,64 +1051,115 @@ namespace PMGF
                 OutputGenome.methodGenome[0].Add(0); // is this even needed
                 OutputGenome.methodGenome.Add(new List<int>()); // change function for method 0
                 OutputGenome.methodGenome[1].Add((int)GenomeKeys.ChangeFunc);
-                OutputGenome.methodGenome[1].Add(0); // function that moves actor Up
+                OutputGenome.methodGenome[1].Add(2); // function that moves actor Up
+
                 OutputGenome.methodGenome.Add(new List<int>()); // method 1
                 OutputGenome.methodGenome[2].Add((int)GenomeKeys.MethodKey);
                 OutputGenome.methodGenome[2].Add(0); // is this even needed
                 OutputGenome.methodGenome.Add(new List<int>()); // change function for method 1
                 OutputGenome.methodGenome[3].Add((int)GenomeKeys.ChangeFunc);
-                OutputGenome.methodGenome[3].Add(0); // function that moves actor Left
+                OutputGenome.methodGenome[3].Add(3); // function that moves actor Left
+
                 OutputGenome.methodGenome.Add(new List<int>()); // method 2
                 OutputGenome.methodGenome[4].Add((int)GenomeKeys.MethodKey);
                 OutputGenome.methodGenome[4].Add(0); // is this even needed
                 OutputGenome.methodGenome.Add(new List<int>()); // change function for method 2
                 OutputGenome.methodGenome[5].Add((int)GenomeKeys.ChangeFunc);
-                OutputGenome.methodGenome[5].Add(0); // function that moves actor Down
+                OutputGenome.methodGenome[5].Add(4); // function that moves actor Down
+
                 OutputGenome.methodGenome.Add(new List<int>()); // method 3
                 OutputGenome.methodGenome[6].Add((int)GenomeKeys.MethodKey);
                 OutputGenome.methodGenome[6].Add(0); // is this even needed
                 OutputGenome.methodGenome.Add(new List<int>()); // change function for method 3
                 OutputGenome.methodGenome[7].Add((int)GenomeKeys.ChangeFunc);
-                OutputGenome.methodGenome[7].Add(0); // function that moves actor Right
+                OutputGenome.methodGenome[7].Add(5); // function that moves actor Right
+
+
 
                 //event genome - could need some value or utility functions, future decides
                 OutputGenome.eventGenome.Add(new List<int>()); // event 0
                 OutputGenome.eventGenome[0].Add((int)GenomeKeys.EventKey);
-                OutputGenome.eventGenome[0].Add(4); //behavior 4 is ONE_TIME... might need to be always not sure
-                OutputGenome.eventGenome.Add(new List<int>()); //condition for event 0
+                OutputGenome.eventGenome[0].Add(0); 
+                OutputGenome.eventGenome.Add(new List<int>()); //first condition for event 0
                 OutputGenome.eventGenome[1].Add((int)GenomeKeys.CondFunc);
-                OutputGenome.eventGenome[1].Add(0); //condition X is button press w or arrowUp
+                OutputGenome.eventGenome[1].Add(3); //condition X is button press  or enter
+                
                 OutputGenome.eventGenome.Add(new List<int>()); // event 1
                 OutputGenome.eventGenome[2].Add((int)GenomeKeys.EventKey);
-                OutputGenome.eventGenome[2].Add(4); //behavior 4 is ONE_TIME... might need to be always not sure
+                OutputGenome.eventGenome[2].Add(0); 
                 OutputGenome.eventGenome.Add(new List<int>()); //condition for event 1
                 OutputGenome.eventGenome[3].Add((int)GenomeKeys.CondFunc);
-                OutputGenome.eventGenome[3].Add(0); //condition X is button press a or arrowLeft
-                OutputGenome.eventGenome.Add(new List<int>()); // event 2
-                OutputGenome.eventGenome[4].Add((int)GenomeKeys.EventKey);
-                OutputGenome.eventGenome[4].Add(4); //behavior 4 is ONE_TIME... might need to be always not sure
-                OutputGenome.eventGenome.Add(new List<int>()); //condition for event 2
-                OutputGenome.eventGenome[5].Add((int)GenomeKeys.CondFunc);
-                OutputGenome.eventGenome[5].Add(0); //condition X is button press s or arrowDown
-                OutputGenome.eventGenome.Add(new List<int>()); // event 3
-                OutputGenome.eventGenome[6].Add((int)GenomeKeys.EventKey);
-                OutputGenome.eventGenome[6].Add(4); //behavior 4 is ONE_TIME... might need to be always not sure
-                OutputGenome.eventGenome.Add(new List<int>()); //condition for event 3
-                OutputGenome.eventGenome[7].Add((int)GenomeKeys.CondFunc);
-                OutputGenome.eventGenome[7].Add(0); //condition X is button press d or arrowRight
-                OutputGenome.eventGenome.Add(new List<int>()); // event 4
-                OutputGenome.eventGenome[8].Add((int)GenomeKeys.EventKey);
-                OutputGenome.eventGenome[8].Add(4); //behavior 4 is ONE_TIME... might need to be always not sure
-                OutputGenome.eventGenome.Add(new List<int>()); //condition for event 4
-                OutputGenome.eventGenome[9].Add((int)GenomeKeys.CondFunc);
-                OutputGenome.eventGenome[9].Add(0); //condition X is button press d or arrowUp
+                OutputGenome.eventGenome[3].Add(4); //condition X is button press w or arrowUp
+                OutputGenome.eventGenome.Add(new List<int>()); // second condition for event 1
+                OutputGenome.eventGenome[4].Add((int)GenomeKeys.CondFunc);
+                OutputGenome.eventGenome[4].Add(8); //condition X is wall detection
 
-                //dosent need a positions genome as we get that from the 
+                OutputGenome.eventGenome.Add(new List<int>()); // event 2
+                OutputGenome.eventGenome[5].Add((int)GenomeKeys.EventKey);
+                OutputGenome.eventGenome[5].Add(0); 
+                OutputGenome.eventGenome.Add(new List<int>()); //condition for event 2
+                OutputGenome.eventGenome[6].Add((int)GenomeKeys.CondFunc);
+                OutputGenome.eventGenome[6].Add(5); //condition X is button press a or arrowLeft
+                OutputGenome.eventGenome.Add(new List<int>()); // second condition for event 2
+                OutputGenome.eventGenome[7].Add((int)GenomeKeys.CondFunc);
+                OutputGenome.eventGenome[7].Add(9); //condition X is wall detection
+
+                OutputGenome.eventGenome.Add(new List<int>()); // event 3
+                OutputGenome.eventGenome[8].Add((int)GenomeKeys.EventKey);
+                OutputGenome.eventGenome[8].Add(0); 
+                OutputGenome.eventGenome.Add(new List<int>()); //condition for event 3
+                OutputGenome.eventGenome[9].Add((int)GenomeKeys.CondFunc);
+                OutputGenome.eventGenome[9].Add(6); //condition X is button press s or arrowDown                
+                OutputGenome.eventGenome.Add(new List<int>()); // second condition for event 3
+                OutputGenome.eventGenome[10].Add((int)GenomeKeys.CondFunc);
+                OutputGenome.eventGenome[10].Add(10); //condition X is wall detection
+
+                OutputGenome.eventGenome.Add(new List<int>()); // event 4
+                OutputGenome.eventGenome[11].Add((int)GenomeKeys.EventKey);
+                OutputGenome.eventGenome[11].Add(0); 
+                OutputGenome.eventGenome.Add(new List<int>()); //condition for event 4
+                OutputGenome.eventGenome[12].Add((int)GenomeKeys.CondFunc);
+                OutputGenome.eventGenome[12].Add(7); //condition X is button press d or arrowRight
+                OutputGenome.eventGenome.Add(new List<int>()); // second condition for event 4
+                OutputGenome.eventGenome[13].Add((int)GenomeKeys.CondFunc);
+                OutputGenome.eventGenome[13].Add(11); //condition X is wall detection 
+
+                //dosent need a positions genome as we get that from the //*/
 
 
 
             }
-            //
+            
+            //actor update function
+            public void UpdateActors()
+            {
+                MainCore.WorldTimeSteps++;
+
+                
+                //for each actor in the spawned actor list
+                for(int i = 0; i< SpawnedActors.Count; i++)
+                {
+                    //
+                    Console.WriteLine("actor: " + i + " is at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
+                    Console.WriteLine("actor: " + i + " checks "+ SpawnedActors[i].Events.Count+" events");
+                    //for each event in current actor
+                    for (int j = 0; j < SpawnedActors[i].Events.Count;j++)
+                    {
+                        
+                        //run condition
+                        SpawnedActors[i].Events[j].EvaluateConditions();
+                        //run method
+                        SpawnedActors[i].Events[j]._method.TimeStep();
+                        Console.WriteLine("     actor: " + i + " is now at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
+
+
+
+                    }
+                    //tells position
+                    Console.WriteLine("actor: " + i + " is now at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
+
+                }
+            }
         }
     }
 }
