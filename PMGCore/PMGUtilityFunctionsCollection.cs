@@ -24,6 +24,7 @@ namespace PMGF
                 /*  2 */Collection.Add(UF_PushLeetToActor);     // Push 1337 to actor stack
             }
 
+           
 
 
             /*
@@ -55,12 +56,13 @@ namespace PMGF
             public void UF_DoNothing(PMGActor actor, object owner, FunctionOwnerType ownerType)
             {
                 // literally do nothing
+                //Console.WriteLine("youre a wizard");
             }
 
             public void UF_PushLeetToActor(PMGActor actor, object owner, FunctionOwnerType ownerType)
             {
                 // push 1337 to actor stack
-                actor.ValueStack.Push(1337);
+                actor.ValueStack.Push(42);
             }
         }
     }
