@@ -769,7 +769,7 @@ namespace PMGF
 
                                     //spawns player
                                     OutputActorList.Add(Player);
-
+                                                                        
                                     //give the actor its position
                                     OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][1]);
                                     OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][2]);
@@ -1013,7 +1013,8 @@ namespace PMGF
 
                 //add to actor
                 Player.Events.Add(rightEvent);
-                
+                //add player tag
+                Player.IsPlayer = true;                
 
             }
 

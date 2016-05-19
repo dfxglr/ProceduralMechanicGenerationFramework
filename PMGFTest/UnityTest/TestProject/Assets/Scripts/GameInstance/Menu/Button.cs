@@ -123,20 +123,9 @@ namespace PMGF
                         case "New Game":
                             //needed because button press instantiates the current menu
                             SingleMenuManager.Instance.DeSelectAllM();
-                            
-
-                            // insert start new game function here below
-                            
-                            //builds the game
-                            SingleInstanceManager.Instance.ThisGameForNow.BuildInstance(false);
-
-                            //make unity actors corrosponding to spawned actor list
-                            SingleInstanceManager.Instance.MakeUnityActors();
-
                             //changes input to be not be in menu
                             SingleInputManager.Instance.inMenu = false;
-
-
+                            // insert start new game function here below
                             break;
                         case "Options":
                             //selects the related menu

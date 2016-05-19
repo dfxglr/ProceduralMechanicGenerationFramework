@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using PMGF.PMGGameInstance;
+
 
 namespace PMGF
 {
@@ -12,8 +12,8 @@ namespace PMGF
             public sealed class SingleMapManager : MonoBehaviour
             {
                 //the map
-                PMGMap map = new PMGMap();
-                public GameObject[,] GameMap;
+                public int[,] TxtMap;
+                public GameObject[,] Map = new GameObject[48,34];
 
                 //-------------------------------------------------// singleton thread safe with no lock (type 4 from http://csharpindepth.com/Articles/General/Singleton.aspx)
                 private static readonly SingleMapManager instance = new SingleMapManager();
@@ -37,40 +37,87 @@ namespace PMGF
                 public void Setup()
                 {
 
-                    GameMap = new GameObject[map.chart.GetLength(1),map.chart.GetLength(0)];
+                    TxtMap = new int[,]{
+        //0,0 this corner                                                  Y-axis going right 
+                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1},
+                        {1,0,0,0,1,1,1,1,0,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,1,1,0,0,1,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,1,1,0,1,1},
+                        {1,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,1,1,0,1,1},
+                        {1,0,1,0,0,1,1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,1,1,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,1,1,1,0,1,0,0,0,0,0,1,1,0,0,1},
+                        {1,0,0,1,1,0,1,0,0,0,1,0,0,1,1,1,0,1,0,0,0,1,0,1,1,1,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,1,1,1,0,0,1,1,0,0,0,0,1,0,1,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,1},
+                        {1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,1},
+                        {1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,1,1,1,0,1,0,0,0,0,1,1,1,1,1,1},
+                        {1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,1,0,0,0,1,1,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1},
+                        {1,0,0,1,1,0,0,1,0,1,0,1,1,0,0,0,0,0,1,1,0,0,1,0,0,1,0,0,1,1,1,1,1,1},
+                        {1,0,0,0,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,1,0,0,1},
+                        {1,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,1},
+                        {1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1},
+                        {1,0,1,1,1,0,0,0,1,0,0,0,0,0,0,1,0,0,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1},
+                        {1,1,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1},
+                        {1,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1},
+                        {1,1,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,0,0,0,1,1,1},
+                        {1,1,1,1,0,1,0,0,0,0,0,1,1,1,1,1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,1,0,1,0,0,1,1,0,1,0,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1},
+                        {1,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,1,0,1,0,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,0,0,1,1,0,0,0,0,0,1},
+                        {1,1,1,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,0,1},
+                        {1,1,1,1,0,0,1,1,1,0,0,1,0,0,1,0,0,1,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,1,1,0,0,1,0,1,0,0,0,0,0,0,1},
+                        {1,1,1,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,1,0,1,0,0,1,0,0,0,1},
+                        {1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1},
+                        {1,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1},
+                        {1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,0,1,1,0,0,1},
+                        {1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                        {1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+                    //X-axis is down
+                    };
                     //find the anchor
                     GameObject Anchor = GameObject.Find("MapAnchor");
 
                     //y
-                    for (int y = 0; y < map.chart.GetLength(0); y++)
+                    for (int y = 0; y < 34; y++)
                     {
                         //x
-                        for (int x = 0; x < map.chart.GetLength(1); x++)
+                        for (int x = 0; x < 48; x++)
                         {
                             //check for 0 or 1 in txtmap
                             //Debug.Log("derp");
-                            if (map.chart[y,x] == 1)
+                            if (TxtMap[x,y] == 1)
                             {
                                 //insert "wall"
-                                GameMap[x,y] = Instantiate(Resources.Load("Prefabs/Wall"), new Vector3(x,-y, 0)+Anchor.transform.position, Quaternion.identity)as GameObject;
-                                GameMap[x,y].transform.parent = Anchor.transform;
-                                GameMap[x, y].GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/Map/Wall") as Texture2D;
-                                GameMap[x, y].name = "Wall[" + x + ", " + y + "]";
+                                Map[x,y] = Instantiate(Resources.Load("Prefabs/Wall"), new Vector3(x,y, 0)+Anchor.transform.position, Quaternion.identity)as GameObject;
+                                Map[x,y].transform.parent = Anchor.transform;
+                                Map[x, y].GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/Map/Wall") as Texture2D;
+                                Map[x, y].name = "Wall[" + x + ", " + y + "]";
                             }
                             else
                             {
                                 //insert "space"
-                                GameMap[x, y] = Instantiate(Resources.Load("Prefabs/EmptySpace"), new Vector3(x, -y, 0) + Anchor.transform.position, Quaternion.identity) as GameObject;
-                                GameMap[x, y].transform.parent = Anchor.transform;
-                                GameMap[x, y].GetComponentInChildren<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/Map/Floor") as Texture2D;
-                                GameMap[x, y].name = "EmptySpace[" + x + ", " +y+ "]";
+                                Map[x, y] = Instantiate(Resources.Load("Prefabs/EmptySpace"), new Vector3(x, y, 0) + Anchor.transform.position, Quaternion.identity) as GameObject;
+                                Map[x, y].transform.parent = Anchor.transform;
+                                Map[x, y].GetComponentInChildren<Renderer>().material.mainTexture = (Texture2D)Resources.Load("Textures/Map/Floor") as Texture2D;
+                                Map[x, y].name = "EmptySpace[" + x + ", " + y + "]";
                             }
                         }
                     }
-
-                    //test and showoff of how to place shit in the map
-                    //GameObject bob =  Instantiate(Resources.Load("Prefabs/Wall"), GameMap[6,2].transform.position+new Vector3(0,0,3), Quaternion.identity) as GameObject;
-                    //bob.transform.parent = Anchor.transform;
                 }
             }
         }

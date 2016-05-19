@@ -91,7 +91,7 @@ namespace PMGF
                     withConsole = runWithConsole;
                 }
                 //update function 
-                public void MenuInputUpdate()
+                public void InputUpdate()
                 {
                     //add keys here
 
