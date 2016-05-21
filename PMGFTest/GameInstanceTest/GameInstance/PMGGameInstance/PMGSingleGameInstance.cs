@@ -793,8 +793,8 @@ namespace PMGF
                             }
                             else
                             {
-                                //
-                                OutputActorList.Add(InputActorList[InputSet.actorTypePositions[i][0]]);
+                                //add the type 
+                                OutputActorList.Add(InputActorList[InputSet.actorTypePositions[i][0]].GetActorCopy());
                                 //gives the actor its position
                                 OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][1]);
                                 OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][2]);
