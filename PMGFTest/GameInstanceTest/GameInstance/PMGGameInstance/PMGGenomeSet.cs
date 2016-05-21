@@ -82,9 +82,9 @@ namespace PMGF
                 //y
 
                 //type 1
+                actorPositionsGenome.Add(1);
+                actorPositionsGenome.Add(1);
                 actorPositionsGenome.Add(2);
-                actorPositionsGenome.Add(1);
-                actorPositionsGenome.Add(1);
 
                 //type 2
                 actorPositionsGenome.Add(0);
@@ -92,12 +92,12 @@ namespace PMGF
                 actorPositionsGenome.Add(2);
 
                 //jump to type 4
-                actorPositionsGenome.Add(1);
+                actorPositionsGenome.Add(2);
                 actorPositionsGenome.Add(1);
                 actorPositionsGenome.Add(1);
 
                 //type 0 again
-                actorPositionsGenome.Add(4);
+                actorPositionsGenome.Add(1);
                 actorPositionsGenome.Add(7);
                 actorPositionsGenome.Add(7);
 
