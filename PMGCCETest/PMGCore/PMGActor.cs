@@ -17,6 +17,10 @@ namespace PMGF
 
             public PMGValueStack ValueStack = new PMGValueStack();
 
+            //player tag
+            public bool IsPlayer = false;
+            //position
+            public List<int> position = new List<int>();
 
             public PMGGameCore Core;
 
@@ -25,10 +29,6 @@ namespace PMGF
                 Core = _Core;
 
 		    }
-
-
-
 		}
-
 	}
 }

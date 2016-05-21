@@ -16,10 +16,6 @@ namespace PMGF
         public class PMGFitness : ICCEFitness
         {
 
-			PMGGenomeSet GenomeSet;
-			PMGGenomeParse GenomeParser;
-
-			PMGSingleGameInstance GInstance;
 
 			/* Weights for parts of fitness */
 			private const double extrinsicWeight = 0.5;
@@ -28,25 +24,25 @@ namespace PMGF
 
 			public PMGFitness() : base()
 			{
-				GenomeParser = new PMGGenomeParse ();
-				GInstance = new PMGSingleGameInstance ();
 			}
 
 
             public double Evaluate(List<IChromosome> chromosomeSet)
             {
+				PMGGenomeSet GenomeSet = new PMGGenomeSet ();
 				double finalFitness = 0.0;
 
 
 				// Convert list of chromosomes to genome set
 				GenomeSet = ConvertChromosomeSetToGenomeSet(chromosomeSet);
 
-				// Parse the genome set
-				GenomeParser.DecodeGenomeSet(GenomeSet);
 
+				PMGSingleGameInstance GInstance = new PMGSingleGameInstance ();
+				// Parse the genome set
+				GInstance.GameSet.DecodeGenomeSet(GenomeSet);
 
 				// Weigh intrinsic/extrinsic
-				finalFitness = intrinsicWeight * IntrinsicFitness() + extrinsicWeight * ExtrinsicFitness();
+				finalFitness = intrinsicWeight * IntrinsicFitness() + extrinsicWeight * ExtrinsicFitness(GInstance);
 
 				//return finalFitness;
 				return RandomizationProvider.Current.GetFloat();
@@ -59,12 +55,12 @@ namespace PMGF
 
 			}
 
-			private double ExtrinsicFitness()
+			private double ExtrinsicFitness(PMGSingleGameInstance GInstance)
 			{
 				// Extrinsic fitnesses //
 				// Create a game instance
 
-				GInstance.BuildInstance(GenomeSet);
+				GInstance.BuildInstance(false);
 
 				// Run with various players and get extrinsic fitness
 				return 0f;

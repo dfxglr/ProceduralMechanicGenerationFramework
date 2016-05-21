@@ -59,8 +59,8 @@ namespace PMGF
 				ConditionFunctionsCount = pmgc.ConditionFunctions.Collection.Count;
 
 				PMGMap map = new PMGMap ();
-				MapH = map.Map.GetLength (0);
-				MapW = map.Map.GetLength (1);
+				MapH = map.chart.GetLength (0);
+				MapW = map.chart.GetLength (1);
 
 				List<CCESpecies> res = new List<CCESpecies> ();
 
