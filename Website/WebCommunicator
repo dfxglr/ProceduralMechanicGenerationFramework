@@ -1,0 +1,37 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+
+public class WebCommunicator : MonoBehavior
+{
+    public bool GenomesReceived;
+    public PMGGenomeSet GenomeSet;
+
+    public WebCommunicator()
+    {
+        GenomeSet = new PMGGenomeSet();
+
+        GenomesReceived = false;
+    }
+
+
+
+
+    public void PromptForGenomes()
+    {
+        Application.ExternalCall( "PromptGenomeSending" );
+    }
+
+    public void LoadGenome(string actorGenome, string actorLocGenome, string eventGenome, string methodGenome)
+    {
+        List<string> genomes = new List<string>();
+        genomes.Add(actorGenome);
+        genomes.Add(actorLocGenome);
+        genomes.Add(eventGenome);
+        genomes.Add(methodGenome);
+
+        GenomeSet.ImportSerializedGenomeSet(genomes);
+
+        GenomesReceived = true;
+    }
+}
