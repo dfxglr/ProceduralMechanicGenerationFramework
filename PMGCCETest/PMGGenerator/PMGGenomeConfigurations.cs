@@ -34,7 +34,7 @@ namespace PMGF
 			public const int   MethodMaxInitLen = 100;
 
 
-			public const int MethodMaxGenomeLength = 100;
+			public const int MethodMaxGenomeLength = 9001;
 
 	        //
 	        //
@@ -46,7 +46,7 @@ namespace PMGF
 
 			public const int   EventMaxInitLen = 100;
 
-			public const int EventMaxGenomeLength = 100;
+			public const int EventMaxGenomeLength = 9001;
 
 
 
@@ -56,13 +56,13 @@ namespace PMGF
 			public const int   ActorMaxInitLen = 100;
 
 
-			public const int ActorMaxGenomeLength = 100;
+			public const int ActorMaxGenomeLength = 9001;
 
 
 			public const int   ActorLocMaxInitLen = 100;
 
 
-			public const int ActorLocMaxGenomeLength = 200;
+			public const int ActorLocMaxGenomeLength = 9001;
 
 
 		}

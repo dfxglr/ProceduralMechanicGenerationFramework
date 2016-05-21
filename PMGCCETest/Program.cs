@@ -53,10 +53,11 @@ namespace PMGF
 						Console.Clear ();
 						Console.WriteLine ("Generation # {0}", ga.GenerationsNumber);
 						Console.WriteLine("Time: {0}", ga.TimeEvolving);
-						/*Console.WriteLine("Population sizes: {0}\t{1}\t{2}\t{3}", ga.Species[0].Population.CurrentGeneration.Chromosomes.Count,
+						Console.WriteLine("Population sizes: {0}\t{1}\t{2}\t{3}", ga.Species[0].Population.CurrentGeneration.Chromosomes.Count,
 																					ga.Species[1].Population.CurrentGeneration.Chromosomes.Count,
 																					ga.Species[2].Population.CurrentGeneration.Chromosomes.Count,
 																					ga.Species[3].Population.CurrentGeneration.Chromosomes.Count);
+
 
 						// Hackish way to display genomes...
 						string [] gstr = {"Actor","ActorLoc","Event","Method"};
@@ -66,7 +67,7 @@ namespace PMGF
 							Gene [] gg;
 							gg = gset[i].GetGenes();
 							Console.WriteLine("{0} ({1}, |{2}|):",gstr[i], gset[i].Fitness, ga.Species[i].Population.CurrentGeneration.Chromosomes.Sum(t => t.Fitness)/ga.Species[i].Population.CurrentGeneration.Chromosomes.Count);
-							foreach(Gene _g in gg)
+							/*foreach(Gene _g in gg)
 							{
 								List<int> _gl = _g.Value as List<int>;
 								if(_gl == null)
@@ -74,11 +75,11 @@ namespace PMGF
 								else
 									_gl.ForEach(h => Console.Write("|{0}",h));
 							}
-							Console.WriteLine("--");
+							Console.WriteLine("--");*/
 						}
 
 						//System.Threading.Thread.Sleep(1000);
-						*/	
+
 					};
 
 
