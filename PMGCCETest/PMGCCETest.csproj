@@ -69,6 +69,8 @@
     <Compile Include="PMGCore\PMGGameCore.cs" />
     <Compile Include="DebugHelpers.cs" />
     <Compile Include="PMGGenerator\PMGRepairFunction.cs" />
+    <Compile Include="PMGExporter.cs" />
+    <Compile Include="PMGImporter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
