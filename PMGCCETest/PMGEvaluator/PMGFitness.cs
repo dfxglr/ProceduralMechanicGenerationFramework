@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Chromosomes;
@@ -18,28 +20,23 @@ namespace PMGF
 
 
 			/* Weights for parts of fitness */
-			private const double extrinsicWeight = 0.5;
-			private const double intrinsicWeight = 0.5;
+			private const int extrinsicWeight = 0;
+			private const int intrinsicWeight = 1;
 
 			//Intrinsic weights
-			private const double iwNumActors = 0.5;
-			private const double iwNumMethods = 0.5;
-			private const double iwNumEvents = 0.5;
-			private const double iwNumEndEvents = 0.5;
-
-			private const double iwComplexity = 0.5;
-			private const double iwMovementType = 0.5;
-			private const double iwGoalType = 0.5;
+			enum IW {NumActors, NumActorTypes, NumEvents, NumMethods};
+			List<int> IntrinsicWeights = new List<int> ();
 
 			// Extrinsic weights
-			private const double ewCompletion = 0.5;
-			private const double ewTimeout = 0.5;
-			private const double ewResilience = 0.5;
-			private const double ewBoardCoverage = 0.5;
 
 
 			public PMGFitness() : base()
 			{
+				// Intrinsic weights
+				IntrinsicWeights.Add(1);
+				IntrinsicWeights.Add(1);
+				IntrinsicWeights.Add(1);
+				IntrinsicWeights.Add(1);
 			}
 
 
@@ -61,10 +58,11 @@ namespace PMGF
 				GInstance.BuildInstance(false);
 
 				// Weigh intrinsic/extrinsic
-				finalFitness = intrinsicWeight * IntrinsicFitness(GInstance) + extrinsicWeight * ExtrinsicFitness(GInstance);
+				finalFitness = realWeight(intrinsicWeight) * IntrinsicFitness(GInstance) 
+								+ realWeight(extrinsicWeight) * ExtrinsicFitness(GInstance);
 
 				//return finalFitness;
-				return RandomizationProvider.Current.GetFloat();
+				return finalFitness;
             }
 
 			private double IntrinsicFitness(PMGSingleGameInstance GInstance)
@@ -88,15 +86,42 @@ namespace PMGF
 				int numActors = GInstance.SpawnedActors.Count;
 
 
-				// num methods
 
-				// num events
+				// num methods & event
+				int numMethods = 0;
+				int numMethodTypes = 0;
+				List<int> methodTypesFound = new List<int> ();
+
+				int numEvents = 0;
+				int numEventTypes = 0;
+				List<int> eventTypesFound = new List<int> ();
+
+				foreach (PMGActor actor in GInstance.SpawnedActors) {
+					numMethods += actor.Events.Count;
+
+					foreach (PMGEvent e in actor.Events) {
+						numEvents++;
+
+						if (!eventTypesFound.Contains (e.Type))
+							eventTypesFound.Add (e.Type);
+
+						if (!methodTypesFound.Contains (e._method.Type))
+							methodTypesFound.Add (e._method.Type);
+					}
+				}
+
+				numMethodTypes = methodTypesFound.Count;
+				numEventTypes = eventTypesFound.Count;
+
 
 				// num end events
 
 				// Weight and sum up
+				ifit = realWeight (IntrinsicWeights [(int)IW.NumActors]) * pdfLogNormScaled (numActors)
+				+ realWeight (IntrinsicWeights [(int)IW.NumEvents]) * pdfLogNormScaled (numEvents)
+				+ realWeight (IntrinsicWeights [(int)IW.NumMethods]) * pdfLogNormScaled (numMethods);
 
-				return 0f;
+				return ifit;
 
 			}
 
@@ -119,6 +144,24 @@ namespace PMGF
 
 
 				return 0f;
+			}
+
+			private double realWeight(int relativeWeight, List<int> allRelativeWeights)
+			{
+				return relativeWeight / allRelativeWeights.Sum ();
+			}
+
+			private double pdfLogNormScaled(int x, double sigma=1, double theta=2, double median=8)
+			{
+				
+				// See paper for documentation
+				return (Math.Pow(Math.E,	-((Math.Pow(Math.Log((x-theta)/median),2))
+													/
+											Math.Pow(2*sigma,2)))
+								/
+						((x - theta)*sigma*Math.Sqrt(2*Math.PI)))
+
+					* (1 / ((1/median) * Math.Sqrt(Math.E/(2*Math.PI))));		// y = [0;1]
 			}
         }
 
