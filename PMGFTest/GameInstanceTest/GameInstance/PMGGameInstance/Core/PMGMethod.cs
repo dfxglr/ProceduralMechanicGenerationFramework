@@ -22,6 +22,8 @@ namespace PMGF
 
             public DoneDelegate _onDone;
 
+            public int Type;
+
 
             public PMGMethod()
             {

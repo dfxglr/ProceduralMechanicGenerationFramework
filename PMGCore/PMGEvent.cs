@@ -31,6 +31,8 @@ namespace PMGF
 
             public PMGActor _callingActor;
 
+            public int Type;
+
 
 		    public PMGEvent(PMGMethod method, PMGActor calling,
                             EventTriggerBehavior behavior= EventTriggerBehavior.ALWAYS)
