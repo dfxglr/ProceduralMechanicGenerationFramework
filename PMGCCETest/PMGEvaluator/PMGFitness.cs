@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Diagnostics;
 using System.Collections.Generic;
 using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Chromosomes;
@@ -19,6 +20,14 @@ namespace PMGF
         {
 
 
+			Stopwatch timer = new Stopwatch();
+			private const int extrinsicMaxRunPerGame = 5; // seconds
+			private const int extrinsicMaxTimeForTrials = 30;
+			private const int NumTrialGames = 5;
+			private const int InGameRunTime = 100; // 100 ingame time seconds 100 * (1 / seconds_per_timestep) timesteps
+			private const int InGameRunSteps = 1000; 	// currently assuming 0.1s per timestep
+			enum PlayerType {Passive, Random};
+			int TotalCells = 0;
 			/* Weights for parts of fitness */
 			private const int extrinsicWeight = 0;
 			private const int intrinsicWeight = 1;
@@ -30,13 +39,15 @@ namespace PMGF
 			// Extrinsic weights
 
 
+
+
 			public PMGFitness() : base()
 			{
 				// Intrinsic weights
-				IntrinsicWeights.Add(1);
-				IntrinsicWeights.Add(1);
-				IntrinsicWeights.Add(1);
-				IntrinsicWeights.Add(1);
+				IntrinsicWeights.Add(1);	// NumActors
+				IntrinsicWeights.Add(1);	// NumActorTypes
+				IntrinsicWeights.Add(1);	// NumEvents
+				IntrinsicWeights.Add(1);	// NumMethods
 			}
 
 
@@ -53,9 +64,19 @@ namespace PMGF
 				PMGSingleGameInstance GInstance = new PMGSingleGameInstance ();
 
 
+
 				// Parse and build the genome set
 				GInstance.GameSet.DecodeGenomeSet(GenomeSet);
 				GInstance.BuildInstance(false);
+
+				// Get number of tiles with 0 in map
+
+				for (int x = 0; x < GInstance.GameSet.Map.chart.GetLength (0); x++) {
+					for (int y = 0; y < GInstance.GameSet.Map.chart.GetLength (1); y++) {
+						if (GInstance.GameSet.Map.chart [x, y] == 0)
+							TotalCells++;
+					}
+				}
 
 				// Weigh intrinsic/extrinsic
 				finalFitness = realWeight(intrinsicWeight) * IntrinsicFitness(GInstance) 
@@ -73,6 +94,7 @@ namespace PMGF
 
 
 				// Complexity
+					
 
 				// Movement Type
 
@@ -116,6 +138,9 @@ namespace PMGF
 
 				// num end events
 
+
+				// Genome breakage from parsing/building
+
 				// Weight and sum up
 				ifit = realWeight (IntrinsicWeights [(int)IW.NumActors]) * pdfLogNormScaled (numActors)
 				+ realWeight (IntrinsicWeights [(int)IW.NumEvents]) * pdfLogNormScaled (numEvents)
@@ -130,9 +155,55 @@ namespace PMGF
 				// Extrinsic fitnesses //
 
 
-				// Create a game instance
-
 				// Run with various players and get extrinsic fitness
+
+
+				bool GameTimedOut = false;
+				bool TrialsTimedOut = false;
+
+				PlayerType PType = PlayerType.Passive;
+
+				List<double> VisitedTilesRatio = new List<double> ();
+
+
+				timer.Start ();
+
+				for (int trials = 0; trials < NumTrialGames; trials++) {
+
+					List<List<int>> VisitedTiles = new List<List<int>>();
+
+					for (int timestep = 0; timestep < InGameRunSteps; timestep++) {
+						// Get some diagnostics?
+						if (timer.Elapsed.Seconds > extrinsicMaxRunPerGame) {
+							// timeout
+							GameTimedOut = true;
+						}
+						GInstance.UpdateActors ();
+
+						// Loop through all the actors
+						foreach (PMGActor actor in GInstance.SpawnedActors) {
+
+							// Check if any new tiles have been visited
+							bool TileHasBeenCounted = false;
+							foreach (List<int> visitedTile in VisitedTiles) {
+								if (Enumerable.SequenceEqual (visitedTile, actor.position))
+									TileHasBeenCounted = true;
+							}
+							// Add them if they have not yet been visited
+							if (!TileHasBeenCounted)
+								VisitedTiles.Add (new List<int> (actor.position.ToArray ()));
+						}
+						// if game ended - how many timesteps did it take?
+					}
+
+					// Add number of visited tiles to list
+					VisitedTilesRatio.Add(VisitedTiles.Count/TotalCells);
+
+					if (timer.Elapsed.Seconds > extrinsicMaxTimeForTrials) {
+						TrialsTimedOut = true;
+					}
+
+				}
 
 				// Completion
 
@@ -140,7 +211,9 @@ namespace PMGF
 
 				// Resilience
 
+
 				//Board Coverage
+				double BoardCoverage = VisitedTilesRatio.Sum() / NumTrialGames;
 
 
 				return 0f;
