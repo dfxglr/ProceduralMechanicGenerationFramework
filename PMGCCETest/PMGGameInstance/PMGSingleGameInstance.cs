@@ -32,7 +32,7 @@ namespace PMGF
             //created from parsed set
             List<PMGActor> CreatedActors = new List<PMGActor>();
             //removed incomeplete actors from created actors, and made lsit of spawnable types
-            List<PMGActor> SpawnAbleActors = new List<PMGActor>();
+            public List<PMGActor> SpawnAbleActors = new List<PMGActor>();
             //actors spawned in map
             public List<PMGActor> SpawnedActors = new List<PMGActor>();
             

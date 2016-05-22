@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PMGF.PMGGenerator;
+using PMGF.PMGGameInstance;
 
 namespace PMGF
 {
@@ -22,6 +23,10 @@ namespace PMGF
             public List<int> eventIndexList = new List<int>();
             //index list for mehtod genome
             public List<int> methodIndexList = new List<int>();
+
+			//map to check for refernece positions READ ONLY
+			public PMGMap Map = new PMGMap();
+		
 
 
             //-------------------------------------------------------------------------------//
@@ -45,6 +50,8 @@ namespace PMGF
             List<List<int>> DefinedActorTypeWithFlawedPosition = new List<List<int>>();
             //this can only occur if the genome is too short
             List<List<int>> UndefinedActorTypeWithFlawedPosition = new List<List<int>>();
+			//actors ouside the map, (type, x, y)
+			List<List<int>> OutOffBounceActorTypePositions = new List<List<int>>();
             //
             bool ActorTypePositionsGenomeLengthLessThanThree = false;
             //-----------------------//
@@ -196,14 +203,26 @@ namespace PMGF
                                 //checks for lack of coordianates
                                 if (mainIndex + 2 < _genomeSet.actorPositionsGenome.Count)
                                 {
-                                    //adds new list 
-                                    actorTypePositions.Add(new List<int>());
-                                    //takes values from mainIndex and the following two
-                                    for (int subIndex = mainIndex; subIndex < mainIndex + 3; subIndex++)
-                                    {
-                                        actorTypePositions[PosListIndex].Add(_genomeSet.actorPositionsGenome[subIndex]);
-                                    }
-                                    PosListIndex++;
+									//check if position is out of map bounce
+									if(_genomeSet.actorPositionsGenome[mainIndex+1]<Map.chart.GetLength(0)&& _genomeSet.actorPositionsGenome[mainIndex+2]<Map.chart.GetLength(1)&& _genomeSet.actorPositionsGenome[mainIndex+1]>=0&&_genomeSet.actorPositionsGenome[mainIndex+2]>0){
+
+	                                    //adds new list 
+	                                    actorTypePositions.Add(new List<int>());
+	                                    //takes values from mainIndex and the following two
+	                                    for (int subIndex = mainIndex; subIndex < mainIndex + 3; subIndex++)
+	                                    {
+	                                        actorTypePositions[PosListIndex].Add(_genomeSet.actorPositionsGenome[subIndex]);
+	                                    }
+	                                    PosListIndex++;
+									}else
+									{
+										//error position out of map boundaries
+										OutOffBounceActorTypePositions.Add(new List<int>());
+										OutOffBounceActorTypePositions [OutOffBounceActorTypePositions.Count - 1].Add (_genomeSet.actorPositionsGenome[mainIndex]);
+										OutOffBounceActorTypePositions [OutOffBounceActorTypePositions.Count - 1].Add (_genomeSet.actorPositionsGenome[mainIndex+1]);
+										OutOffBounceActorTypePositions [OutOffBounceActorTypePositions.Count - 1].Add (_genomeSet.actorPositionsGenome[mainIndex+2]);
+
+									}
                                 }
                                 else
                                 {
