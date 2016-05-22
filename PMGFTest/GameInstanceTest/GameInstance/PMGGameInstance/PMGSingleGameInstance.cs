@@ -391,6 +391,9 @@ namespace PMGF
                                     }
                                     //add every item in list of executelists to _steps in current method                                    
                                     CurrentMethod._steps = CurrentMethodExecuteLists;
+                                    //gives it its type
+                                    CurrentMethod.Type = InputSet.actorTypes[i][j];
+
                                     if (debug)
                                     {
                                             Console.WriteLine("                executelist:   added to method: " + InputSet.actorTypes[i][j]);
@@ -623,7 +626,9 @@ namespace PMGF
                                         {
                                             //current event's conditions executelist gets filled with the current executelist
                                             CurrentEvent._conditions = CurrentEventExecutelist;
-                                            
+                                            //add its type
+                                            CurrentEvent.Type = InputSet.actorTypes[i][j];
+
                                             if (debug)
                                             {
                                                 Console.WriteLine("                executelist complete, and was added to event conditions");                                                
@@ -798,6 +803,8 @@ namespace PMGF
                                 //gives the actor its position
                                 OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][1]);
                                 OutputActorList[OutputActorList.Count - 1].position.Add(InputSet.actorTypePositions[i][2]);
+                                //add its type
+                                OutputActorList[OutputActorList.Count - 1].Type = InputSet.actorTypePositions[i][0];
 
                                 if (debug)
                                 {

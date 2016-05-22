@@ -22,6 +22,8 @@ namespace PMGF
             public bool IsPlayer = false;
             //position
             public List<int> position = new List<int>();
+            //type
+            public int Type;
 
             public PMGGameCore Core;
 
