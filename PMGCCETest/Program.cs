@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using PMGF.PMGCore;
 using PMGF.PMGGenerator;
+using PMGF.PMGGameInstance;
 using GeneticSharp.Domain;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Terminations;
@@ -15,12 +16,16 @@ namespace PMGF
 		{
 			class MainClass
 			{
+				static List<IChromosome> gset = new List<IChromosome> ();
+
 				public static void Main (string[] args)
 				{
+					PMGExporter exporter = new PMGExporter ();
 					for (int i = 0; i < 1000; i++)
 					{
 						//Console.ReadKey ();
 						RunTest ();
+						exporter.ExportSetToFile (new PMGGenomeSet (gset), "./BestOfGeneration_" + i); 
 					}
 
 				}
@@ -49,7 +54,7 @@ namespace PMGF
 
 					ga.GenerationRan += delegate {
 						//System.Threading.Thread.Sleep(1000);
-						List<IChromosome> gset = ga.BestChromosomeSet;
+						gset = ga.BestChromosomeSet;
 						Console.Clear ();
 						Console.WriteLine ("Generation # {0}", ga.GenerationsNumber);
 						Console.WriteLine("Time: {0}", ga.TimeEvolving);

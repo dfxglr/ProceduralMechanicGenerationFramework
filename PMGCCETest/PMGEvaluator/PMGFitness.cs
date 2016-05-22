@@ -61,7 +61,7 @@ namespace PMGF
 				GInstance.BuildInstance(false);
 
 				// Weigh intrinsic/extrinsic
-				finalFitness = intrinsicWeight * IntrinsicFitness() + extrinsicWeight * ExtrinsicFitness(GInstance);
+				finalFitness = intrinsicWeight * IntrinsicFitness(GInstance) + extrinsicWeight * ExtrinsicFitness(GInstance);
 
 				//return finalFitness;
 				return RandomizationProvider.Current.GetFloat();

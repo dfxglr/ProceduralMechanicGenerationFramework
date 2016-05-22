@@ -10,7 +10,7 @@ namespace PMGF
 {
     namespace PMGGameInstance
     { 
-        class PMGGenomeSet
+        public class PMGGenomeSet
         {
             //actors
             public List<int> actorGenome = new List<int>();
@@ -22,7 +22,23 @@ namespace PMGF
 
             public PMGGenomeSet()
             {
-            }
+			}
+			public PMGGenomeSet(List<IChromosome> ChromosomeSet)
+			{
+				ChromosomeSetToGenomeSet (ChromosomeSet);
+			}
+			public PMGGenomeSet(PMGGenomeSet GenomeSet)
+			{
+				Clear ();
+				actorGenome = new List<int> (GenomeSet.actorGenome);
+				actorPositionsGenome = new List<int> (GenomeSet.actorPositionsGenome);
+
+				foreach (List<int> eSet in GenomeSet.eventGenome)
+					eventGenome.Add (eSet);
+
+				foreach (List<int> mSet in GenomeSet.methodGenome)
+					methodGenome.Add (mSet);
+			}
 
 			public void ChromosomeSetToGenomeSet(List<IChromosome> ChromosomeSet)
 			{				
@@ -51,8 +67,8 @@ namespace PMGF
 			{
 				Clear ();
 
-				actorGenome = SerializedSet [0].Split (';').ToList ();
-				actorPositionsGenome = SerializedSet [1].Split (';').ToList ();
+				actorGenome = SerializedSet [0].Split (';').Select(int.Parse).ToList ();
+				actorPositionsGenome = SerializedSet [1].Split (';').Select(int.Parse).ToList ();
 
 				foreach (string s in SerializedSet[2].Split(';')) {
 					eventGenome.Add(new List<int>(s.Split(',').ToList().Select(int.Parse).ToList()));
