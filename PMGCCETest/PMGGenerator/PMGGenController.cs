@@ -27,17 +27,17 @@ namespace PMGF
 
 			// Use genome lengths as per PMGGenomeConfigurations
 
-			private const int ActorMinPopSize = 10;
-			private const int ActorMaxPopSize = 50;
+			private const int ActorMinPopSize = 20;
+			private const int ActorMaxPopSize = 100;
 
-			private const int MethodMinPopSize = 10;
-			private const int MethodMaxPopSize = 50;
+			private const int MethodMinPopSize = 20;
+			private const int MethodMaxPopSize = 100;
 
-			private const int ActorLocMinPopSize = 10;
-			private const int ActorLocMaxPopSize = 50;
+			private const int ActorLocMinPopSize = 20;
+			private const int ActorLocMaxPopSize = 100;
 
-			private const int EventMinPopSize = 10;
-			private const int EventMaxPopSize = 50;
+			private const int EventMinPopSize = 20;
+			private const int EventMaxPopSize = 100;
 
 
 			private int UtilityFunctionsCount;

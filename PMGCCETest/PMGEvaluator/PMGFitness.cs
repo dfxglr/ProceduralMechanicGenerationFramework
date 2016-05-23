@@ -23,7 +23,7 @@ namespace PMGF
 			Stopwatch timer = new Stopwatch();
 			private const int extrinsicMaxRunPerGame = 5; // seconds
 			private const int extrinsicMaxTimeForTrials = 30;
-			private const int NumTrialGames = 5;
+			private const int NumTrialGames = 1;
 			private const int InGameRunTime = 100; // 100 ingame time seconds 100 * (1 / seconds_per_timestep) timesteps
 			private const int InGameRunSteps = 1000; 	// currently assuming 0.1s per timestep
 			enum PlayerType {Passive, Random};
@@ -94,7 +94,7 @@ namespace PMGF
 			{
 				// Intrinsic fitnesses //
 
-				double ifit = 0;
+				double ifit = 0.0;
 
 
 				// Complexity
@@ -146,9 +146,9 @@ namespace PMGF
 				// Genome breakage from parsing/building
 
 				// Weight and sum up
-				ifit = realWeight (IntrinsicWeights [(int)IW.NumActors], IntrinsicWeights) * pdfLogNormScaled (numActors)
-				+ realWeight (IntrinsicWeights [(int)IW.NumEvents], IntrinsicWeights) * pdfLogNormScaled (numEvents)
-				+ realWeight (IntrinsicWeights [(int)IW.NumMethods], IntrinsicWeights) * pdfLogNormScaled (numMethods);
+				ifit = realWeight (IntrinsicWeights [(int)IW.NumActors], IntrinsicWeights) * pdfLogNormScaled (numActors);
+				ifit += realWeight (IntrinsicWeights [(int)IW.NumEvents], IntrinsicWeights) * pdfLogNormScaled (numEvents);
+				ifit += realWeight (IntrinsicWeights [(int)IW.NumMethods], IntrinsicWeights) * pdfLogNormScaled (numMethods);
 
 				return ifit;
 
@@ -201,19 +201,19 @@ namespace PMGF
 							// Yes this is ugly and messy and hacky
 							switch (e.Message) {
 							case "Popping empty stack":
-								PoppingEmptyStack.Last ()++;
+								PoppingEmptyStack[trials]++;
 								break;
 							case "Reading from empty stack":
-								ReadEmptyStack.Last ()++;
+								ReadEmptyStack[trials]++;
 								break;
 							case "Reading from outside stack":
-								ReadOutsideStack.Last ()++;
+								ReadOutsideStack[trials]++;
 								break;
 							case "Pushing null to stack":
-								PushNullToStack.Last ()++;
+								PushNullToStack[trials]++;
 								break;
 							case "ExecuteList owner is null":
-								ExecuteListOwnerNull.Last ()++;
+								ExecuteListOwnerNull[trials]++;
 								break;
 							case "Casting of owner as PMGEvent failed.":
 								break;
@@ -230,6 +230,8 @@ namespace PMGF
 							case "Casting of function as PMGConditionFunction failed.":
 								break;
 							case "Casting of function as PMGChangeFunction failed.":
+								break;
+							case "Pushing null to valuestack":
 								break;
 							default:
 								throw new Exception (e.Message);
@@ -279,15 +281,16 @@ namespace PMGF
 
 			private double realWeight(int relativeWeight, List<int> allRelativeWeights)
 			{
-				return relativeWeight / allRelativeWeights.Sum ();
+				double result = relativeWeight / allRelativeWeights.Sum ();
+				return result;
 			}
 
 			private double pdfLogNormScaled(int x, double sigma=1, double theta=2, double median=8)
 			{
 				
 				// See paper for documentation
-				if (x < theta)
-					return 0;
+				if (x <= theta)
+					return 0.0;
 				
 				double scaling = (1 / ((1/median) * Math.Sqrt(Math.E/(2*Math.PI))));
 				double innerLog = Math.Pow((x-theta)/median,2);
