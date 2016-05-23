@@ -135,6 +135,7 @@ namespace PMGF
 
 
                                 bool methodTypeFound = false;
+                                CurrentMethod = new PMGMethod();
 
                                 //if the value is an index in the method index list
                                 if (InputSet.actorTypes[i][j] == e)
