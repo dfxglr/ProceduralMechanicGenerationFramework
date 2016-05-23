@@ -59,7 +59,7 @@ namespace PMGF
 			public const int ActorMaxGenomeLength = 300;
 
 
-			public const int   ActorLocMaxInitLen = 9;
+			public const int   ActorLocMaxInitLen = 30;
 
 
 			public const int ActorLocMaxGenomeLength = 90;

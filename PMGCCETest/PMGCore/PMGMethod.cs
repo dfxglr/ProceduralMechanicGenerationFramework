@@ -69,11 +69,17 @@ namespace PMGF
                 if (!_running)
                     return;
 
+				if (_steps.Count == 0)
+					throw new System.InvalidOperationException (string.Format("Method has no steps. Type = {0}", Type));
+
+				if (_stepIter >= _steps.Count || _stepIter < 0)
+					throw new System.InvalidOperationException ("Step iterator of method out of range");
+
                 // Execute next step
                 CurrentStep = _steps[_stepIter];
                 if (CurrentStep != null)
                 {
-                    _steps[_stepIter].Execute();
+                    CurrentStep.Execute();
                 }
                 _stepIter++;
 

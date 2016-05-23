@@ -83,8 +83,8 @@ namespace PMGF
 				}
 
 				// Weigh intrinsic/extrinsic
-				finalFitness = (intrinsicWeight / 2) * IntrinsicFitness(GInstance) 
-					+ (extrinsicWeight / 2) * ExtrinsicFitness(GInstance);
+				//finalFitness = ((double)intrinsicWeight / 2.0) * IntrinsicFitness(GInstance) 
+					//+ ((double)extrinsicWeight / 2.0) * ExtrinsicFitness(GInstance);
 
 				//return finalFitness;
 				return finalFitness;
@@ -148,6 +148,7 @@ namespace PMGF
 				// Weight and sum up
 				ifit = realWeight (IntrinsicWeights [(int)IW.NumActors], IntrinsicWeights) * pdfLogNormScaled (numActors);
 				ifit += realWeight (IntrinsicWeights [(int)IW.NumEvents], IntrinsicWeights) * pdfLogNormScaled (numEvents);
+				ifit += realWeight (IntrinsicWeights [(int)IW.NumActorTypes], IntrinsicWeights) * pdfLogNormScaled (numActorTypes);
 				ifit += realWeight (IntrinsicWeights [(int)IW.NumMethods], IntrinsicWeights) * pdfLogNormScaled (numMethods);
 
 				return ifit;
@@ -157,7 +158,7 @@ namespace PMGF
 			private double ExtrinsicFitness(PMGSingleGameInstance GInstance)
 			{
 				// Extrinsic fitnesses //
-				double efit = 0;
+				double efit = 0.0;
 
 				// Run with various players and get extrinsic fitness
 
@@ -195,7 +196,7 @@ namespace PMGF
 						// Try to do a step. Catch any exceptions and keep running
 						try
 						{
-							GInstance.UpdateActors ();
+							//GInstance.UpdateActors ();
 						}
 						catch(Exception e) {
 							// Yes this is ugly and messy and hacky
@@ -234,6 +235,12 @@ namespace PMGF
 							case "Pushing null to valuestack":
 								break;
 							default:
+								Console.WriteLine ("Some other exception from inside the game:");
+								Console.WriteLine (e.Message);
+								Console.WriteLine ("Full Genome:");
+								PMGExporter exporter = new PMGExporter ();
+								exporter.ExportSetToFile (GInstance.GameSet._genomeSet, "./genome_for_no_method_functions");
+								GInstance.GameSet._genomeSet.ExportSerializedGenomeSet ().ForEach (t => Console.WriteLine (t));
 								throw new Exception (e.Message);
 								break;
 							}
@@ -255,7 +262,7 @@ namespace PMGF
 					}
 
 					// Add number of visited tiles to list
-					VisitedTilesRatio.Add(VisitedTiles.Count/TotalCells);
+					VisitedTilesRatio.Add((double)VisitedTiles.Count/(double)TotalCells);
 
 					if (timer.Elapsed.Seconds > extrinsicMaxTimeForTrials) {
 						TrialsTimedOut = true;
@@ -271,7 +278,7 @@ namespace PMGF
 
 
 				//Board Coverage
-				double BoardCoverage = VisitedTilesRatio.Sum() / NumTrialGames;
+				double BoardCoverage = (double)VisitedTilesRatio.Sum() / (double)NumTrialGames;
 
 
 				efit = BoardCoverage * ExtrinsicWeights [(int)EW.BoardCoverage];
@@ -281,23 +288,23 @@ namespace PMGF
 
 			private double realWeight(int relativeWeight, List<int> allRelativeWeights)
 			{
-				double result = relativeWeight / allRelativeWeights.Sum ();
+				double result = (double)relativeWeight / (double)allRelativeWeights.Sum ();
 				return result;
 			}
 
-			private double pdfLogNormScaled(int x, double sigma=1, double theta=2, double median=8)
+			private double pdfLogNormScaled(int x, double sigma=1.0, double theta=2.0, double median=8.0)
 			{
 				
 				// See paper for documentation
 				if (x <= theta)
 					return 0.0;
 				
-				double scaling = (1 / ((1/median) * Math.Sqrt(Math.E/(2*Math.PI))));
-				double innerLog = Math.Pow((x-theta)/median,2);
-				double eExponent = -1 * (Math.Log (innerLog) / (2 * Math.Pow (sigma, 2)));
-				double lowerPart = (x - theta) * sigma * Math.Sqrt (2 * Math.PI);
-				double result = Math.Pow (Math.E, eExponent) / lowerPart;
-				result *= scaling;
+				double scaling = (1.0 / ((1.0/median) * Math.Sqrt(Math.E/(2.0*Math.PI))));
+				double innerLog = (x-theta)/median;
+				double eExponent = -1 * (Math.Pow(Math.Log (innerLog),2) / (2 * Math.Pow (sigma, 2)));
+				double lowerPart = (x - theta) * sigma * Math.Sqrt (2.0 * Math.PI);
+				double unscaledResult = Math.Pow (Math.E, eExponent) / lowerPart;
+				double result = unscaledResult * scaling;
 				
 				return result;
 			}
