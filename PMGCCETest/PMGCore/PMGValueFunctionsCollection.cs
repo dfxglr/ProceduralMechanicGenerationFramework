@@ -34,7 +34,7 @@ namespace PMGF
             public void VF_DebugWriteToConsole(PMGActor actor, PMGValueStack localStack)
             {
                 // Write a message to console for testing purposes.
-                System.Console.WriteLine("VF_DebugWriteToConsole Called!");
+               // System.Console.WriteLine("VF_DebugWriteToConsole Called!");
 
                 // You can also call other functions!
                 VF_Push1337ToLocal(actor, localStack);
@@ -43,13 +43,13 @@ namespace PMGF
 
             public void VF_Push42ToLocal(PMGActor actor, PMGValueStack localStack)
             {
-                System.Console.WriteLine("Pushing 42 to local stack");
+                //System.Console.WriteLine("Pushing 42 to local stack");
                 localStack.Push(42);
             }
 
             public void VF_Push1337ToLocal(PMGActor actor, PMGValueStack localStack)
             {
-                System.Console.WriteLine("Push 1337 to local stack");
+                //System.Console.WriteLine("Push 1337 to local stack");
                 localStack.Push(1337);
             }
 

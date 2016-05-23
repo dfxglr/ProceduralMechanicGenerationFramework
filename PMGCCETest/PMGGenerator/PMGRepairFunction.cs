@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GeneticSharp.Domain.Chromosomes;
 using PMGF.PMGGenerator;
 
@@ -27,7 +28,7 @@ namespace PMGF
 				}
 			}
 
-			protected int MaxGenomeLength;
+			int MaxGenomeLength;
 
 
 			protected override void PerformRepair(IChromosome chromosome)
@@ -36,6 +37,7 @@ namespace PMGF
 				if (chromosome.Length > MaxGenomeLength) {
 					chromosome.Resize (MaxGenomeLength);
 				}
+
 			}
 		}
 	}
