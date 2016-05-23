@@ -1155,8 +1155,8 @@ namespace PMGF
                 for(int i = 0; i< SpawnedActors.Count; i++)
                 {
                     //
-                    Console.WriteLine("actor: " + i + " is at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
-                    Console.WriteLine("actor: " + i + " checks "+ SpawnedActors[i].Events.Count+" events");
+                    //Console.WriteLine("actor: " + i + " is at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
+                    //Console.WriteLine("actor: " + i + " checks "+ SpawnedActors[i].Events.Count+" events");
                     //for each event in current actor
                     for (int j = 0; j < SpawnedActors[i].Events.Count;j++)
                     {
@@ -1165,14 +1165,14 @@ namespace PMGF
                         SpawnedActors[i].Events[j].EvaluateConditions();
                         //run method
                         SpawnedActors[i].Events[j]._method.TimeStep();
-                        Console.WriteLine("     actor: " + i + " is now at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
+                        //Console.WriteLine("     actor: " + i + " is now at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
 
 
 
                     }
                     //tells position
 
-                    Console.WriteLine("actor: " + i + " is now at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
+                    //Console.WriteLine("actor: " + i + " is now at(" + SpawnedActors[i].position[0] + "," + SpawnedActors[i].position[1] + ")");
 
                 }
             }

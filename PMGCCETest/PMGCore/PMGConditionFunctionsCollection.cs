@@ -52,15 +52,15 @@ namespace PMGF
              */
             public bool CF_DebugWriteToConsole(PMGActor actor, PMGValueStack localStack)
             {
-                System.Console.WriteLine("Cond. function checking if timestep > 5");
+                //Console.WriteLine("Cond. function checking if timestep > 5");
                 if(actor.Core.WorldTimeSteps > 5)
                 {
-                    Console.WriteLine("It did!");
+                    //Console.WriteLine("It did!");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("It did not!");
+                    //Console.WriteLine("It did not!");
                     return false;
                 }
             }
@@ -79,7 +79,7 @@ namespace PMGF
             }
             public bool CF_Input_IsActionPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
-                Console.WriteLine("     key action is pressed");
+                //Console.WriteLine("     key action is pressed");
                 return true;
 //
 //                if ((Keyboard.IsKeyDown(Key.Return) && !actionPressed) || (Keyboard.IsKeyDown(Key.Space) && !actionPressed))
@@ -95,7 +95,7 @@ namespace PMGF
             }
             public bool CF_Input_IsUpPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
-                Console.WriteLine("     key up is pressed");
+                //Console.WriteLine("     key up is pressed");
 
                 return true;
 //                if ((Keyboard.IsKeyDown(Key.W) && !upPressed) || (Keyboard.IsKeyDown(Key.Up) && !upPressed))
@@ -111,7 +111,7 @@ namespace PMGF
             }
             public bool CF_Input_IsLeftPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
-                Console.WriteLine("     key left is pressed");
+                //Console.WriteLine("     key left is pressed");
                 return true;
 //                if ((Keyboard.IsKeyDown(Key.A) && !leftPressed) || (Keyboard.IsKeyDown(Key.Left) && !leftPressed))
 //                {
@@ -126,7 +126,7 @@ namespace PMGF
             }
             public bool CF_Input_IsDownPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
-                Console.WriteLine("     key down is pressed");
+                //Console.WriteLine("     key down is pressed");
                 return true;
 //                if ((Keyboard.IsKeyDown(Key.S) && !downPressed) || (Keyboard.IsKeyDown(Key.Down) && !downPressed))
 //                {
@@ -141,7 +141,7 @@ namespace PMGF
             }
             public bool CF_Input_IsRightPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
-                Console.WriteLine("     key right is  pressed");
+                //Console.WriteLine("     key right is  pressed");
                 return true;
 //                if ((Keyboard.IsKeyDown(Key.D) && !rightPressed) || (Keyboard.IsKeyDown(Key.Right) && !rightPressed))
 //                {
@@ -158,12 +158,12 @@ namespace PMGF
             {
                 if (Map.chart[actor.position[0],actor.position[1]-1]== 0)
                 {
-                    Console.WriteLine("     up is a space");
+                    //Console.WriteLine("     up is a space");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("     up is a wall");
+                    //Console.WriteLine("     up is a wall");
                     return false;
                 }
             }
@@ -171,12 +171,12 @@ namespace PMGF
             {
                 if (Map.chart[actor.position[0]-1, actor.position[1]] == 0)
                 {
-                    Console.WriteLine("     left is a space");
+                    //Console.WriteLine("     left is a space");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("     left is a wall");
+                    //Console.WriteLine("     left is a wall");
                     return false;
                 }
             }
@@ -184,12 +184,12 @@ namespace PMGF
             {
                 if (Map.chart[actor.position[0], actor.position[1] + 1] == 0)
                 {
-                    Console.WriteLine("     down is a space");
+                    //Console.WriteLine("     down is a space");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("     down is a wall");
+                    //Console.WriteLine("     down is a wall");
                     return false;
                 }
             }
@@ -197,12 +197,12 @@ namespace PMGF
             {
                 if (Map.chart[actor.position[0]+1, actor.position[1]] == 0)
                 {
-                    Console.WriteLine("     right is a space");
+                    //Console.WriteLine("     right is a space");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("     right is a wall");
+                    //Console.WriteLine("     right is a wall");
                     return false;
                 }
             }

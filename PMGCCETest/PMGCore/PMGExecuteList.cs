@@ -22,7 +22,7 @@ namespace PMGF
             {
                 // The owner of the execution list (event or method)
                 if(owner == null)
-                    throw new System.ArgumentNullException("owner");
+                    throw new System.ArgumentNullException("owner", "ExecuteList owner is null");
                 _owner = owner;
                 _ownerType = ownerT;
 
@@ -64,7 +64,7 @@ namespace PMGF
                 }
 
                 if(localStack == null)
-                    throw new System.InvalidOperationException("localStack is still null. Could not be set to event or method stack.");
+                    throw new System.InvalidOperationException("localStack is null");
 
                 // Prepare bool for condition functions
                 bool AllTrue = true;
@@ -81,7 +81,7 @@ namespace PMGF
 
                     if(i < 0 || i > _functions.Count)
                     {
-                        throw new System.InvalidOperationException("Tried to execute functions outside of list. Did a utility function change it?");
+                        throw new System.InvalidOperationException("Tried to execute functions outside of list.");
                     }
 
                     PMGFunction f = _functions[i];
@@ -92,7 +92,7 @@ namespace PMGF
                             PMGValueFunction vf = f as PMGValueFunction;
 
                             if(vf == null)
-                                throw new System.InvalidCastException("Casting of function as 2PMGValueFunction failed.");
+                                throw new System.InvalidCastException("Casting of function as PMGValueFunction failed.");
 
                             vf.Do(_actor, localStack);
                             break;

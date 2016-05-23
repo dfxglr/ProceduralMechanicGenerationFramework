@@ -55,7 +55,7 @@ namespace PMGF
             public void CF_PushLeetToActor(PMGActor actor, PMGValueStack localStack)
             {
                 // push 1337 to actor stack
-                Console.WriteLine("fagit");
+                //Console.WriteLine("fagit");
                 actor.ValueStack.Push(9001);
             }
             public void CF_Movement_MoveUpOnce(PMGActor actor, PMGValueStack localStack)
@@ -66,11 +66,11 @@ namespace PMGF
                 if (actor.position[1] - 1 > 0)
                 {
                     actor.position[1] = actor.position[1] - 1;
-                    Console.WriteLine("         moved up 1 step");
+                    //Console.WriteLine("         moved up 1 step");
                 }
                 else
                 {
-                    Console.WriteLine("         cant moved up 1 step");
+                    //Console.WriteLine("         cant moved up 1 step");
                 }
             }
             public void CF_Movement_MoveLeftOnce(PMGActor actor, PMGValueStack localStack)
@@ -80,11 +80,11 @@ namespace PMGF
                 if (actor.position[0] - 1 > 0)
                 {
                     actor.position[0] = actor.position[0] - 1;
-                    Console.WriteLine("         moved left 1 step");
+                    //Console.WriteLine("         moved left 1 step");
                 }
                 else
                 {
-                    Console.WriteLine("         cant moved left 1 step");
+                    //Console.WriteLine("         cant moved left 1 step");
                 }
             }
             public void CF_Movement_MoveDownOnce(PMGActor actor, PMGValueStack localStack)
@@ -93,11 +93,11 @@ namespace PMGF
                 if (actor.position[1] + 1 < Map.chart.GetLength(1))
                 {
                     actor.position[1] = actor.position[1] + 1;
-                    Console.WriteLine("         moved down 1 step");
+                    //Console.WriteLine("         moved down 1 step");
                 }
                 else
                 {
-                    Console.WriteLine("         cant moved down 1 step");
+                    //Console.WriteLine("         cant moved down 1 step");
                 }
             }
             public void CF_Movement_MoveRightOnce(PMGActor actor, PMGValueStack localStack)
@@ -106,11 +106,11 @@ namespace PMGF
                 if (actor.position[0] + 1 < Map.chart.GetLength(0))
                 {
                     actor.position[0] = actor.position[0] + 1;
-                    Console.WriteLine("         moved right 1 step");
+                    //Console.WriteLine("         moved right 1 step");
                 }
                 else
                 {
-                    Console.WriteLine("         cant moved right 1 step");
+                    //Console.WriteLine("         cant moved right 1 step");
                 }
             }
         }

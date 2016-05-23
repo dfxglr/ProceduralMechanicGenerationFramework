@@ -20,8 +20,8 @@ namespace PMGF
 			{
 				// Add item to end of correct stack
 
-                if(item == null)
-                    throw new ArgumentNullException("item");
+				if (item == null)
+					throw new ArgumentNullException ("item", "Pushing null to stack");
 
 				Values.Add (item);
 			}
