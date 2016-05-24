@@ -10,7 +10,7 @@ namespace PMGF
 {
     namespace PMGGameInstance
     {
-        class PMGGenomeParse
+        public class PMGGenomeParse
         {
             //local genome set tho it needs to be public
             public PMGGenomeSet _genomeSet;
@@ -198,7 +198,8 @@ namespace PMGF
                         for (int mainIndex = 0; mainIndex < _genomeSet.actorPositionsGenome.Count; mainIndex += 3)
                         {
                             //cross refences to see it the type declarations matches the position type
-                            if (_genomeSet.actorPositionsGenome[mainIndex] < actorTypes.Count)
+                            //if (_genomeSet.actorPositionsGenome[mainIndex] < actorTypes.Count)
+                            if(true)
                             {
                                 //checks for lack of coordianates
                                 if (mainIndex + 2 < _genomeSet.actorPositionsGenome.Count)
@@ -213,6 +214,7 @@ namespace PMGF
 	                                    {
 	                                        actorTypePositions[PosListIndex].Add(_genomeSet.actorPositionsGenome[subIndex]);
 	                                    }
+                                        actorTypePositions[PosListIndex][0] = actorTypePositions[PosListIndex][0] % actorTypes.Count;
 	                                    PosListIndex++;
 									}else
 									{

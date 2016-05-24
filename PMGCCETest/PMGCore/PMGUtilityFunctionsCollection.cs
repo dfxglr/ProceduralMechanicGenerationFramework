@@ -33,7 +33,7 @@ namespace PMGF
             public void UF_DebugWriteToConsole(PMGActor actor, object owner, FunctionOwnerType ownerType)
             {
                 // Write a message to console for testing purposes.
-                Console.WriteLine("Utility functions called. ");
+               // Console.WriteLine("Utility functions called. ");
 
 
                 // Get owner as method (this is for testing so we know it's a method)
@@ -47,7 +47,7 @@ namespace PMGF
 
                 if( intFromStack > 1000)
                 {
-                    Console.WriteLine("Changing value function in owner method steps!");
+                    //Console.WriteLine("Changing value function in owner method steps!");
                     ownerM.CurrentStep._functions[0] = new PMGValueFunction(1);
                     ownerM.Reset();
                 }

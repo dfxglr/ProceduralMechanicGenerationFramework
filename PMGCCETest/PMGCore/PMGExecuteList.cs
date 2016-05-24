@@ -94,7 +94,13 @@ namespace PMGF
                             if(vf == null)
                                 throw new System.InvalidCastException("Casting of function as PMGValueFunction failed.");
 
-                            vf.Do(_actor, localStack);
+							try
+							{
+	                            vf.Do(_actor, localStack);
+							}
+							catch (System.Exception e){
+							//throw new System.InvalidOperationException (string.Format("Executing value function failed with msg: {0}", e.Message), e);
+							}
                             break;
 
                         case FunctionType.UTILITY:
@@ -102,8 +108,14 @@ namespace PMGF
 
                             if(uf == null)
                                 throw new System.InvalidCastException("Casting of function as PMGUtilityFunction failed.");
-
-                            uf.Do(_actor, _owner, _ownerType);
+							
+							try
+							{
+								uf.Do(_actor, _owner, _ownerType);
+							}
+							catch (System.Exception e){
+							//throw new System.InvalidOperationException (string.Format("Executing utility function failed with msg: {0}", e.Message), e);
+							}
                             break;
 
                         case FunctionType.CONDITION:
@@ -112,17 +124,29 @@ namespace PMGF
                             if(cf == null)
                                 throw new System.InvalidCastException("Casting of function as PMGConditionFunction failed.");
 
-                            AllTrue &= cf.Do(_actor, localStack);
-                             break;
+							try
+							{
+							AllTrue &= cf.Do(_actor, localStack);
+							}
+							catch (System.Exception e){
+							//throw new System.InvalidOperationException (string.Format("Executing condition function failed with msg: {0}", e.Message), e);
+							}
+                            break;
 
                         case FunctionType.CHANGE:
                             PMGChangeFunction chf = f as PMGChangeFunction;
 
                             if(chf == null)
                                 throw new System.InvalidCastException("Casting of function as PMGChangeFunction failed.");
-
-                            chf.Do(_actor, localStack);
-                             break;
+							
+							try
+							{
+							chf.Do(_actor, localStack);
+							}
+							catch (System.Exception e){
+							//throw new System.InvalidOperationException (string.Format(21"Executing change function failed with msg: {0}", e.Message), e);
+							}
+                            break;
                     }
                 }
 
