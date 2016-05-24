@@ -20,18 +20,17 @@ namespace PMGF
 
 				public static void Main (string[] args)
 				{
-					PMGExporter exporter = new PMGExporter ();
-					for (int i = 0; i < 1000; i++)
+					for (int i = 0; i < 10; i++)
 					{
 						//Console.ReadKey ();
-						RunTest ();
-						exporter.ExportSetToFile (new PMGGenomeSet (gset), "./BestOfGeneration_" + i); 
+						RunTest (i); 
 					}
 
 				}
-				public static void RunTest()
+				public static void RunTest(int run_nr)
 				{
-			
+
+					PMGExporter exporter = new PMGExporter ();
 					// Use PMGGenController to control GeneticAlgorithmCCE
 					// so that it can create Lists of Chromosomes (Genome Sets)
 					// Lead that to the parser
@@ -50,7 +49,7 @@ namespace PMGF
 
 					// Set the termination
 					//ga.Termination = new ...		// 1 minute
-					ga.Termination = new GenerationNumberTermination(100);
+					ga.Termination = pgc.CreateTermination();
 
 					ga.GenerationRan += delegate {
 						//System.Threading.Thread.Sleep(1000);
@@ -70,9 +69,11 @@ namespace PMGF
 
 						for(int i = 0; i < 4; i++)
 						{
+							
 							Gene [] gg;
 							gg = gset[i].GetGenes();
 							Console.WriteLine("{0} ({3} - {1}, |{2}|):",gstr[i], gset[i].Fitness, ga.Species[i].Population.CurrentGeneration.Chromosomes.Sum(t => t.Fitness)/ga.Species[i].Population.CurrentGeneration.Chromosomes.Count, uset[i].Fitness);
+							exporter.ExportSetToFile (new PMGGenomeSet (uset), string.Format("./OutputGenomes/kRun_nr_{0:00}_gen{1:00000}",run_nr, ga.GenerationsNumber));
 							/*foreach(Gene _g in gg)
 							{
 								List<int> _gl = _g.Value as List<int>;

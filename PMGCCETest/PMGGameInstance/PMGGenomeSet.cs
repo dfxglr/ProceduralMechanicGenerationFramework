@@ -44,6 +44,7 @@ namespace PMGF
 			{				
 				Clear ();
 
+
 				foreach (Gene g in ChromosomeSet[0].GetGenes())
 				{
 					actorGenome.Add ((int)g.Value);
