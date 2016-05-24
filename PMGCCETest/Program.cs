@@ -55,6 +55,7 @@ namespace PMGF
 					ga.GenerationRan += delegate {
 						//System.Threading.Thread.Sleep(1000);
 						gset = ga.BestChromosomeSet;
+						var uset = ga.UberBestSet;
 						Console.Clear ();
 						Console.WriteLine ("Generation # {0}", ga.GenerationsNumber);
 						Console.WriteLine("Time: {0}", ga.TimeEvolving);
@@ -71,7 +72,7 @@ namespace PMGF
 						{
 							Gene [] gg;
 							gg = gset[i].GetGenes();
-							Console.WriteLine("{0} ({1}, |{2}|):",gstr[i], gset[i].Fitness, ga.Species[i].Population.CurrentGeneration.Chromosomes.Sum(t => t.Fitness)/ga.Species[i].Population.CurrentGeneration.Chromosomes.Count);
+							Console.WriteLine("{0} ({3} - {1}, |{2}|):",gstr[i], gset[i].Fitness, ga.Species[i].Population.CurrentGeneration.Chromosomes.Sum(t => t.Fitness)/ga.Species[i].Population.CurrentGeneration.Chromosomes.Count, uset[i].Fitness);
 							/*foreach(Gene _g in gg)
 							{
 								List<int> _gl = _g.Value as List<int>;

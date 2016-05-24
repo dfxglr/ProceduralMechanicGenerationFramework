@@ -37,7 +37,7 @@ namespace PMGF
 			List<int> IntrinsicWeights = new List<int> ();
 
 			// Extrinsic weights
-			enum EW {BoardCoverage}
+			enum EW {BoardCoverage, Exceptions}
 			List<int> ExtrinsicWeights = new List<int>();
 			List<int> ExtrinsicExceptionWeights = new List<int> ();
 
@@ -52,6 +52,7 @@ namespace PMGF
 				IntrinsicWeights.Add(1);	// NumMethods
 
 				ExtrinsicWeights.Add (1);	// BoardCoverage
+				ExtrinsicWeights.Add (4);	// Exceptions
 			}
 
 
@@ -83,8 +84,8 @@ namespace PMGF
 				}
 
 				// Weigh intrinsic/extrinsic
-				//finalFitness = ((double)intrinsicWeight / 2.0) * IntrinsicFitness(GInstance) 
-					//+ ((double)extrinsicWeight / 2.0) * ExtrinsicFitness(GInstance);
+				finalFitness = ((double)intrinsicWeight / 2.0) * IntrinsicFitness(GInstance) 
+					+ ((double)extrinsicWeight / 2.0) * ExtrinsicFitness(GInstance);
 
 				//return finalFitness;
 				return finalFitness;
@@ -168,12 +169,35 @@ namespace PMGF
 
 				PlayerType PType = PlayerType.Passive;
 
+				// Exceptions
 				List<double> VisitedTilesRatio = new List<double> ();
+
 				List<int> PoppingEmptyStack = new List<int> ();
 				List<int> ReadEmptyStack = new List<int> ();
 				List<int> ReadOutsideStack = new List<int> ();
 				List<int> PushNullToStack = new List<int> ();
 				List<int> ExecuteListOwnerNull = new List<int> ();
+				List<int> CastingOfFunctionFailed = new List<int> ();
+				List<int> ExecutingFunctionsOutsideList = new List<int> ();
+				List<int> StackIsNull = new List<int> ();
+				List<int> NoStepsInMethod = new List<int> ();
+				List<int> CastingOfOwnerFailed = new List<int> ();
+				List<int> UndefinedError = new List<int> ();
+
+
+				//ExceptionWeights
+				ExtrinsicExceptionWeights.Add(1);	//PoppingEmptyStack
+				ExtrinsicExceptionWeights.Add(1);	//ReadEmptyStack
+				ExtrinsicExceptionWeights.Add(1);	//ReadOutsideStack
+				ExtrinsicExceptionWeights.Add(1);	//PushNullToStack
+				ExtrinsicExceptionWeights.Add(1);	//ExecuteListOwnerNull
+				ExtrinsicExceptionWeights.Add(1);	//CastingOfFunctionFailed
+				ExtrinsicExceptionWeights.Add(1);	//ExecutingFunctionsOutsideList
+				ExtrinsicExceptionWeights.Add(1);	//StackIsNull
+				ExtrinsicExceptionWeights.Add(1);	//NoStepsInMethod
+				ExtrinsicExceptionWeights.Add(1);	//CastingOfOwnerFailed
+				ExtrinsicExceptionWeights.Add(1);	//UndefinedError
+
 
 				timer.Start ();
 
@@ -184,6 +208,13 @@ namespace PMGF
 					ReadOutsideStack.Add (0);
 					PushNullToStack.Add (0);
 					ExecuteListOwnerNull.Add (0);
+					CastingOfOwnerFailed.Add (0);
+					ExecutingFunctionsOutsideList.Add (0);
+					StackIsNull.Add (0);
+					CastingOfFunctionFailed.Add (0);
+					PushNullToStack.Add (0);
+					NoStepsInMethod.Add (0);
+					UndefinedError.Add (0);
 					List<List<int>> VisitedTiles = new List<List<int>>();
 
 					for (int timestep = 0; timestep < InGameRunSteps; timestep++) {
@@ -196,7 +227,7 @@ namespace PMGF
 						// Try to do a step. Catch any exceptions and keep running
 						try
 						{
-							//GInstance.UpdateActors ();
+							GInstance.UpdateActors ();
 						}
 						catch(Exception e) {
 							// Yes this is ugly and messy and hacky
@@ -217,31 +248,44 @@ namespace PMGF
 								ExecuteListOwnerNull[trials]++;
 								break;
 							case "Casting of owner as PMGEvent failed.":
+								CastingOfOwnerFailed[trials]++;
 								break;
 							case "Casting of owner as PMGMethod failed.":
+								CastingOfOwnerFailed[trials]++;
 								break;
 							case "Tried to execute functions outside of list.":
+								ExecutingFunctionsOutsideList[trials]++;
 								break;
 							case "localStack is null":
+								StackIsNull[trials]++;
 								break;
 							case "Casting of function as PMGValueFunction failed.":
+								CastingOfFunctionFailed[trials]++;
 								break;
 							case "Casting of function as PMGUtilityFunction failed.":
+								CastingOfFunctionFailed[trials]++;
 								break;
 							case "Casting of function as PMGConditionFunction failed.":
+								CastingOfFunctionFailed[trials]++;
 								break;
 							case "Casting of function as PMGChangeFunction failed.":
+								CastingOfFunctionFailed[trials]++;
 								break;
 							case "Pushing null to valuestack":
+								PushNullToStack[trials]++;
+								break;
+							case "Method has no steps.":
+								NoStepsInMethod[trials]++;
 								break;
 							default:
-								Console.WriteLine ("Some other exception from inside the game:");
-								Console.WriteLine (e.Message);
-								Console.WriteLine ("Full Genome:");
-								PMGExporter exporter = new PMGExporter ();
-								exporter.ExportSetToFile (GInstance.GameSet._genomeSet, "./genome_for_no_method_functions");
-								GInstance.GameSet._genomeSet.ExportSerializedGenomeSet ().ForEach (t => Console.WriteLine (t));
-								throw new Exception (e.Message);
+								UndefinedError [trials]++;
+//								Console.WriteLine ("Some other exception from inside the game:");
+//								Console.WriteLine (e.Message);
+//								Console.WriteLine ("Full Genome:");
+//								PMGExporter exporter = new PMGExporter ();
+//								exporter.ExportSetToFile (GInstance.GameSet._genomeSet, "./genome_for_no_method_functions");
+//								GInstance.GameSet._genomeSet.ExportSerializedGenomeSet ().ForEach (t => Console.WriteLine (t));
+//								throw new Exception (e.Message);
 								break;
 							}
 						}
@@ -280,8 +324,22 @@ namespace PMGF
 				//Board Coverage
 				double BoardCoverage = (double)VisitedTilesRatio.Sum() / (double)NumTrialGames;
 
+				double Exceptions = LogFunction (PoppingEmptyStack.Average ()) * realWeight(ExtrinsicExceptionWeights [0], ExtrinsicExceptionWeights)
+				                    + LogFunction (ReadEmptyStack.Average ()) * realWeight(ExtrinsicExceptionWeights [0], ExtrinsicExceptionWeights)
+				                    + LogFunction (ReadOutsideStack.Average ()) * realWeight(ExtrinsicExceptionWeights [1], ExtrinsicExceptionWeights)
+				                    + LogFunction (PushNullToStack.Average ()) * realWeight(ExtrinsicExceptionWeights [2], ExtrinsicExceptionWeights)
+				                    + LogFunction (ExecuteListOwnerNull.Average ()) * realWeight(ExtrinsicExceptionWeights [3], ExtrinsicExceptionWeights)
+				                    + LogFunction (CastingOfOwnerFailed.Average ()) * realWeight(ExtrinsicExceptionWeights [4], ExtrinsicExceptionWeights)
+				                    + LogFunction (ExecutingFunctionsOutsideList.Average ()) * realWeight(ExtrinsicExceptionWeights [5], ExtrinsicExceptionWeights)
+				                    + LogFunction (StackIsNull.Average ()) * realWeight(ExtrinsicExceptionWeights [6], ExtrinsicExceptionWeights)
+				                    + LogFunction (CastingOfFunctionFailed.Average ()) * realWeight(ExtrinsicExceptionWeights [7], ExtrinsicExceptionWeights)
+				                    + LogFunction (PushNullToStack.Average ()) * realWeight(ExtrinsicExceptionWeights [8], ExtrinsicExceptionWeights)
+				                    + LogFunction (NoStepsInMethod.Average ()) * realWeight(ExtrinsicExceptionWeights [9], ExtrinsicExceptionWeights)
+				                    + LogFunction (UndefinedError.Average ()) * realWeight(ExtrinsicExceptionWeights [10], ExtrinsicExceptionWeights);
 
-				efit = BoardCoverage * ExtrinsicWeights [(int)EW.BoardCoverage];
+
+				efit = BoardCoverage * realWeight(ExtrinsicWeights [(int)EW.BoardCoverage], ExtrinsicWeights)
+					+ Exceptions * realWeight(ExtrinsicWeights[(int)EW.Exceptions],ExtrinsicWeights);
 
 				return efit;
 			}
@@ -307,6 +365,12 @@ namespace PMGF
 				double result = unscaledResult * scaling;
 				
 				return result;
+			}
+
+			private double LogFunction(double x, double a=0.75)
+			{
+				double result = Math.Min(a * Math.Log10 (x),1.0);
+				return Math.Max(result,0.0);
 			}
         }
 

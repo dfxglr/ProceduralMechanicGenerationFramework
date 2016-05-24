@@ -47,7 +47,7 @@ namespace PMGF
 
                 if( intFromStack > 1000)
                 {
-                    Console.WriteLine("Changing value function in owner method steps!");
+                    //Console.WriteLine("Changing value function in owner method steps!");
                     ownerM.CurrentStep._functions[0] = new PMGValueFunction(1);
                     ownerM.Reset();
                 }
