@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
+//using System.Windows.Input;
 using PMGF.PMGGameInstance;
-
+//using UnityEngine;
 
 
 namespace PMGF
@@ -19,13 +19,13 @@ namespace PMGF
             public List<ConditionFunction> Collection = new List<ConditionFunction>();
 
             //---------------------------------------------------------------//
-            // input key bools
+            // input key bools THIS I BAD MUST FIX
             bool actionPressed = false;
             bool upPressed = false;
             bool leftPressed = false;
             bool downPressed = false;
             bool rightPressed = false;
-            // the static map
+            // the static map - READ ONLY - might make this a singleton so it can be changed
             PMGMap Map = new PMGMap();             
             //---------------------------------------------------------------//
             public void Initialize()
@@ -40,10 +40,22 @@ namespace PMGF
                 /*  5 */Collection.Add(CF_Input_IsLeftPressedOnce);   // Left   (a or arrowLeft button pressed)
                 /*  6 */Collection.Add(CF_Input_IsDownPressedOnce);   // Down   (s or arrowDown button pressed)
                 /*  7 */Collection.Add(CF_Input_IsRightPressedOnce);  // Right  (d or arrowRight button pressed)
+
                 /*  8 */Collection.Add(CF_Dectection_IsUpASpace);     
                 /*  9 */Collection.Add(CF_Dectection_IsLeftASpace);   
                 /* 10 */Collection.Add(CF_Dectection_IsDownASpace);  
                 /* 11 */Collection.Add(CF_Dectection_IsRightASpace);
+
+                /* 12 */Collection.Add(CF_Dectection_IsUpAWall);     
+                /* 13 */Collection.Add(CF_Dectection_IsLeftAWall);   
+                /* 14 */Collection.Add(CF_Dectection_IsDownAWall);  
+                /* 15 */Collection.Add(CF_Dectection_IsRightAWall);
+                /* 16 */Collection.Add(CF_Timer_Continues);
+                /* 17 */Collection.Add(CF_Collision_WithActorType_0_1);
+                /* 18 */Collection.Add(CF_Collision_WithActorType_0);
+                /* 19 */Collection.Add(CF_CheckStats_ActorHasMaxKeys);
+
+
             }
             
 
@@ -52,7 +64,7 @@ namespace PMGF
              */
             public bool CF_DebugWriteToConsole(PMGActor actor, PMGValueStack localStack)
             {
-                //Console.WriteLine("Cond. function checking if timestep > 5");
+                //System.Console.WriteLine("Cond. function checking if timestep > 5");
                 if(actor.Core.WorldTimeSteps > 5)
                 {
                     //Console.WriteLine("It did!");
@@ -79,79 +91,32 @@ namespace PMGF
             }
             public bool CF_Input_IsActionPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
-                //Console.WriteLine("     key action is pressed");
-                return true;
-//
-//                if ((Keyboard.IsKeyDown(Key.Return) && !actionPressed) || (Keyboard.IsKeyDown(Key.Space) && !actionPressed))
-//                {
-//                    actionPressed = true;        
-//                    return true;
-//                }                
-//                if (Keyboard.IsKeyUp(Key.Return) && Keyboard.IsKeyUp(Key.Space) && actionPressed)
-//                {
-//                    actionPressed = false;
-//                }
+                
                 return false;  //*/
             }
             public bool CF_Input_IsUpPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 //Console.WriteLine("     key up is pressed");
 
-                return true;
-//                if ((Keyboard.IsKeyDown(Key.W) && !upPressed) || (Keyboard.IsKeyDown(Key.Up) && !upPressed))
-//                {
-//                    upPressed = true;
-//                    return true;
-//                }
-//                if (Keyboard.IsKeyUp(Key.W) && Keyboard.IsKeyUp(Key.Up) && upPressed)
-//                {
-//                    upPressed = false;
-//                }
-                return false;//
+                return false;
+               
             }
             public bool CF_Input_IsLeftPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 //Console.WriteLine("     key left is pressed");
-                return true;
-//                if ((Keyboard.IsKeyDown(Key.A) && !leftPressed) || (Keyboard.IsKeyDown(Key.Left) && !leftPressed))
-//                {
-//                    leftPressed = true;
-//                    return true;
-//                }
-//                if (Keyboard.IsKeyUp(Key.A) && Keyboard.IsKeyUp(Key.Left) && leftPressed)
-//                {
-//                    leftPressed = false;
-//                }
                 return false;
+               
             }
             public bool CF_Input_IsDownPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 //Console.WriteLine("     key down is pressed");
-                return true;
-//                if ((Keyboard.IsKeyDown(Key.S) && !downPressed) || (Keyboard.IsKeyDown(Key.Down) && !downPressed))
-//                {
-//                    downPressed = true;
-//                    return true;
-//                }
-//                if (Keyboard.IsKeyUp(Key.S) && Keyboard.IsKeyUp(Key.Down) && downPressed)
-//                {
-//                    downPressed = false;
-//                }
+                
                 return false;//*/
             }
             public bool CF_Input_IsRightPressedOnce(PMGActor actor, PMGValueStack localStack)
             {
                 //Console.WriteLine("     key right is  pressed");
-                return true;
-//                if ((Keyboard.IsKeyDown(Key.D) && !rightPressed) || (Keyboard.IsKeyDown(Key.Right) && !rightPressed))
-//                {
-//                    rightPressed = true;
-//                    return true;
-//                }
-//                if (Keyboard.IsKeyUp(Key.D) && Keyboard.IsKeyUp(Key.Right) && rightPressed)
-//                {
-//                    rightPressed = false;
-//                }
+                
                 return false;
             }
             public bool CF_Dectection_IsUpASpace(PMGActor actor, PMGValueStack localStack)
@@ -205,6 +170,104 @@ namespace PMGF
                     //Console.WriteLine("     right is a wall");
                     return false;
                 }
+            }
+            public bool CF_Dectection_IsUpAWall(PMGActor actor, PMGValueStack localStack)
+            {
+                if (Map.chart[actor.position[0], actor.position[1] - 1] == 1)
+                {
+                    //Console.WriteLine("     up is a wall");
+                    return true;
+                }
+                else
+                {
+                    //Console.WriteLine("     up is a space");
+                    return false;
+                }
+            }
+            public bool CF_Dectection_IsLeftAWall(PMGActor actor, PMGValueStack localStack)
+            {
+                if (Map.chart[actor.position[0] - 1, actor.position[1]] == 1)
+                {
+                    //Console.WriteLine("     left is a wall");
+                    return true;
+                }
+                else
+                {
+                    //Console.WriteLine("     left is a space");
+                    return false;
+                }
+            }
+            public bool CF_Dectection_IsDownAWall(PMGActor actor, PMGValueStack localStack)
+            {
+                if (Map.chart[actor.position[0], actor.position[1] + 1] == 1)
+                {
+                    //Console.WriteLine("     down is a wall");
+                    return true;
+                }
+                else
+                {
+                    //Console.WriteLine("     down is a space");
+                    return false;
+                }
+            }
+            public bool CF_Dectection_IsRightAWall(PMGActor actor, PMGValueStack localStack)
+            {
+                if (Map.chart[actor.position[0] + 1, actor.position[1]] == 1)
+                {
+                    //Console.WriteLine("     right is a Wall");
+                    return true;
+                }
+                else
+                {
+                    //Console.WriteLine("     right is a space");
+                    return false;
+                }
+            }
+            public bool CF_Timer_Continues(PMGActor actor, PMGValueStack localStack)
+            {
+                //makes timer function here
+                
+                return true;//
+            }
+            public bool CF_Collision_WithActorType_0_1(PMGActor actor, PMGValueStack localStack)
+            {
+                for (int i = 0; i<localStack.ActorStack.Values.Count;i++ )
+                {
+                    //hack job stuff
+                    if (actor.position[0] == localStack.ActorStack.Values[i].position[0] && actor.position[1] == localStack.ActorStack.Values[i].position[1])
+                    {
+                        return true;
+                    }
+                }
+                
+                //Debug.Log("'player' 's pos: "+ localStack.GetActor().position[0]+","+localStack.GetActor().position[1]);
+                //Debug.Log("'enemy' 's pos: "+ actor.position[0]+","+actor.position[1]);
+                return false;
+            }
+            public bool CF_Collision_WithActorType_0(PMGActor actor, PMGValueStack localStack)
+            {
+                
+                //hack job stuff
+                if (actor.position[0] == localStack.ActorStack.Values[0].position[0] && actor.position[1] == localStack.ActorStack.Values[0].position[1])
+                {
+
+                    //Debug.Log("colliding with player");
+                    return true;
+                }
+                
+
+                //Debug.Log("'player' 's pos: "+ localStack.GetActor().position[0]+","+localStack.GetActor().position[1]);
+                //Debug.Log("'enemy' 's pos: "+ actor.position[0]+","+actor.position[1]);
+                return false;
+            }
+            public bool CF_CheckStats_ActorHasMaxKeys(PMGActor actor, PMGValueStack localStack)
+            {               
+                if(localStack.GetActor().HasKey)
+                {
+                    return true;
+                }  
+
+                return false;
             }
         }
     }

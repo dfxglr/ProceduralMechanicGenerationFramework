@@ -1,5 +1,6 @@
 ﻿using System;
 using PMGF.PMGGameInstance;
+using System.Linq;
 
 namespace PMGF
 {
@@ -30,8 +31,8 @@ namespace PMGF
 			if (lines.Length != 4)
 				return null;
 
-			if (!ret.ImportSerializedGenomeSet (lines))
-				return false;
+			if (!ret.ImportSerializedGenomeSet (lines.ToList()))
+				return null;
 
 			return ret;
 		}

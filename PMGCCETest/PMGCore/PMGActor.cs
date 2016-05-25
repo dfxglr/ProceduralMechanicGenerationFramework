@@ -24,7 +24,11 @@ namespace PMGF
             public List<int> position = new List<int>();
             //type
             public int Type;
-
+            // has moved
+            public bool HasMoved = false;
+            //has a key to give
+            public bool HasKey = false;
+           
             public PMGGameCore Core;
 
             public PMGActor(PMGGameCore _Core)

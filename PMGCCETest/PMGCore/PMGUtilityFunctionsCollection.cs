@@ -33,7 +33,7 @@ namespace PMGF
             public void UF_DebugWriteToConsole(PMGActor actor, object owner, FunctionOwnerType ownerType)
             {
                 // Write a message to console for testing purposes.
-               // Console.WriteLine("Utility functions called. ");
+                //Console.WriteLine("Utility functions called. ");
 
 
                 // Get owner as method (this is for testing so we know it's a method)

@@ -11,9 +11,9 @@ namespace PMGF
 
 		public class PMGValueStack
 		{
-			GenericStack<PMGActor> ActorStack = new GenericStack<PMGActor>();
-			GenericStack<int> IntStack = new GenericStack<int>();
-            GenericStack<Stopwatch> TimerStack = new GenericStack<Stopwatch>();
+			public GenericStack<PMGActor> ActorStack = new GenericStack<PMGActor>();
+			public GenericStack<int> IntStack = new GenericStack<int>();
+            public GenericStack<Stopwatch> TimerStack = new GenericStack<Stopwatch>();
 
 			public PMGValueStack()
 			{

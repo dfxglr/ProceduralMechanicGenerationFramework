@@ -1,3 +1,7 @@
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace PMGF
 {
     namespace PMGCore
@@ -20,6 +24,9 @@ namespace PMGF
             // World variables. TODO move at some point?
             public PMGValueStack WorldStack = new PMGValueStack();
             public int WorldTimeSteps;
+
+            //spawned actor list
+            public List<PMGActor> WorldActors = new List<PMGActor>();
 
             public PMGGameCore()
             {
