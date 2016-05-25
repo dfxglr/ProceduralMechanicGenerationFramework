@@ -186,7 +186,7 @@ namespace PMGF
 			{
 				// Create the termination function to be used
 				// ( time? )									H  M   S
-				return new TimeEvolvingTermination(new TimeSpan(0, 10, 0));
+				return new TimeEvolvingTermination(new TimeSpan(1, 0, 0));
 			}
 
 			public void ConfigGA(GeneticAlgorithmCCE ga)

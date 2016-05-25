@@ -21,11 +21,11 @@ namespace PMGF
 
 
 			Stopwatch timer = new Stopwatch();
-			private const int extrinsicMaxRunPerGame = 5; // seconds
-			private const int extrinsicMaxTimeForTrials = 30;
+			private const int extrinsicMaxRunPerGame = 4; // seconds
+			private const int extrinsicMaxTimeForTrials = 16;
 			private const int NumTrialGames = 1;
 			private const int InGameRunTime = 100; // 100 ingame time seconds 100 * (1 / seconds_per_timestep) timesteps
-			private const int InGameRunSteps = 1000; 	// currently assuming 0.1s per timestep
+			private const int InGameRunSteps = 200; 	// currently assuming 0.1s per timestep
 			enum PlayerType {Passive, Random};
 			int TotalCells = 0;
 			/* Weights for parts of fitness */
@@ -46,13 +46,23 @@ namespace PMGF
 			public PMGFitness() : base()
 			{
 				// Intrinsic weights
-				IntrinsicWeights.Add(1);	// NumActors
+				IntrinsicWeights.Add(4);	// NumActors
 				IntrinsicWeights.Add(1);	// NumActorTypes
-				IntrinsicWeights.Add(1);	// NumEvents
-				IntrinsicWeights.Add(1);	// NumMethods
+				IntrinsicWeights.Add(2);	// NumEvents
+				IntrinsicWeights.Add(2);	// NumMethods
 
-				ExtrinsicWeights.Add (1);	// BoardCoverage
-				ExtrinsicWeights.Add (4);	// Exceptions
+				ExtrinsicWeights.Add (3);	// BoardCoverage
+				ExtrinsicWeights.Add (1);	// Exceptions
+
+				PMGSingleGameInstance GInstance = new PMGSingleGameInstance ();
+				// Get number of tiles with 0 in map
+
+				for (int x = 0; x < GInstance.GameSet.Map.chart.GetLength (0); x++) {
+					for (int y = 0; y < GInstance.GameSet.Map.chart.GetLength (1); y++) {
+						if (GInstance.GameSet.Map.chart [x, y] == 0)
+							TotalCells++;
+					}
+				}
 			}
 
 
@@ -74,21 +84,14 @@ namespace PMGF
 				GInstance.GameSet.DecodeGenomeSet(GenomeSet);
 				GInstance.BuildInstance(false);
 
-				// Get number of tiles with 0 in map
 
-				for (int x = 0; x < GInstance.GameSet.Map.chart.GetLength (0); x++) {
-					for (int y = 0; y < GInstance.GameSet.Map.chart.GetLength (1); y++) {
-						if (GInstance.GameSet.Map.chart [x, y] == 0)
-							TotalCells++;
-					}
-				}
 
 				// Weigh intrinsic/extrinsic
-				finalFitness = ((double)intrinsicWeight / 2.0) * IntrinsicFitness(GInstance) 
-					+ ((double)extrinsicWeight / 2.0) * ExtrinsicFitness(GInstance);
+				finalFitness = (Convert.ToDouble(intrinsicWeight) / 2.0) * IntrinsicFitness(GInstance) 
+					+ (Convert.ToDouble(extrinsicWeight) / 2.0) * ExtrinsicFitness(GInstance);
 
-				//return finalFitness;
 				return finalFitness;
+//				return RandomizationProvider.Current.GetFloat();
             }
 
 			private double IntrinsicFitness(PMGSingleGameInstance GInstance)
@@ -96,7 +99,7 @@ namespace PMGF
 				// Intrinsic fitnesses //
 
 				double ifit = 0.0;
-
+				return ifit;
 
 				// Complexity
 					
@@ -194,7 +197,7 @@ namespace PMGF
 				ExtrinsicExceptionWeights.Add(1);	//CastingOfFunctionFailed
 				ExtrinsicExceptionWeights.Add(1);	//ExecutingFunctionsOutsideList
 				ExtrinsicExceptionWeights.Add(1);	//StackIsNull
-				ExtrinsicExceptionWeights.Add(1);	//NoStepsInMethod
+				ExtrinsicExceptionWeights.Add(2);	//NoStepsInMethod
 				ExtrinsicExceptionWeights.Add(1);	//CastingOfOwnerFailed
 				ExtrinsicExceptionWeights.Add(1);	//UndefinedError
 
@@ -306,7 +309,7 @@ namespace PMGF
 					}
 
 					// Add number of visited tiles to list
-					VisitedTilesRatio.Add((double)VisitedTiles.Count/(double)TotalCells);
+					VisitedTilesRatio.Add(Convert.ToDouble(VisitedTiles.Count)/Convert.ToDouble(TotalCells));
 
 					if (timer.Elapsed.Seconds > extrinsicMaxTimeForTrials) {
 						TrialsTimedOut = true;
@@ -322,7 +325,7 @@ namespace PMGF
 
 
 				//Board Coverage
-				double BoardCoverage = (double)VisitedTilesRatio.Sum() / (double)NumTrialGames;
+				double BoardCoverage = Convert.ToDouble(VisitedTilesRatio.Sum()) / Convert.ToDouble(NumTrialGames);
 
 				double Exceptions = LogFunction (PoppingEmptyStack.Average ()) * realWeight(ExtrinsicExceptionWeights [0], ExtrinsicExceptionWeights)
 				                    + LogFunction (ReadEmptyStack.Average ()) * realWeight(ExtrinsicExceptionWeights [0], ExtrinsicExceptionWeights)
@@ -346,7 +349,7 @@ namespace PMGF
 
 			private double realWeight(int relativeWeight, List<int> allRelativeWeights)
 			{
-				double result = (double)relativeWeight / (double)allRelativeWeights.Sum ();
+				double result = Convert.ToDouble(relativeWeight) / Convert.ToDouble(allRelativeWeights.Sum ());
 				return result;
 			}
 
@@ -354,13 +357,14 @@ namespace PMGF
 			{
 				
 				// See paper for documentation
-				if (x <= theta)
+				double dx = Convert.ToDouble(x);
+				if (dx <= theta)
 					return 0.0;
 				
 				double scaling = (1.0 / ((1.0/median) * Math.Sqrt(Math.E/(2.0*Math.PI))));
-				double innerLog = (x-theta)/median;
+				double innerLog = (dx-theta)/median;
 				double eExponent = -1 * (Math.Pow(Math.Log (innerLog),2) / (2 * Math.Pow (sigma, 2)));
-				double lowerPart = (x - theta) * sigma * Math.Sqrt (2.0 * Math.PI);
+				double lowerPart = (dx - theta) * sigma * Math.Sqrt (2.0 * Math.PI);
 				double unscaledResult = Math.Pow (Math.E, eExponent) / lowerPart;
 				double result = unscaledResult * scaling;
 				

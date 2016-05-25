@@ -44,6 +44,7 @@ namespace PMGF
 			{				
 				Clear ();
 
+
 				foreach (Gene g in ChromosomeSet[0].GetGenes())
 				{
 					actorGenome.Add ((int)g.Value);
@@ -63,9 +64,12 @@ namespace PMGF
 
 			}
 
-			public void ImportSerializedGenomeSet(List<string> SerializedSet)
+			public bool ImportSerializedGenomeSet(List<string> SerializedSet)
 			{
 				Clear ();
+
+				if (SerializedSet.Count != 4)
+					return false;
 
 				actorGenome = SerializedSet [0].Split (';').Select(int.Parse).ToList ();
 				actorPositionsGenome = SerializedSet [1].Split (';').Select(int.Parse).ToList ();
@@ -77,6 +81,8 @@ namespace PMGF
 				foreach (string s in SerializedSet[3].Split(';')) {
 					methodGenome.Add(new List<int>(s.Split(',').ToList().Select(int.Parse).ToList()));
 				}
+
+				return true;
 			}
 
 			public List<string> ExportSerializedGenomeSet()

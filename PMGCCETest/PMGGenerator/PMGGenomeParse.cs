@@ -214,7 +214,8 @@ namespace PMGF
 	                                    {
 	                                        actorTypePositions[PosListIndex].Add(_genomeSet.actorPositionsGenome[subIndex]);
 	                                    }
-                                        actorTypePositions[PosListIndex][0] = actorTypePositions[PosListIndex][0] % actorTypes.Count;
+										if(actorTypes.Count != 0)
+                                        	actorTypePositions[PosListIndex][0] = actorTypePositions[PosListIndex][0] % actorTypes.Count;
 	                                    PosListIndex++;
 									}else
 									{

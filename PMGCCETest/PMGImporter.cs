@@ -18,8 +18,22 @@ namespace PMGF
 			// Unserialize genome set
 		}
 
-		public void ImportFromFile()
+		public PMGGenomeSet ImportFromFile(string filename)
 		{
+			PMGGenomeSet ret = new PMGGenomeSet();
+
+			if (!System.IO.File.Exists (filename))
+				return null;
+			
+			string[] lines = System.IO.File.ReadAllLines (filename);
+
+			if (lines.Length != 4)
+				return null;
+
+			if (!ret.ImportSerializedGenomeSet (lines))
+				return false;
+
+			return ret;
 		}
 	}
 }
